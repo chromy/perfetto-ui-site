@@ -35,9 +35,10 @@ var perfetto = (function () {
 	        config_editor_state: {
 	            stream_to_host: false,
 	            buffer_size_kb: null,
+	            trace_duration_ms: null,
 	            atrace_categories: {},
 	        },
-	        config: null,
+	        config: "echo 'Create a config above'",
 	    };
 	}
 	exports.createZeroState = createZeroState;
@@ -6603,10 +6604,15 @@ var perfetto = (function () {
 	function createConfig(state$$1) {
 	    const ftraceEvents = [];
 	    const atraceCategories = Object.keys(state$$1.atrace_categories);
+	    const sizeKb = state$$1.buffer_size_kb ? state$$1.buffer_size_kb : 1024;
+	    const durationMs = state$$1.trace_duration_ms ? state$$1.trace_duration_ms : 1000;
+	    const writeIntoFile = !!state$$1.stream_to_host;
+	    const fileWritePeriodMs = writeIntoFile ? 1000 : 0;
 	    return protos$1.TraceConfig.encode({
 	        buffers: [
 	            {
-	                sizeKb: 1024,
+	                sizeKb,
+	                fillPolicy: protos$1.TraceConfig.BufferConfig.FillPolicy.RING_BUFFER,
 	            },
 	        ],
 	        dataSources: [
@@ -6621,7 +6627,16 @@ var perfetto = (function () {
 	                },
 	            }
 	        ],
-	        durationMs: 1000,
+	        producers: [
+	            {
+	                producerName: 'perfetto.traced_probes',
+	                shmSizeKb: 4096,
+	                pageSizeKb: 4,
+	            },
+	        ],
+	        durationMs,
+	        writeIntoFile,
+	        fileWritePeriodMs,
 	    }).finish();
 	}
 	function base64Encode(buffer) {
@@ -6632,15 +6647,15 @@ var perfetto = (function () {
 	}
 	function configToCommandline(config) {
 	    const s = base64Encode(createConfig(config));
-	    let suffix = 'adb shell "perfetto -c - -o /data/misc/perfetto-traces/trace.pb"';
 	    if (config.stream_to_host) {
-	        suffix = 'adb shell "perfetto -c - -o /dev/tty 2>/dev/null" > /tmp/trace';
+	        return `echo ${s} | base64 --decode > /tmp/config && \
+  adb push /tmp/config /data/local/tmp/config && \
+  ./buildtools/android_sdk/platform-tools/adb shell -t "cat /data/local/tmp/config | perfetto -n -c - -o /dev/tty 2>/dev/null" > /tmp/trace`;
 	    }
-	    return `echo ${s} | base64 --decode | ${suffix}`;
+	    else {
+	        return `echo ${s} | base64 --decode | adb shell "perfetto -c - -o /data/misc/perfetto-traces/trace" && adb pull /data/misc/perfetto-traces/trace /tmp/trace`;
+	    }
 	}
-	//function on_action(action) {
-	//  const any_self = (self as any);
-	//}
 	function main() {
 	    console.log('Hello from the worker!');
 	    const any_self = self;
@@ -6651,13 +6666,16 @@ var perfetto = (function () {
 	                    topic: 'pong',
 	                });
 	                break;
-	            case 'init':
+	            case 'init': {
 	                gState = m.data.initial_state;
+	                const config = gState.config_editor_state;
+	                gState.config = configToCommandline(config);
 	                any_self.postMessage({
 	                    topic: 'new_state',
 	                    new_state: gState,
 	                });
 	                break;
+	            }
 	            case 'inc':
 	                gState.counter += 1;
 	                any_self.postMessage({
@@ -6672,6 +6690,28 @@ var perfetto = (function () {
 	                    new_state: gState,
 	                });
 	                break;
+	            case 'set_buffer_size': {
+	                const config = gState.config_editor_state;
+	                const buffer_size_kb = m.data.buffer_size_mb * 1024;
+	                config.buffer_size_kb = buffer_size_kb;
+	                gState.config = configToCommandline(config);
+	                any_self.postMessage({
+	                    topic: 'new_state',
+	                    new_state: gState,
+	                });
+	                break;
+	            }
+	            case 'set_trace_duration': {
+	                const config = gState.config_editor_state;
+	                const duration_ms = m.data.duration_s * 1000;
+	                config.trace_duration_ms = duration_ms;
+	                gState.config = configToCommandline(config);
+	                any_self.postMessage({
+	                    topic: 'new_state',
+	                    new_state: gState,
+	                });
+	                break;
+	            }
 	            case 'set_stream_to_host': {
 	                const config = gState.config_editor_state;
 	                const enabled = m.data.enabled;

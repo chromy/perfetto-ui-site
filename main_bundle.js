@@ -237,9 +237,10 @@ var perfetto = (function () {
 	        config_editor_state: {
 	            stream_to_host: false,
 	            buffer_size_kb: null,
+	            trace_duration_ms: null,
 	            atrace_categories: {},
 	        },
-	        config: null,
+	        config: "echo 'Create a config above'",
 	    };
 	}
 	exports.createZeroState = createZeroState;
@@ -1597,6 +1598,18 @@ var perfetto = (function () {
 	        enabled,
 	    };
 	}
+	function setTraceDuration(duration_s) {
+	    return {
+	        topic: 'set_trace_duration',
+	        duration_s,
+	    };
+	}
+	function setBufferSize(buffer_size_mb) {
+	    return {
+	        topic: 'set_buffer_size',
+	        buffer_size_mb,
+	    };
+	}
 	const Menu = {
 	    view(vnode) {
 	        return mithril("#menu", mithril('h1', vnode.attrs.title));
@@ -1635,10 +1648,16 @@ var perfetto = (function () {
 	        return [
 	            mithril(Menu, { title: "Config Editor" }),
 	            mithril(Side),
-	            mithril('#content', mithril('.group', 'Trace Config'), mithril('div', mithril('label', mithril('input[type=checkbox]', {
+	            mithril('#content', mithril('.group', 'Trace Config'), mithril('label', mithril('.checkbox', mithril('input[type=checkbox]', {
 	                checked: gState.config_editor_state.stream_to_host,
 	                onchange: q(mithril.withAttr('checked', c => gDispatch(setStreamToHost(c)))),
-	            }), 'Stream to host')), mithril('.group', 'Atrace Categories'), atrace.categories.map(category => mithril('div', mithril('label', mithril('input[type=checkbox]', {
+	            }), 'Stream to host')), mithril('label', mithril('input[type=number][min=0]', {
+	                value: (gState.config_editor_state.trace_duration_ms || 0) / 1000,
+	                onchange: q(mithril.withAttr('value', v => gDispatch(setTraceDuration(v)))),
+	            }), 'Trace duration (seconds)'), mithril('label', mithril('input[type=number][min=0]', {
+	                value: (gState.config_editor_state.buffer_size_kb || 0) / 1024,
+	                onchange: q(mithril.withAttr('value', v => gDispatch(setBufferSize(v)))),
+	            }), 'Buffer size (mb)'), atrace.categories.map(category => mithril('label', mithril('.checkbox', mithril('input[type=checkbox]', {
 	                checked: gState.config_editor_state.atrace_categories[category.tag],
 	                onchange: q(mithril.withAttr('checked', c => gDispatch(setCategory(category.tag, c)))),
 	            }), category.name))), gState.config && [
@@ -1649,23 +1668,32 @@ var perfetto = (function () {
 	    },
 	};
 	function readState() {
-	    //const config: ConfigEditorState = (m.route.param('config') as any);
+	    const config = mithril.route.param('config');
+	    console.log(config);
 	    const state$$1 = state.createZeroState();
-	    //  state.config_editor_state = config;
+	    if (mithril.route.get())
+	        state$$1.fragment = mithril.route.get();
+	    if (config)
+	        state$$1.config_editor_state = config;
 	    return state$$1;
 	}
 	function updateState(new_state) {
 	    const old_state = gState;
 	    gState = new_state;
-	    console.log(gState.config);
 	    if (old_state.fragment == new_state.fragment) {
-	        mithril.redraw();
+	        //m.redraw();
+	        mithril.route.set(gState.fragment, {
+	            config: gState.config_editor_state,
+	        }, {
+	            replace: true,
+	            state: {}
+	        });
 	        return;
 	    }
 	    mithril.route.set(gState.fragment, {}, {
 	        replace: false,
 	        state: {
-	        //checked: gState.config_editor_state.sched_enabled,
+	            config: gState.config_editor_state,
 	        }
 	    });
 	}
