@@ -2,3 +2,9 @@
 /*
 !.gitignore
 !index.html
+!logo.png
+!main_bundle.js
+!main_bundle.js.map
+!wasm
+!worker_bundle.js
+!worker_bundle.js.map
