@@ -70,6 +70,9 @@
       background: white;
       padding: 2rem;
       box-shadow: #80808078 0px 1px 1px 1px;
+      width: 100%;
+      max-width: 1000px;
+      justify-self: center;
     }
     #masthead {
       display: flex;
@@ -233,6 +236,23 @@
     justify-content: center;
     align-items: center;
     background-color: #27303d;
+  }
+
+  #content.home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .center {
+    align-self: center;
+    justify-self: center;
+  }
+
+  .trace-card {
+    border: solid #1b9ce2 1px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    box-shadow: 0px 1px 1px 1px #80808040;
   }
 
   </style>

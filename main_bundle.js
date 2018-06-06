@@ -232,7 +232,6 @@ var perfetto = (function () {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	function createZeroState() {
 	    return {
-	        counter: 0,
 	        fragment: "/home",
 	        config_editor: {
 	            stream_to_host: false,
@@ -241,6 +240,8 @@ var perfetto = (function () {
 	            atrace_categories: {},
 	        },
 	        fragment_params: {},
+	        traces: [],
+	        backends: {},
 	        config_commandline: "echo 'Create a config above'",
 	    };
 	}
@@ -1575,9 +1576,13 @@ var perfetto = (function () {
 	        f(e);
 	    };
 	}
-	function incrementCounter() {
-	    return {
-	        topic: 'inc',
+	function quietDispatch(action) {
+	    return function (e) {
+	        e.redraw = false;
+	        if (action instanceof Function) {
+	            return gDispatch(action(e));
+	        }
+	        return gDispatch(action);
 	    };
 	}
 	function navigate(fragment) {
@@ -1611,6 +1616,12 @@ var perfetto = (function () {
 	        buffer_size_mb,
 	    };
 	}
+	function loadTraceFile(file) {
+	    return {
+	        topic: 'load_trace_file',
+	        file,
+	    };
+	}
 	const Menu = {
 	    view(vnode) {
 	        return mithril("#menu", mithril('h1', vnode.attrs.title));
@@ -1618,18 +1629,7 @@ var perfetto = (function () {
 	};
 	const Side = {
 	    view: function () {
-	        return mithril("#side", mithril('#masthead', mithril("img#logo[src='logo.png'][width=384px][height=384px]"), mithril("h1", "Perfetto")), mithril('ul.items', mithril('li', { onclick: q(_ => gDispatch(navigate('/control'))) }, 'Home'), mithril('li', { onclick: q(_ => gDispatch(navigate('/viewer'))) }, 'Trace Viewer'), mithril('li', { onclick: q(_ => gDispatch(navigate('/config'))) }, 'Config Editor')));
-	    },
-	};
-	const HomePage = {
-	    view: function () {
-	        return [
-	            mithril(Menu, { title: "Home" }),
-	            mithril(Side),
-	            mithril('#content', mithril("button", {
-	                onclick: q(_ => gDispatch(incrementCounter())),
-	            }, "Load trace")),
-	        ];
+	        return mithril("#side", mithril('#masthead', mithril("img#logo[src='logo.png'][width=384px][height=384px]"), mithril("h1", "Perfetto")), mithril('ul.items', mithril('li', { onclick: quietDispatch(navigate('/control')) }, 'Home'), mithril('li', { onclick: quietDispatch(navigate('/viewer')) }, 'Trace Viewer'), mithril('li', { onclick: quietDispatch(navigate('/config')) }, 'Config Editor')));
 	    },
 	};
 	function copy(text) {
@@ -1650,6 +1650,24 @@ var perfetto = (function () {
 	            checked: vnode.attrs.checked,
 	            onchange: q(mithril.withAttr('checked', vnode.attrs.setter)),
 	        }), vnode.attrs.label));
+	    },
+	};
+	const HomePage = {
+	    view: function () {
+	        return [
+	            mithril(Menu, { title: "Home" }),
+	            mithril(Side),
+	            mithril('#content.home', mithril("input[type=file].center", {
+	                onchange: quietDispatch((e) => {
+	                    const file = e.target.files.item(0);
+	                    console.log(file);
+	                    return loadTraceFile(file);
+	                }),
+	            }, "Load trace"), gState.traces.length === 0
+	                ? mithril('span.center', 'No traces loaded')
+	                : // m("ul", gState.traces.map(t => m('li', t.name))),
+	                    mithril('.traces', Object.values(gState.backends).map(b => mithril('.trace-card', `${b.name}, ${b.state}`)))),
+	        ];
 	    },
 	};
 	const ConfigPage = {

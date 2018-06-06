@@ -30,7 +30,6 @@ var perfetto = (function () {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	function createZeroState() {
 	    return {
-	        counter: 0,
 	        fragment: "/home",
 	        config_editor: {
 	            stream_to_host: false,
@@ -39,6 +38,8 @@ var perfetto = (function () {
 	            atrace_categories: {},
 	        },
 	        fragment_params: {},
+	        traces: [],
+	        backends: {},
 	        config_commandline: "echo 'Create a config above'",
 	    };
 	}
@@ -6602,6 +6603,8 @@ var perfetto = (function () {
 
 
 	let gState = state.createZeroState();
+	let gTracesController = null;
+	let gLargestKnownId = 0;
 	function createConfig(state$$1) {
 	    const ftraceEvents = [];
 	    const atraceCategories = Object.keys(state$$1.atrace_categories);
@@ -6671,62 +6674,141 @@ var perfetto = (function () {
 	    }
 	    return {};
 	}
+	function publishBackend(info) {
+	    return {
+	        topic: 'publish_backend',
+	        info,
+	    };
+	}
+	class TraceController {
+	    constructor(id) {
+	        this.id = id;
+	        this.state = 'LOADING';
+	        this.name = '';
+	    }
+	    details() {
+	        return {
+	            id: this.id,
+	            state: this.state,
+	            name: this.name,
+	        };
+	    }
+	    setup(trace) {
+	        console.log('setup');
+	        this.name = trace.name || '';
+	        this.state = 'LOADING';
+	        gState.backends[this.id] = this.details();
+	        setTimeout(() => {
+	            this.state = 'READY';
+	            dispatch(publishBackend(this.details()));
+	        }, 1000);
+	    }
+	    update(state$$1) {
+	        console.log('update', state$$1);
+	    }
+	    teardown() {
+	        console.log('teardown');
+	        delete gState.backends[this.id];
+	    }
+	}
+	class TracesController {
+	    constructor() {
+	        this.controllers = new Map();
+	    }
+	    update(state$$1) {
+	        for (const trace of state$$1.traces) {
+	            if (this.controllers.has(trace.id))
+	                continue;
+	            const controller = new TraceController(trace.id);
+	            this.controllers.set(trace.id, controller);
+	            controller.setup(trace);
+	        }
+	        for (const trace of state$$1.traces) {
+	            const controller = this.controllers.get(trace.id);
+	            if (!controller)
+	                throw 'Missing id';
+	            controller.update(state$$1);
+	        }
+	        const ids = new Set(state$$1.traces.map(t => t.id));
+	        for (const controller of this.controllers.values()) {
+	            if (ids.has(controller.id))
+	                continue;
+	            controller.teardown();
+	            this.controllers.delete(controller.id);
+	        }
+	    }
+	}
+	function dispatch(action) {
+	    const any_self = self;
+	    switch (action.topic) {
+	        case 'init': {
+	            gState = action.initial_state;
+	            break;
+	        }
+	        case 'navigate':
+	            gState.fragment = action.fragment;
+	            break;
+	        case 'set_buffer_size': {
+	            const config = gState.config_editor;
+	            const buffer_size_kb = action.buffer_size_mb * 1024;
+	            config.buffer_size_kb = buffer_size_kb;
+	            break;
+	        }
+	        case 'set_trace_duration': {
+	            const config = gState.config_editor;
+	            const duration_ms = action.duration_s * 1000;
+	            config.trace_duration_ms = duration_ms;
+	            break;
+	        }
+	        case 'set_stream_to_host': {
+	            const config = gState.config_editor;
+	            const enabled = action.enabled;
+	            config.stream_to_host = enabled;
+	            break;
+	        }
+	        case 'publish_backend': {
+	            gState.backends[action.info.id] = action.info;
+	            break;
+	        }
+	        case 'set_category': {
+	            const config = gState.config_editor;
+	            const category = action.category;
+	            const enabled = action.enabled;
+	            if (enabled) {
+	                config.atrace_categories[category] = true;
+	            }
+	            else {
+	                delete config.atrace_categories[category];
+	            }
+	            break;
+	        }
+	        case 'load_trace_file': {
+	            const file = action.file;
+	            console.log('load_trace_file', file);
+	            gState.traces.push({
+	                name: file.name,
+	                id: '' + gLargestKnownId++,
+	            });
+	            break;
+	        }
+	        default:
+	            break;
+	    }
+	    const config = gState.config_editor;
+	    gState.config_commandline = configToCommandline(config);
+	    gState.fragment_params = computeFragmentParams(gState);
+	    if (gTracesController)
+	        gTracesController.update(gState);
+	    any_self.postMessage({
+	        topic: 'new_state',
+	        new_state: gState,
+	    });
+	}
 	function main() {
 	    console.log('Hello from the worker!');
+	    gTracesController = new TracesController();
 	    const any_self = self;
-	    any_self.onmessage = (m) => {
-	        switch (m.data.topic) {
-	            case 'init': {
-	                gState = m.data.initial_state;
-	                break;
-	            }
-	            case 'inc':
-	                gState.counter += 1;
-	                break;
-	            case 'navigate':
-	                gState.fragment = m.data.fragment;
-	                break;
-	            case 'set_buffer_size': {
-	                const config = gState.config_editor;
-	                const buffer_size_kb = m.data.buffer_size_mb * 1024;
-	                config.buffer_size_kb = buffer_size_kb;
-	                break;
-	            }
-	            case 'set_trace_duration': {
-	                const config = gState.config_editor;
-	                const duration_ms = m.data.duration_s * 1000;
-	                config.trace_duration_ms = duration_ms;
-	                break;
-	            }
-	            case 'set_stream_to_host': {
-	                const config = gState.config_editor;
-	                const enabled = m.data.enabled;
-	                config.stream_to_host = enabled;
-	                break;
-	            }
-	            case 'set_category': {
-	                const config = gState.config_editor;
-	                const category = m.data.category;
-	                const enabled = m.data.enabled;
-	                if (enabled) {
-	                    config.atrace_categories[category] = true;
-	                }
-	                else {
-	                    delete config.atrace_categories[category];
-	                }
-	                break;
-	            }
-	            default:
-	                break;
-	        }
-	        const config = gState.config_editor;
-	        gState.config_commandline = configToCommandline(config);
-	        gState.fragment_params = computeFragmentParams(gState);
-	        any_self.postMessage({
-	            topic: 'new_state',
-	            new_state: gState,
-	        });
-	    };
+	    any_self.onmessage = (m) => dispatch(m.data);
 	}
 	exports.main = main;
 
