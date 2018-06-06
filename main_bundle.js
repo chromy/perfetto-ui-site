@@ -233,14 +233,15 @@ var perfetto = (function () {
 	function createZeroState() {
 	    return {
 	        counter: 0,
-	        fragment: "/control",
-	        config_editor_state: {
+	        fragment: "/home",
+	        config_editor: {
 	            stream_to_host: false,
 	            buffer_size_kb: null,
 	            trace_duration_ms: null,
 	            atrace_categories: {},
 	        },
-	        config: "echo 'Create a config above'",
+	        fragment_params: {},
+	        config_commandline: "echo 'Create a config above'",
 	    };
 	}
 	exports.createZeroState = createZeroState;
@@ -1617,17 +1618,17 @@ var perfetto = (function () {
 	};
 	const Side = {
 	    view: function () {
-	        return mithril("#side", mithril('#masthead', mithril("img#logo[src='logo.png'][width=384px][height=384px]"), mithril("h1", "Perfetto")), mithril('ul.items', mithril('li', { onclick: q(_ => gDispatch(navigate('/control'))) }, 'Home'), mithril('li', { onclick: q(_ => gDispatch(navigate('/config'))) }, 'Config Editor')));
+	        return mithril("#side", mithril('#masthead', mithril("img#logo[src='logo.png'][width=384px][height=384px]"), mithril("h1", "Perfetto")), mithril('ul.items', mithril('li', { onclick: q(_ => gDispatch(navigate('/control'))) }, 'Home'), mithril('li', { onclick: q(_ => gDispatch(navigate('/viewer'))) }, 'Trace Viewer'), mithril('li', { onclick: q(_ => gDispatch(navigate('/config'))) }, 'Config Editor')));
 	    },
 	};
-	const ControlPage = {
+	const HomePage = {
 	    view: function () {
 	        return [
-	            mithril(Menu, { title: "Control" }),
+	            mithril(Menu, { title: "Home" }),
 	            mithril(Side),
-	            mithril('#content', mithril("h1", { class: "title" }, `Counter: ${gState.counter}`), mithril("button", {
+	            mithril('#content', mithril("button", {
 	                onclick: q(_ => gDispatch(incrementCounter())),
-	            }, "A button")),
+	            }, "Load trace")),
 	        ];
 	    },
 	};
@@ -1643,58 +1644,96 @@ var perfetto = (function () {
 	        }
 	    });
 	}
+	const Checkbox = {
+	    view(vnode) {
+	        return mithril('label', mithril('.checkbox', mithril('input[type=checkbox]', {
+	            checked: vnode.attrs.checked,
+	            onchange: q(mithril.withAttr('checked', vnode.attrs.setter)),
+	        }), vnode.attrs.label));
+	    },
+	};
 	const ConfigPage = {
 	    view: function () {
 	        return [
 	            mithril(Menu, { title: "Config Editor" }),
 	            mithril(Side),
-	            mithril('#content', mithril('.group', 'Trace Config'), mithril('label', mithril('.checkbox', mithril('input[type=checkbox]', {
-	                checked: gState.config_editor_state.stream_to_host,
-	                onchange: q(mithril.withAttr('checked', c => gDispatch(setStreamToHost(c)))),
-	            }), 'Stream to host')), mithril('label', mithril('input[type=number][min=0]', {
-	                value: (gState.config_editor_state.trace_duration_ms || 0) / 1000,
+	            mithril('#content', mithril('.group', 'Trace Config'), mithril(Checkbox, {
+	                label: 'Stream to host',
+	                checked: gState.config_editor.stream_to_host,
+	                setter: (c) => gDispatch(setStreamToHost(c)),
+	            }), mithril('label', mithril('input[type=number][min=0]', {
+	                value: (gState.config_editor.trace_duration_ms || 0) / 1000,
 	                onchange: q(mithril.withAttr('value', v => gDispatch(setTraceDuration(v)))),
 	            }), 'Trace duration (seconds)'), mithril('label', mithril('input[type=number][min=0]', {
-	                value: (gState.config_editor_state.buffer_size_kb || 0) / 1024,
+	                value: (gState.config_editor.buffer_size_kb || 0) / 1024,
 	                onchange: q(mithril.withAttr('value', v => gDispatch(setBufferSize(v)))),
-	            }), 'Buffer size (mb)'), atrace.categories.map(category => mithril('label', mithril('.checkbox', mithril('input[type=checkbox]', {
-	                checked: gState.config_editor_state.atrace_categories[category.tag],
-	                onchange: q(mithril.withAttr('checked', c => gDispatch(setCategory(category.tag, c)))),
-	            }), category.name))), gState.config && [
-	                mithril('code.block', gState.config),
-	                mithril('button', { onclick: () => copy(gState.config) }, 'Copy to clipboard'),
+	            }), 'Buffer size (mb)'), atrace.categories.map(category => mithril(Checkbox, {
+	                label: category.name,
+	                checked: gState.config_editor.atrace_categories[category.tag],
+	                setter: (c) => gDispatch(setCategory(category.tag, c)),
+	            })), gState.config_commandline && [
+	                mithril('code.block', gState.config_commandline),
+	                mithril('button', {
+	                    onclick: () => copy(gState.config_commandline)
+	                }, 'Copy to clipboard'),
 	            ]),
 	        ];
 	    },
 	};
+	const ViewerPage = {
+	    view: function () {
+	        return [
+	            mithril(Menu, { title: "Trace Viewer" }),
+	            mithril(Side),
+	            mithril('#content', "No traces loaded"),
+	        ];
+	    },
+	};
+	function readParam(key, setter) {
+	    const param = mithril.route.param(key);
+	    if (param === undefined)
+	        return;
+	    setter(param);
+	}
 	function readState() {
-	    const config = mithril.route.param('config');
-	    console.log(config);
 	    const state$$1 = state.createZeroState();
-	    if (mithril.route.get())
-	        state$$1.fragment = mithril.route.get();
-	    if (config)
-	        state$$1.config_editor_state = config;
+	    if (!mithril.route.get())
+	        return state$$1;
+	    const fragment = mithril.route.get();
+	    if (fragment.startsWith('/config')) {
+	        state$$1.fragment = '/config';
+	        readParam('stream_to_host', _ => state$$1.config_editor.stream_to_host = true);
+	        readParam('buffer_size_kb', v => state$$1.config_editor.buffer_size_kb = v);
+	        readParam('trace_duration_ms', v => state$$1.config_editor.trace_duration_ms = v);
+	        readParam('atrace_categories', v => v.forEach((c) => state$$1.config_editor.atrace_categories[c] = true));
+	    }
 	    return state$$1;
+	}
+	function tryReadState() {
+	    try {
+	        return readState();
+	    }
+	    catch (error) {
+	        console.error(`Failed to parse state ("${error}") falling back to empty state.`);
+	        return state.createZeroState();
+	    }
 	}
 	function updateState(new_state) {
 	    const old_state = gState;
 	    gState = new_state;
 	    if (old_state.fragment == new_state.fragment) {
-	        //m.redraw();
-	        mithril.route.set(gState.fragment, {
-	            config: gState.config_editor_state,
-	        }, {
-	            replace: true,
-	            state: {}
-	        });
+	        if (new_state.fragment === '/config') {
+	            mithril.route.set(gState.fragment, new_state.fragment_params, {
+	                replace: true,
+	                state: {}
+	            });
+	        }
+	        mithril.redraw();
 	        return;
 	    }
-	    mithril.route.set(gState.fragment, {}, {
+	    mithril.route.set(gState.fragment, new_state.fragment_params, {
 	        replace: false,
-	        state: {
-	            config: gState.config_editor_state,
-	        }
+	        state: {}
 	    });
 	}
 	function main() {
@@ -1705,28 +1744,24 @@ var perfetto = (function () {
 	    };
 	    worker.onmessage = msg => {
 	        switch (msg.data.topic) {
-	            case 'pong':
-	                console.log('Worker ACKed.');
-	                break;
 	            case 'new_state':
 	                updateState(msg.data.new_state);
 	                break;
 	        }
 	    };
-	    worker.postMessage({ topic: 'ping' });
 	    const root = document.querySelector('main');
 	    if (root == null) {
 	        console.error('No main element found.');
 	        return;
 	    }
-	    mithril.route(root, "/control", {
-	        "/control": ControlPage,
+	    mithril.route(root, "/home", {
+	        "/home": HomePage,
 	        "/config": ConfigPage,
+	        "/viewer": ViewerPage,
 	    });
-	    gState = readState();
+	    gState = tryReadState();
 	    mithril.redraw();
 	    gDispatch = worker.postMessage.bind(worker);
-	    console.log('initial:', gState);
 	    gDispatch({
 	        topic: 'init',
 	        initial_state: gState,

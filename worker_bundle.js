@@ -31,14 +31,15 @@ var perfetto = (function () {
 	function createZeroState() {
 	    return {
 	        counter: 0,
-	        fragment: "/control",
-	        config_editor_state: {
+	        fragment: "/home",
+	        config_editor: {
 	            stream_to_host: false,
 	            buffer_size_kb: null,
 	            trace_duration_ms: null,
 	            atrace_categories: {},
 	        },
-	        config: "echo 'Create a config above'",
+	        fragment_params: {},
+	        config_commandline: "echo 'Create a config above'",
 	    };
 	}
 	exports.createZeroState = createZeroState;
@@ -6656,75 +6657,55 @@ var perfetto = (function () {
 	        return `echo ${s} | base64 --decode | adb shell "perfetto -c - -o /data/misc/perfetto-traces/trace" && adb pull /data/misc/perfetto-traces/trace /tmp/trace`;
 	    }
 	}
+	function computeFragmentParams(state$$1) {
+	    if (state$$1.fragment === '/config') {
+	        let params = {};
+	        if (state$$1.config_editor.stream_to_host)
+	            params['stream_to_host'] = '';
+	        if (state$$1.config_editor.buffer_size_kb)
+	            params['buffer_size_kb'] = state$$1.config_editor.buffer_size_kb;
+	        if (state$$1.config_editor.trace_duration_ms)
+	            params['trace_duration_ms'] = state$$1.config_editor.trace_duration_ms;
+	        params['atrace_categories'] = Object.keys(state$$1.config_editor.atrace_categories);
+	        return params;
+	    }
+	    return {};
+	}
 	function main() {
 	    console.log('Hello from the worker!');
 	    const any_self = self;
 	    any_self.onmessage = (m) => {
 	        switch (m.data.topic) {
-	            case 'ping':
-	                any_self.postMessage({
-	                    topic: 'pong',
-	                });
-	                break;
 	            case 'init': {
 	                gState = m.data.initial_state;
-	                const config = gState.config_editor_state;
-	                gState.config = configToCommandline(config);
-	                any_self.postMessage({
-	                    topic: 'new_state',
-	                    new_state: gState,
-	                });
 	                break;
 	            }
 	            case 'inc':
 	                gState.counter += 1;
-	                any_self.postMessage({
-	                    topic: 'new_state',
-	                    new_state: gState,
-	                });
 	                break;
 	            case 'navigate':
 	                gState.fragment = m.data.fragment;
-	                any_self.postMessage({
-	                    topic: 'new_state',
-	                    new_state: gState,
-	                });
 	                break;
 	            case 'set_buffer_size': {
-	                const config = gState.config_editor_state;
+	                const config = gState.config_editor;
 	                const buffer_size_kb = m.data.buffer_size_mb * 1024;
 	                config.buffer_size_kb = buffer_size_kb;
-	                gState.config = configToCommandline(config);
-	                any_self.postMessage({
-	                    topic: 'new_state',
-	                    new_state: gState,
-	                });
 	                break;
 	            }
 	            case 'set_trace_duration': {
-	                const config = gState.config_editor_state;
+	                const config = gState.config_editor;
 	                const duration_ms = m.data.duration_s * 1000;
 	                config.trace_duration_ms = duration_ms;
-	                gState.config = configToCommandline(config);
-	                any_self.postMessage({
-	                    topic: 'new_state',
-	                    new_state: gState,
-	                });
 	                break;
 	            }
 	            case 'set_stream_to_host': {
-	                const config = gState.config_editor_state;
+	                const config = gState.config_editor;
 	                const enabled = m.data.enabled;
 	                config.stream_to_host = enabled;
-	                gState.config = configToCommandline(config);
-	                any_self.postMessage({
-	                    topic: 'new_state',
-	                    new_state: gState,
-	                });
 	                break;
 	            }
-	            case 'set_category':
-	                const config = gState.config_editor_state;
+	            case 'set_category': {
+	                const config = gState.config_editor;
 	                const category = m.data.category;
 	                const enabled = m.data.enabled;
 	                if (enabled) {
@@ -6733,15 +6714,18 @@ var perfetto = (function () {
 	                else {
 	                    delete config.atrace_categories[category];
 	                }
-	                gState.config = configToCommandline(config);
-	                any_self.postMessage({
-	                    topic: 'new_state',
-	                    new_state: gState,
-	                });
 	                break;
+	            }
 	            default:
-	                return;
+	                break;
 	        }
+	        const config = gState.config_editor;
+	        gState.config_commandline = configToCommandline(config);
+	        gState.fragment_params = computeFragmentParams(gState);
+	        any_self.postMessage({
+	            topic: 'new_state',
+	            new_state: gState,
+	        });
 	    };
 	}
 	exports.main = main;
