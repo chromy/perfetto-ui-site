@@ -6564,6 +6564,16947 @@ var perfetto = (function () {
 	            return TraceConfig;
 	        })();
 
+	        protos.Trace = (function() {
+
+	            /**
+	             * Properties of a Trace.
+	             * @memberof perfetto.protos
+	             * @interface ITrace
+	             * @property {Array.<perfetto.protos.ITracePacket>|null} [packet] Trace packet
+	             */
+
+	            /**
+	             * Constructs a new Trace.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a Trace.
+	             * @implements ITrace
+	             * @constructor
+	             * @param {perfetto.protos.ITrace=} [properties] Properties to set
+	             */
+	            function Trace(properties) {
+	                this.packet = [];
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * Trace packet.
+	             * @member {Array.<perfetto.protos.ITracePacket>} packet
+	             * @memberof perfetto.protos.Trace
+	             * @instance
+	             */
+	            Trace.prototype.packet = $util.emptyArray;
+
+	            /**
+	             * Creates a new Trace instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.Trace
+	             * @static
+	             * @param {perfetto.protos.ITrace=} [properties] Properties to set
+	             * @returns {perfetto.protos.Trace} Trace instance
+	             */
+	            Trace.create = function create(properties) {
+	                return new Trace(properties);
+	            };
+
+	            /**
+	             * Encodes the specified Trace message. Does not implicitly {@link perfetto.protos.Trace.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.Trace
+	             * @static
+	             * @param {perfetto.protos.ITrace} message Trace message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Trace.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.packet != null && message.packet.length)
+	                    for (var i = 0; i < message.packet.length; ++i)
+	                        $root.perfetto.protos.TracePacket.encode(message.packet[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified Trace message, length delimited. Does not implicitly {@link perfetto.protos.Trace.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.Trace
+	             * @static
+	             * @param {perfetto.protos.ITrace} message Trace message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Trace.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a Trace message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.Trace
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.Trace} Trace
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Trace.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.Trace();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        if (!(message.packet && message.packet.length))
+	                            message.packet = [];
+	                        message.packet.push($root.perfetto.protos.TracePacket.decode(reader, reader.uint32()));
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a Trace message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.Trace
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.Trace} Trace
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Trace.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a Trace message.
+	             * @function verify
+	             * @memberof perfetto.protos.Trace
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            Trace.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.packet != null && message.hasOwnProperty("packet")) {
+	                    if (!Array.isArray(message.packet))
+	                        return "packet: array expected";
+	                    for (var i = 0; i < message.packet.length; ++i) {
+	                        var error = $root.perfetto.protos.TracePacket.verify(message.packet[i]);
+	                        if (error)
+	                            return "packet." + error;
+	                    }
+	                }
+	                return null;
+	            };
+
+	            /**
+	             * Creates a Trace message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.Trace
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.Trace} Trace
+	             */
+	            Trace.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.Trace)
+	                    return object;
+	                var message = new $root.perfetto.protos.Trace();
+	                if (object.packet) {
+	                    if (!Array.isArray(object.packet))
+	                        throw TypeError(".perfetto.protos.Trace.packet: array expected");
+	                    message.packet = [];
+	                    for (var i = 0; i < object.packet.length; ++i) {
+	                        if (typeof object.packet[i] !== "object")
+	                            throw TypeError(".perfetto.protos.Trace.packet: object expected");
+	                        message.packet[i] = $root.perfetto.protos.TracePacket.fromObject(object.packet[i]);
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a Trace message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.Trace
+	             * @static
+	             * @param {perfetto.protos.Trace} message Trace
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            Trace.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.arrays || options.defaults)
+	                    object.packet = [];
+	                if (message.packet && message.packet.length) {
+	                    object.packet = [];
+	                    for (var j = 0; j < message.packet.length; ++j)
+	                        object.packet[j] = $root.perfetto.protos.TracePacket.toObject(message.packet[j], options);
+	                }
+	                return object;
+	            };
+
+	            /**
+	             * Converts this Trace to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.Trace
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            Trace.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return Trace;
+	        })();
+
+	        protos.TracePacket = (function() {
+
+	            /**
+	             * Properties of a TracePacket.
+	             * @memberof perfetto.protos
+	             * @interface ITracePacket
+	             * @property {perfetto.protos.IFtraceEventBundle|null} [ftraceEvents] TracePacket ftraceEvents
+	             * @property {perfetto.protos.IProcessTree|null} [processTree] TracePacket processTree
+	             * @property {perfetto.protos.IInodeFileMap|null} [inodeFileMap] TracePacket inodeFileMap
+	             * @property {number|null} [trustedUid] TracePacket trustedUid
+	             */
+
+	            /**
+	             * Constructs a new TracePacket.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a TracePacket.
+	             * @implements ITracePacket
+	             * @constructor
+	             * @param {perfetto.protos.ITracePacket=} [properties] Properties to set
+	             */
+	            function TracePacket(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * TracePacket ftraceEvents.
+	             * @member {perfetto.protos.IFtraceEventBundle|null|undefined} ftraceEvents
+	             * @memberof perfetto.protos.TracePacket
+	             * @instance
+	             */
+	            TracePacket.prototype.ftraceEvents = null;
+
+	            /**
+	             * TracePacket processTree.
+	             * @member {perfetto.protos.IProcessTree|null|undefined} processTree
+	             * @memberof perfetto.protos.TracePacket
+	             * @instance
+	             */
+	            TracePacket.prototype.processTree = null;
+
+	            /**
+	             * TracePacket inodeFileMap.
+	             * @member {perfetto.protos.IInodeFileMap|null|undefined} inodeFileMap
+	             * @memberof perfetto.protos.TracePacket
+	             * @instance
+	             */
+	            TracePacket.prototype.inodeFileMap = null;
+
+	            /**
+	             * TracePacket trustedUid.
+	             * @member {number} trustedUid
+	             * @memberof perfetto.protos.TracePacket
+	             * @instance
+	             */
+	            TracePacket.prototype.trustedUid = 0;
+
+	            // OneOf field names bound to virtual getters and setters
+	            var $oneOfFields;
+
+	            /**
+	             * TracePacket data.
+	             * @member {"ftraceEvents"|"processTree"|"inodeFileMap"|undefined} data
+	             * @memberof perfetto.protos.TracePacket
+	             * @instance
+	             */
+	            Object.defineProperty(TracePacket.prototype, "data", {
+	                get: $util.oneOfGetter($oneOfFields = ["ftraceEvents", "processTree", "inodeFileMap"]),
+	                set: $util.oneOfSetter($oneOfFields)
+	            });
+
+	            /**
+	             * TracePacket optionalTrustedUid.
+	             * @member {"trustedUid"|undefined} optionalTrustedUid
+	             * @memberof perfetto.protos.TracePacket
+	             * @instance
+	             */
+	            Object.defineProperty(TracePacket.prototype, "optionalTrustedUid", {
+	                get: $util.oneOfGetter($oneOfFields = ["trustedUid"]),
+	                set: $util.oneOfSetter($oneOfFields)
+	            });
+
+	            /**
+	             * Creates a new TracePacket instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.TracePacket
+	             * @static
+	             * @param {perfetto.protos.ITracePacket=} [properties] Properties to set
+	             * @returns {perfetto.protos.TracePacket} TracePacket instance
+	             */
+	            TracePacket.create = function create(properties) {
+	                return new TracePacket(properties);
+	            };
+
+	            /**
+	             * Encodes the specified TracePacket message. Does not implicitly {@link perfetto.protos.TracePacket.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.TracePacket
+	             * @static
+	             * @param {perfetto.protos.ITracePacket} message TracePacket message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            TracePacket.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.ftraceEvents != null && message.hasOwnProperty("ftraceEvents"))
+	                    $root.perfetto.protos.FtraceEventBundle.encode(message.ftraceEvents, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+	                if (message.processTree != null && message.hasOwnProperty("processTree"))
+	                    $root.perfetto.protos.ProcessTree.encode(message.processTree, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+	                if (message.trustedUid != null && message.hasOwnProperty("trustedUid"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.trustedUid);
+	                if (message.inodeFileMap != null && message.hasOwnProperty("inodeFileMap"))
+	                    $root.perfetto.protos.InodeFileMap.encode(message.inodeFileMap, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified TracePacket message, length delimited. Does not implicitly {@link perfetto.protos.TracePacket.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.TracePacket
+	             * @static
+	             * @param {perfetto.protos.ITracePacket} message TracePacket message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            TracePacket.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a TracePacket message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.TracePacket
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.TracePacket} TracePacket
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            TracePacket.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.TracePacket();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.ftraceEvents = $root.perfetto.protos.FtraceEventBundle.decode(reader, reader.uint32());
+	                        break;
+	                    case 2:
+	                        message.processTree = $root.perfetto.protos.ProcessTree.decode(reader, reader.uint32());
+	                        break;
+	                    case 4:
+	                        message.inodeFileMap = $root.perfetto.protos.InodeFileMap.decode(reader, reader.uint32());
+	                        break;
+	                    case 3:
+	                        message.trustedUid = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a TracePacket message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.TracePacket
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.TracePacket} TracePacket
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            TracePacket.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a TracePacket message.
+	             * @function verify
+	             * @memberof perfetto.protos.TracePacket
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            TracePacket.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                var properties = {};
+	                if (message.ftraceEvents != null && message.hasOwnProperty("ftraceEvents")) {
+	                    properties.data = 1;
+	                    {
+	                        var error = $root.perfetto.protos.FtraceEventBundle.verify(message.ftraceEvents);
+	                        if (error)
+	                            return "ftraceEvents." + error;
+	                    }
+	                }
+	                if (message.processTree != null && message.hasOwnProperty("processTree")) {
+	                    if (properties.data === 1)
+	                        return "data: multiple values";
+	                    properties.data = 1;
+	                    {
+	                        var error = $root.perfetto.protos.ProcessTree.verify(message.processTree);
+	                        if (error)
+	                            return "processTree." + error;
+	                    }
+	                }
+	                if (message.inodeFileMap != null && message.hasOwnProperty("inodeFileMap")) {
+	                    if (properties.data === 1)
+	                        return "data: multiple values";
+	                    properties.data = 1;
+	                    {
+	                        var error = $root.perfetto.protos.InodeFileMap.verify(message.inodeFileMap);
+	                        if (error)
+	                            return "inodeFileMap." + error;
+	                    }
+	                }
+	                if (message.trustedUid != null && message.hasOwnProperty("trustedUid")) {
+	                    properties.optionalTrustedUid = 1;
+	                    if (!$util.isInteger(message.trustedUid))
+	                        return "trustedUid: integer expected";
+	                }
+	                return null;
+	            };
+
+	            /**
+	             * Creates a TracePacket message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.TracePacket
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.TracePacket} TracePacket
+	             */
+	            TracePacket.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.TracePacket)
+	                    return object;
+	                var message = new $root.perfetto.protos.TracePacket();
+	                if (object.ftraceEvents != null) {
+	                    if (typeof object.ftraceEvents !== "object")
+	                        throw TypeError(".perfetto.protos.TracePacket.ftraceEvents: object expected");
+	                    message.ftraceEvents = $root.perfetto.protos.FtraceEventBundle.fromObject(object.ftraceEvents);
+	                }
+	                if (object.processTree != null) {
+	                    if (typeof object.processTree !== "object")
+	                        throw TypeError(".perfetto.protos.TracePacket.processTree: object expected");
+	                    message.processTree = $root.perfetto.protos.ProcessTree.fromObject(object.processTree);
+	                }
+	                if (object.inodeFileMap != null) {
+	                    if (typeof object.inodeFileMap !== "object")
+	                        throw TypeError(".perfetto.protos.TracePacket.inodeFileMap: object expected");
+	                    message.inodeFileMap = $root.perfetto.protos.InodeFileMap.fromObject(object.inodeFileMap);
+	                }
+	                if (object.trustedUid != null)
+	                    message.trustedUid = object.trustedUid | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a TracePacket message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.TracePacket
+	             * @static
+	             * @param {perfetto.protos.TracePacket} message TracePacket
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            TracePacket.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (message.ftraceEvents != null && message.hasOwnProperty("ftraceEvents")) {
+	                    object.ftraceEvents = $root.perfetto.protos.FtraceEventBundle.toObject(message.ftraceEvents, options);
+	                    if (options.oneofs)
+	                        object.data = "ftraceEvents";
+	                }
+	                if (message.processTree != null && message.hasOwnProperty("processTree")) {
+	                    object.processTree = $root.perfetto.protos.ProcessTree.toObject(message.processTree, options);
+	                    if (options.oneofs)
+	                        object.data = "processTree";
+	                }
+	                if (message.trustedUid != null && message.hasOwnProperty("trustedUid")) {
+	                    object.trustedUid = message.trustedUid;
+	                    if (options.oneofs)
+	                        object.optionalTrustedUid = "trustedUid";
+	                }
+	                if (message.inodeFileMap != null && message.hasOwnProperty("inodeFileMap")) {
+	                    object.inodeFileMap = $root.perfetto.protos.InodeFileMap.toObject(message.inodeFileMap, options);
+	                    if (options.oneofs)
+	                        object.data = "inodeFileMap";
+	                }
+	                return object;
+	            };
+
+	            /**
+	             * Converts this TracePacket to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.TracePacket
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            TracePacket.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return TracePacket;
+	        })();
+
+	        protos.FtraceEventBundle = (function() {
+
+	            /**
+	             * Properties of a FtraceEventBundle.
+	             * @memberof perfetto.protos
+	             * @interface IFtraceEventBundle
+	             * @property {number|null} [cpu] FtraceEventBundle cpu
+	             * @property {Array.<perfetto.protos.IFtraceEvent>|null} [event] FtraceEventBundle event
+	             * @property {number|null} [overwriteCount] FtraceEventBundle overwriteCount
+	             */
+
+	            /**
+	             * Constructs a new FtraceEventBundle.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a FtraceEventBundle.
+	             * @implements IFtraceEventBundle
+	             * @constructor
+	             * @param {perfetto.protos.IFtraceEventBundle=} [properties] Properties to set
+	             */
+	            function FtraceEventBundle(properties) {
+	                this.event = [];
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * FtraceEventBundle cpu.
+	             * @member {number} cpu
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @instance
+	             */
+	            FtraceEventBundle.prototype.cpu = 0;
+
+	            /**
+	             * FtraceEventBundle event.
+	             * @member {Array.<perfetto.protos.IFtraceEvent>} event
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @instance
+	             */
+	            FtraceEventBundle.prototype.event = $util.emptyArray;
+
+	            /**
+	             * FtraceEventBundle overwriteCount.
+	             * @member {number} overwriteCount
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @instance
+	             */
+	            FtraceEventBundle.prototype.overwriteCount = 0;
+
+	            /**
+	             * Creates a new FtraceEventBundle instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @static
+	             * @param {perfetto.protos.IFtraceEventBundle=} [properties] Properties to set
+	             * @returns {perfetto.protos.FtraceEventBundle} FtraceEventBundle instance
+	             */
+	            FtraceEventBundle.create = function create(properties) {
+	                return new FtraceEventBundle(properties);
+	            };
+
+	            /**
+	             * Encodes the specified FtraceEventBundle message. Does not implicitly {@link perfetto.protos.FtraceEventBundle.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @static
+	             * @param {perfetto.protos.IFtraceEventBundle} message FtraceEventBundle message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            FtraceEventBundle.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.cpu != null && message.hasOwnProperty("cpu"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.cpu);
+	                if (message.event != null && message.event.length)
+	                    for (var i = 0; i < message.event.length; ++i)
+	                        $root.perfetto.protos.FtraceEvent.encode(message.event[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+	                if (message.overwriteCount != null && message.hasOwnProperty("overwriteCount"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.overwriteCount);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified FtraceEventBundle message, length delimited. Does not implicitly {@link perfetto.protos.FtraceEventBundle.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @static
+	             * @param {perfetto.protos.IFtraceEventBundle} message FtraceEventBundle message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            FtraceEventBundle.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a FtraceEventBundle message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.FtraceEventBundle} FtraceEventBundle
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            FtraceEventBundle.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.FtraceEventBundle();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.cpu = reader.uint32();
+	                        break;
+	                    case 2:
+	                        if (!(message.event && message.event.length))
+	                            message.event = [];
+	                        message.event.push($root.perfetto.protos.FtraceEvent.decode(reader, reader.uint32()));
+	                        break;
+	                    case 3:
+	                        message.overwriteCount = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a FtraceEventBundle message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.FtraceEventBundle} FtraceEventBundle
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            FtraceEventBundle.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a FtraceEventBundle message.
+	             * @function verify
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            FtraceEventBundle.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.cpu != null && message.hasOwnProperty("cpu"))
+	                    if (!$util.isInteger(message.cpu))
+	                        return "cpu: integer expected";
+	                if (message.event != null && message.hasOwnProperty("event")) {
+	                    if (!Array.isArray(message.event))
+	                        return "event: array expected";
+	                    for (var i = 0; i < message.event.length; ++i) {
+	                        var error = $root.perfetto.protos.FtraceEvent.verify(message.event[i]);
+	                        if (error)
+	                            return "event." + error;
+	                    }
+	                }
+	                if (message.overwriteCount != null && message.hasOwnProperty("overwriteCount"))
+	                    if (!$util.isInteger(message.overwriteCount))
+	                        return "overwriteCount: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a FtraceEventBundle message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.FtraceEventBundle} FtraceEventBundle
+	             */
+	            FtraceEventBundle.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.FtraceEventBundle)
+	                    return object;
+	                var message = new $root.perfetto.protos.FtraceEventBundle();
+	                if (object.cpu != null)
+	                    message.cpu = object.cpu >>> 0;
+	                if (object.event) {
+	                    if (!Array.isArray(object.event))
+	                        throw TypeError(".perfetto.protos.FtraceEventBundle.event: array expected");
+	                    message.event = [];
+	                    for (var i = 0; i < object.event.length; ++i) {
+	                        if (typeof object.event[i] !== "object")
+	                            throw TypeError(".perfetto.protos.FtraceEventBundle.event: object expected");
+	                        message.event[i] = $root.perfetto.protos.FtraceEvent.fromObject(object.event[i]);
+	                    }
+	                }
+	                if (object.overwriteCount != null)
+	                    message.overwriteCount = object.overwriteCount >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a FtraceEventBundle message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @static
+	             * @param {perfetto.protos.FtraceEventBundle} message FtraceEventBundle
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            FtraceEventBundle.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.arrays || options.defaults)
+	                    object.event = [];
+	                if (options.defaults) {
+	                    object.cpu = 0;
+	                    object.overwriteCount = 0;
+	                }
+	                if (message.cpu != null && message.hasOwnProperty("cpu"))
+	                    object.cpu = message.cpu;
+	                if (message.event && message.event.length) {
+	                    object.event = [];
+	                    for (var j = 0; j < message.event.length; ++j)
+	                        object.event[j] = $root.perfetto.protos.FtraceEvent.toObject(message.event[j], options);
+	                }
+	                if (message.overwriteCount != null && message.hasOwnProperty("overwriteCount"))
+	                    object.overwriteCount = message.overwriteCount;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this FtraceEventBundle to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.FtraceEventBundle
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            FtraceEventBundle.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return FtraceEventBundle;
+	        })();
+
+	        protos.FtraceEvent = (function() {
+
+	            /**
+	             * Properties of a FtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IFtraceEvent
+	             * @property {number|Long|null} [timestamp] FtraceEvent timestamp
+	             * @property {number|null} [pid] FtraceEvent pid
+	             * @property {perfetto.protos.ISchedSwitchFtraceEvent|null} [schedSwitch] FtraceEvent schedSwitch
+	             * @property {perfetto.protos.ICpufreqInteractiveAlreadyFtraceEvent|null} [cpufreqInteractiveAlready] FtraceEvent cpufreqInteractiveAlready
+	             * @property {perfetto.protos.ICpufreqInteractiveBoostFtraceEvent|null} [cpufreqInteractiveBoost] FtraceEvent cpufreqInteractiveBoost
+	             * @property {perfetto.protos.ICpufreqInteractiveNotyetFtraceEvent|null} [cpufreqInteractiveNotyet] FtraceEvent cpufreqInteractiveNotyet
+	             * @property {perfetto.protos.ICpufreqInteractiveSetspeedFtraceEvent|null} [cpufreqInteractiveSetspeed] FtraceEvent cpufreqInteractiveSetspeed
+	             * @property {perfetto.protos.ICpufreqInteractiveTargetFtraceEvent|null} [cpufreqInteractiveTarget] FtraceEvent cpufreqInteractiveTarget
+	             * @property {perfetto.protos.ICpufreqInteractiveUnboostFtraceEvent|null} [cpufreqInteractiveUnboost] FtraceEvent cpufreqInteractiveUnboost
+	             * @property {perfetto.protos.ICpuFrequencyFtraceEvent|null} [cpuFrequency] FtraceEvent cpuFrequency
+	             * @property {perfetto.protos.ICpuFrequencyLimitsFtraceEvent|null} [cpuFrequencyLimits] FtraceEvent cpuFrequencyLimits
+	             * @property {perfetto.protos.ICpuIdleFtraceEvent|null} [cpuIdle] FtraceEvent cpuIdle
+	             * @property {perfetto.protos.IClockSetRateFtraceEvent|null} [clockSetRate] FtraceEvent clockSetRate
+	             * @property {perfetto.protos.ISchedWakeupFtraceEvent|null} [schedWakeup] FtraceEvent schedWakeup
+	             * @property {perfetto.protos.ISchedBlockedReasonFtraceEvent|null} [schedBlockedReason] FtraceEvent schedBlockedReason
+	             * @property {perfetto.protos.ISchedCpuHotplugFtraceEvent|null} [schedCpuHotplug] FtraceEvent schedCpuHotplug
+	             * @property {perfetto.protos.ILowmemoryKillFtraceEvent|null} [lowmemoryKill] FtraceEvent lowmemoryKill
+	             * @property {perfetto.protos.IExt4DaWriteBeginFtraceEvent|null} [ext4DaWriteBegin] FtraceEvent ext4DaWriteBegin
+	             * @property {perfetto.protos.IExt4DaWriteEndFtraceEvent|null} [ext4DaWriteEnd] FtraceEvent ext4DaWriteEnd
+	             * @property {perfetto.protos.IExt4SyncFileEnterFtraceEvent|null} [ext4SyncFileEnter] FtraceEvent ext4SyncFileEnter
+	             * @property {perfetto.protos.IExt4SyncFileExitFtraceEvent|null} [ext4SyncFileExit] FtraceEvent ext4SyncFileExit
+	             * @property {perfetto.protos.IBlockRqIssueFtraceEvent|null} [blockRqIssue] FtraceEvent blockRqIssue
+	             * @property {perfetto.protos.IMmVmscanDirectReclaimBeginFtraceEvent|null} [mmVmscanDirectReclaimBegin] FtraceEvent mmVmscanDirectReclaimBegin
+	             * @property {perfetto.protos.IMmVmscanDirectReclaimEndFtraceEvent|null} [mmVmscanDirectReclaimEnd] FtraceEvent mmVmscanDirectReclaimEnd
+	             * @property {perfetto.protos.IMmVmscanKswapdWakeFtraceEvent|null} [mmVmscanKswapdWake] FtraceEvent mmVmscanKswapdWake
+	             * @property {perfetto.protos.IMmVmscanKswapdSleepFtraceEvent|null} [mmVmscanKswapdSleep] FtraceEvent mmVmscanKswapdSleep
+	             * @property {perfetto.protos.IBinderTransactionFtraceEvent|null} [binderTransaction] FtraceEvent binderTransaction
+	             * @property {perfetto.protos.IBinderTransactionReceivedFtraceEvent|null} [binderTransactionReceived] FtraceEvent binderTransactionReceived
+	             * @property {perfetto.protos.IBinderLockFtraceEvent|null} [binderLock] FtraceEvent binderLock
+	             * @property {perfetto.protos.IBinderLockedFtraceEvent|null} [binderLocked] FtraceEvent binderLocked
+	             * @property {perfetto.protos.IBinderUnlockFtraceEvent|null} [binderUnlock] FtraceEvent binderUnlock
+	             * @property {perfetto.protos.ICgroupAttachTaskFtraceEvent|null} [cgroupAttachTask] FtraceEvent cgroupAttachTask
+	             * @property {perfetto.protos.ICgroupMkdirFtraceEvent|null} [cgroupMkdir] FtraceEvent cgroupMkdir
+	             * @property {perfetto.protos.ICgroupRemountFtraceEvent|null} [cgroupRemount] FtraceEvent cgroupRemount
+	             * @property {perfetto.protos.ICgroupRmdirFtraceEvent|null} [cgroupRmdir] FtraceEvent cgroupRmdir
+	             * @property {perfetto.protos.ICgroupTransferTasksFtraceEvent|null} [cgroupTransferTasks] FtraceEvent cgroupTransferTasks
+	             * @property {perfetto.protos.ICgroupDestroyRootFtraceEvent|null} [cgroupDestroyRoot] FtraceEvent cgroupDestroyRoot
+	             * @property {perfetto.protos.ICgroupReleaseFtraceEvent|null} [cgroupRelease] FtraceEvent cgroupRelease
+	             * @property {perfetto.protos.ICgroupRenameFtraceEvent|null} [cgroupRename] FtraceEvent cgroupRename
+	             * @property {perfetto.protos.ICgroupSetupRootFtraceEvent|null} [cgroupSetupRoot] FtraceEvent cgroupSetupRoot
+	             * @property {perfetto.protos.IBlockRqCompleteFtraceEvent|null} [blockRqComplete] FtraceEvent blockRqComplete
+	             * @property {perfetto.protos.IExt4EsLookupExtentEnterFtraceEvent|null} [ext4EsLookupExtentEnter] FtraceEvent ext4EsLookupExtentEnter
+	             * @property {perfetto.protos.IExt4EsLookupExtentExitFtraceEvent|null} [ext4EsLookupExtentExit] FtraceEvent ext4EsLookupExtentExit
+	             * @property {perfetto.protos.IExt4LoadInodeFtraceEvent|null} [ext4LoadInode] FtraceEvent ext4LoadInode
+	             * @property {perfetto.protos.IF2fsGetDataBlockFtraceEvent|null} [f2fsGetDataBlock] FtraceEvent f2fsGetDataBlock
+	             * @property {perfetto.protos.IF2fsIgetFtraceEvent|null} [f2fsIget] FtraceEvent f2fsIget
+	             * @property {perfetto.protos.IF2fsSyncFileEnterFtraceEvent|null} [f2fsSyncFileEnter] FtraceEvent f2fsSyncFileEnter
+	             * @property {perfetto.protos.IF2fsSyncFileExitFtraceEvent|null} [f2fsSyncFileExit] FtraceEvent f2fsSyncFileExit
+	             * @property {perfetto.protos.IF2fsWriteBeginFtraceEvent|null} [f2fsWriteBegin] FtraceEvent f2fsWriteBegin
+	             * @property {perfetto.protos.IF2fsWriteEndFtraceEvent|null} [f2fsWriteEnd] FtraceEvent f2fsWriteEnd
+	             */
+
+	            /**
+	             * Constructs a new FtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a FtraceEvent.
+	             * @implements IFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IFtraceEvent=} [properties] Properties to set
+	             */
+	            function FtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * FtraceEvent timestamp.
+	             * @member {number|Long} timestamp
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.timestamp = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * FtraceEvent pid.
+	             * @member {number} pid
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.pid = 0;
+
+	            /**
+	             * FtraceEvent schedSwitch.
+	             * @member {perfetto.protos.ISchedSwitchFtraceEvent|null|undefined} schedSwitch
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.schedSwitch = null;
+
+	            /**
+	             * FtraceEvent cpufreqInteractiveAlready.
+	             * @member {perfetto.protos.ICpufreqInteractiveAlreadyFtraceEvent|null|undefined} cpufreqInteractiveAlready
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cpufreqInteractiveAlready = null;
+
+	            /**
+	             * FtraceEvent cpufreqInteractiveBoost.
+	             * @member {perfetto.protos.ICpufreqInteractiveBoostFtraceEvent|null|undefined} cpufreqInteractiveBoost
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cpufreqInteractiveBoost = null;
+
+	            /**
+	             * FtraceEvent cpufreqInteractiveNotyet.
+	             * @member {perfetto.protos.ICpufreqInteractiveNotyetFtraceEvent|null|undefined} cpufreqInteractiveNotyet
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cpufreqInteractiveNotyet = null;
+
+	            /**
+	             * FtraceEvent cpufreqInteractiveSetspeed.
+	             * @member {perfetto.protos.ICpufreqInteractiveSetspeedFtraceEvent|null|undefined} cpufreqInteractiveSetspeed
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cpufreqInteractiveSetspeed = null;
+
+	            /**
+	             * FtraceEvent cpufreqInteractiveTarget.
+	             * @member {perfetto.protos.ICpufreqInteractiveTargetFtraceEvent|null|undefined} cpufreqInteractiveTarget
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cpufreqInteractiveTarget = null;
+
+	            /**
+	             * FtraceEvent cpufreqInteractiveUnboost.
+	             * @member {perfetto.protos.ICpufreqInteractiveUnboostFtraceEvent|null|undefined} cpufreqInteractiveUnboost
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cpufreqInteractiveUnboost = null;
+
+	            /**
+	             * FtraceEvent cpuFrequency.
+	             * @member {perfetto.protos.ICpuFrequencyFtraceEvent|null|undefined} cpuFrequency
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cpuFrequency = null;
+
+	            /**
+	             * FtraceEvent cpuFrequencyLimits.
+	             * @member {perfetto.protos.ICpuFrequencyLimitsFtraceEvent|null|undefined} cpuFrequencyLimits
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cpuFrequencyLimits = null;
+
+	            /**
+	             * FtraceEvent cpuIdle.
+	             * @member {perfetto.protos.ICpuIdleFtraceEvent|null|undefined} cpuIdle
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cpuIdle = null;
+
+	            /**
+	             * FtraceEvent clockSetRate.
+	             * @member {perfetto.protos.IClockSetRateFtraceEvent|null|undefined} clockSetRate
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.clockSetRate = null;
+
+	            /**
+	             * FtraceEvent schedWakeup.
+	             * @member {perfetto.protos.ISchedWakeupFtraceEvent|null|undefined} schedWakeup
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.schedWakeup = null;
+
+	            /**
+	             * FtraceEvent schedBlockedReason.
+	             * @member {perfetto.protos.ISchedBlockedReasonFtraceEvent|null|undefined} schedBlockedReason
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.schedBlockedReason = null;
+
+	            /**
+	             * FtraceEvent schedCpuHotplug.
+	             * @member {perfetto.protos.ISchedCpuHotplugFtraceEvent|null|undefined} schedCpuHotplug
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.schedCpuHotplug = null;
+
+	            /**
+	             * FtraceEvent lowmemoryKill.
+	             * @member {perfetto.protos.ILowmemoryKillFtraceEvent|null|undefined} lowmemoryKill
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.lowmemoryKill = null;
+
+	            /**
+	             * FtraceEvent ext4DaWriteBegin.
+	             * @member {perfetto.protos.IExt4DaWriteBeginFtraceEvent|null|undefined} ext4DaWriteBegin
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.ext4DaWriteBegin = null;
+
+	            /**
+	             * FtraceEvent ext4DaWriteEnd.
+	             * @member {perfetto.protos.IExt4DaWriteEndFtraceEvent|null|undefined} ext4DaWriteEnd
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.ext4DaWriteEnd = null;
+
+	            /**
+	             * FtraceEvent ext4SyncFileEnter.
+	             * @member {perfetto.protos.IExt4SyncFileEnterFtraceEvent|null|undefined} ext4SyncFileEnter
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.ext4SyncFileEnter = null;
+
+	            /**
+	             * FtraceEvent ext4SyncFileExit.
+	             * @member {perfetto.protos.IExt4SyncFileExitFtraceEvent|null|undefined} ext4SyncFileExit
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.ext4SyncFileExit = null;
+
+	            /**
+	             * FtraceEvent blockRqIssue.
+	             * @member {perfetto.protos.IBlockRqIssueFtraceEvent|null|undefined} blockRqIssue
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.blockRqIssue = null;
+
+	            /**
+	             * FtraceEvent mmVmscanDirectReclaimBegin.
+	             * @member {perfetto.protos.IMmVmscanDirectReclaimBeginFtraceEvent|null|undefined} mmVmscanDirectReclaimBegin
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.mmVmscanDirectReclaimBegin = null;
+
+	            /**
+	             * FtraceEvent mmVmscanDirectReclaimEnd.
+	             * @member {perfetto.protos.IMmVmscanDirectReclaimEndFtraceEvent|null|undefined} mmVmscanDirectReclaimEnd
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.mmVmscanDirectReclaimEnd = null;
+
+	            /**
+	             * FtraceEvent mmVmscanKswapdWake.
+	             * @member {perfetto.protos.IMmVmscanKswapdWakeFtraceEvent|null|undefined} mmVmscanKswapdWake
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.mmVmscanKswapdWake = null;
+
+	            /**
+	             * FtraceEvent mmVmscanKswapdSleep.
+	             * @member {perfetto.protos.IMmVmscanKswapdSleepFtraceEvent|null|undefined} mmVmscanKswapdSleep
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.mmVmscanKswapdSleep = null;
+
+	            /**
+	             * FtraceEvent binderTransaction.
+	             * @member {perfetto.protos.IBinderTransactionFtraceEvent|null|undefined} binderTransaction
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.binderTransaction = null;
+
+	            /**
+	             * FtraceEvent binderTransactionReceived.
+	             * @member {perfetto.protos.IBinderTransactionReceivedFtraceEvent|null|undefined} binderTransactionReceived
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.binderTransactionReceived = null;
+
+	            /**
+	             * FtraceEvent binderLock.
+	             * @member {perfetto.protos.IBinderLockFtraceEvent|null|undefined} binderLock
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.binderLock = null;
+
+	            /**
+	             * FtraceEvent binderLocked.
+	             * @member {perfetto.protos.IBinderLockedFtraceEvent|null|undefined} binderLocked
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.binderLocked = null;
+
+	            /**
+	             * FtraceEvent binderUnlock.
+	             * @member {perfetto.protos.IBinderUnlockFtraceEvent|null|undefined} binderUnlock
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.binderUnlock = null;
+
+	            /**
+	             * FtraceEvent cgroupAttachTask.
+	             * @member {perfetto.protos.ICgroupAttachTaskFtraceEvent|null|undefined} cgroupAttachTask
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cgroupAttachTask = null;
+
+	            /**
+	             * FtraceEvent cgroupMkdir.
+	             * @member {perfetto.protos.ICgroupMkdirFtraceEvent|null|undefined} cgroupMkdir
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cgroupMkdir = null;
+
+	            /**
+	             * FtraceEvent cgroupRemount.
+	             * @member {perfetto.protos.ICgroupRemountFtraceEvent|null|undefined} cgroupRemount
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cgroupRemount = null;
+
+	            /**
+	             * FtraceEvent cgroupRmdir.
+	             * @member {perfetto.protos.ICgroupRmdirFtraceEvent|null|undefined} cgroupRmdir
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cgroupRmdir = null;
+
+	            /**
+	             * FtraceEvent cgroupTransferTasks.
+	             * @member {perfetto.protos.ICgroupTransferTasksFtraceEvent|null|undefined} cgroupTransferTasks
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cgroupTransferTasks = null;
+
+	            /**
+	             * FtraceEvent cgroupDestroyRoot.
+	             * @member {perfetto.protos.ICgroupDestroyRootFtraceEvent|null|undefined} cgroupDestroyRoot
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cgroupDestroyRoot = null;
+
+	            /**
+	             * FtraceEvent cgroupRelease.
+	             * @member {perfetto.protos.ICgroupReleaseFtraceEvent|null|undefined} cgroupRelease
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cgroupRelease = null;
+
+	            /**
+	             * FtraceEvent cgroupRename.
+	             * @member {perfetto.protos.ICgroupRenameFtraceEvent|null|undefined} cgroupRename
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cgroupRename = null;
+
+	            /**
+	             * FtraceEvent cgroupSetupRoot.
+	             * @member {perfetto.protos.ICgroupSetupRootFtraceEvent|null|undefined} cgroupSetupRoot
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.cgroupSetupRoot = null;
+
+	            /**
+	             * FtraceEvent blockRqComplete.
+	             * @member {perfetto.protos.IBlockRqCompleteFtraceEvent|null|undefined} blockRqComplete
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.blockRqComplete = null;
+
+	            /**
+	             * FtraceEvent ext4EsLookupExtentEnter.
+	             * @member {perfetto.protos.IExt4EsLookupExtentEnterFtraceEvent|null|undefined} ext4EsLookupExtentEnter
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.ext4EsLookupExtentEnter = null;
+
+	            /**
+	             * FtraceEvent ext4EsLookupExtentExit.
+	             * @member {perfetto.protos.IExt4EsLookupExtentExitFtraceEvent|null|undefined} ext4EsLookupExtentExit
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.ext4EsLookupExtentExit = null;
+
+	            /**
+	             * FtraceEvent ext4LoadInode.
+	             * @member {perfetto.protos.IExt4LoadInodeFtraceEvent|null|undefined} ext4LoadInode
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.ext4LoadInode = null;
+
+	            /**
+	             * FtraceEvent f2fsGetDataBlock.
+	             * @member {perfetto.protos.IF2fsGetDataBlockFtraceEvent|null|undefined} f2fsGetDataBlock
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.f2fsGetDataBlock = null;
+
+	            /**
+	             * FtraceEvent f2fsIget.
+	             * @member {perfetto.protos.IF2fsIgetFtraceEvent|null|undefined} f2fsIget
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.f2fsIget = null;
+
+	            /**
+	             * FtraceEvent f2fsSyncFileEnter.
+	             * @member {perfetto.protos.IF2fsSyncFileEnterFtraceEvent|null|undefined} f2fsSyncFileEnter
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.f2fsSyncFileEnter = null;
+
+	            /**
+	             * FtraceEvent f2fsSyncFileExit.
+	             * @member {perfetto.protos.IF2fsSyncFileExitFtraceEvent|null|undefined} f2fsSyncFileExit
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.f2fsSyncFileExit = null;
+
+	            /**
+	             * FtraceEvent f2fsWriteBegin.
+	             * @member {perfetto.protos.IF2fsWriteBeginFtraceEvent|null|undefined} f2fsWriteBegin
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.f2fsWriteBegin = null;
+
+	            /**
+	             * FtraceEvent f2fsWriteEnd.
+	             * @member {perfetto.protos.IF2fsWriteEndFtraceEvent|null|undefined} f2fsWriteEnd
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            FtraceEvent.prototype.f2fsWriteEnd = null;
+
+	            // OneOf field names bound to virtual getters and setters
+	            var $oneOfFields;
+
+	            /**
+	             * FtraceEvent event.
+	             * @member {"schedSwitch"|"cpufreqInteractiveAlready"|"cpufreqInteractiveBoost"|"cpufreqInteractiveNotyet"|"cpufreqInteractiveSetspeed"|"cpufreqInteractiveTarget"|"cpufreqInteractiveUnboost"|"cpuFrequency"|"cpuFrequencyLimits"|"cpuIdle"|"clockSetRate"|"schedWakeup"|"schedBlockedReason"|"schedCpuHotplug"|"lowmemoryKill"|"ext4DaWriteBegin"|"ext4DaWriteEnd"|"ext4SyncFileEnter"|"ext4SyncFileExit"|"blockRqIssue"|"mmVmscanDirectReclaimBegin"|"mmVmscanDirectReclaimEnd"|"mmVmscanKswapdWake"|"mmVmscanKswapdSleep"|"binderTransaction"|"binderTransactionReceived"|"binderLock"|"binderLocked"|"binderUnlock"|"cgroupAttachTask"|"cgroupMkdir"|"cgroupRemount"|"cgroupRmdir"|"cgroupTransferTasks"|"cgroupDestroyRoot"|"cgroupRelease"|"cgroupRename"|"cgroupSetupRoot"|"blockRqComplete"|"ext4EsLookupExtentEnter"|"ext4EsLookupExtentExit"|"ext4LoadInode"|"f2fsGetDataBlock"|"f2fsIget"|"f2fsSyncFileEnter"|"f2fsSyncFileExit"|"f2fsWriteBegin"|"f2fsWriteEnd"|undefined} event
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             */
+	            Object.defineProperty(FtraceEvent.prototype, "event", {
+	                get: $util.oneOfGetter($oneOfFields = ["schedSwitch", "cpufreqInteractiveAlready", "cpufreqInteractiveBoost", "cpufreqInteractiveNotyet", "cpufreqInteractiveSetspeed", "cpufreqInteractiveTarget", "cpufreqInteractiveUnboost", "cpuFrequency", "cpuFrequencyLimits", "cpuIdle", "clockSetRate", "schedWakeup", "schedBlockedReason", "schedCpuHotplug", "lowmemoryKill", "ext4DaWriteBegin", "ext4DaWriteEnd", "ext4SyncFileEnter", "ext4SyncFileExit", "blockRqIssue", "mmVmscanDirectReclaimBegin", "mmVmscanDirectReclaimEnd", "mmVmscanKswapdWake", "mmVmscanKswapdSleep", "binderTransaction", "binderTransactionReceived", "binderLock", "binderLocked", "binderUnlock", "cgroupAttachTask", "cgroupMkdir", "cgroupRemount", "cgroupRmdir", "cgroupTransferTasks", "cgroupDestroyRoot", "cgroupRelease", "cgroupRename", "cgroupSetupRoot", "blockRqComplete", "ext4EsLookupExtentEnter", "ext4EsLookupExtentExit", "ext4LoadInode", "f2fsGetDataBlock", "f2fsIget", "f2fsSyncFileEnter", "f2fsSyncFileExit", "f2fsWriteBegin", "f2fsWriteEnd"]),
+	                set: $util.oneOfSetter($oneOfFields)
+	            });
+
+	            /**
+	             * Creates a new FtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.FtraceEvent} FtraceEvent instance
+	             */
+	            FtraceEvent.create = function create(properties) {
+	                return new FtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified FtraceEvent message. Does not implicitly {@link perfetto.protos.FtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IFtraceEvent} message FtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            FtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.timestamp != null && message.hasOwnProperty("timestamp"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.timestamp);
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.pid);
+	                if (message.schedSwitch != null && message.hasOwnProperty("schedSwitch"))
+	                    $root.perfetto.protos.SchedSwitchFtraceEvent.encode(message.schedSwitch, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+	                if (message.cpufreqInteractiveAlready != null && message.hasOwnProperty("cpufreqInteractiveAlready"))
+	                    $root.perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent.encode(message.cpufreqInteractiveAlready, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+	                if (message.cpufreqInteractiveBoost != null && message.hasOwnProperty("cpufreqInteractiveBoost"))
+	                    $root.perfetto.protos.CpufreqInteractiveBoostFtraceEvent.encode(message.cpufreqInteractiveBoost, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+	                if (message.cpufreqInteractiveNotyet != null && message.hasOwnProperty("cpufreqInteractiveNotyet"))
+	                    $root.perfetto.protos.CpufreqInteractiveNotyetFtraceEvent.encode(message.cpufreqInteractiveNotyet, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+	                if (message.cpufreqInteractiveSetspeed != null && message.hasOwnProperty("cpufreqInteractiveSetspeed"))
+	                    $root.perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent.encode(message.cpufreqInteractiveSetspeed, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+	                if (message.cpufreqInteractiveTarget != null && message.hasOwnProperty("cpufreqInteractiveTarget"))
+	                    $root.perfetto.protos.CpufreqInteractiveTargetFtraceEvent.encode(message.cpufreqInteractiveTarget, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+	                if (message.cpufreqInteractiveUnboost != null && message.hasOwnProperty("cpufreqInteractiveUnboost"))
+	                    $root.perfetto.protos.CpufreqInteractiveUnboostFtraceEvent.encode(message.cpufreqInteractiveUnboost, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
+	                if (message.cpuFrequency != null && message.hasOwnProperty("cpuFrequency"))
+	                    $root.perfetto.protos.CpuFrequencyFtraceEvent.encode(message.cpuFrequency, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
+	                if (message.cpuFrequencyLimits != null && message.hasOwnProperty("cpuFrequencyLimits"))
+	                    $root.perfetto.protos.CpuFrequencyLimitsFtraceEvent.encode(message.cpuFrequencyLimits, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
+	                if (message.cpuIdle != null && message.hasOwnProperty("cpuIdle"))
+	                    $root.perfetto.protos.CpuIdleFtraceEvent.encode(message.cpuIdle, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
+	                if (message.clockSetRate != null && message.hasOwnProperty("clockSetRate"))
+	                    $root.perfetto.protos.ClockSetRateFtraceEvent.encode(message.clockSetRate, writer.uint32(/* id 16, wireType 2 =*/130).fork()).ldelim();
+	                if (message.schedWakeup != null && message.hasOwnProperty("schedWakeup"))
+	                    $root.perfetto.protos.SchedWakeupFtraceEvent.encode(message.schedWakeup, writer.uint32(/* id 17, wireType 2 =*/138).fork()).ldelim();
+	                if (message.schedBlockedReason != null && message.hasOwnProperty("schedBlockedReason"))
+	                    $root.perfetto.protos.SchedBlockedReasonFtraceEvent.encode(message.schedBlockedReason, writer.uint32(/* id 18, wireType 2 =*/146).fork()).ldelim();
+	                if (message.schedCpuHotplug != null && message.hasOwnProperty("schedCpuHotplug"))
+	                    $root.perfetto.protos.SchedCpuHotplugFtraceEvent.encode(message.schedCpuHotplug, writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
+	                if (message.lowmemoryKill != null && message.hasOwnProperty("lowmemoryKill"))
+	                    $root.perfetto.protos.LowmemoryKillFtraceEvent.encode(message.lowmemoryKill, writer.uint32(/* id 35, wireType 2 =*/282).fork()).ldelim();
+	                if (message.ext4DaWriteBegin != null && message.hasOwnProperty("ext4DaWriteBegin"))
+	                    $root.perfetto.protos.Ext4DaWriteBeginFtraceEvent.encode(message.ext4DaWriteBegin, writer.uint32(/* id 41, wireType 2 =*/330).fork()).ldelim();
+	                if (message.ext4DaWriteEnd != null && message.hasOwnProperty("ext4DaWriteEnd"))
+	                    $root.perfetto.protos.Ext4DaWriteEndFtraceEvent.encode(message.ext4DaWriteEnd, writer.uint32(/* id 42, wireType 2 =*/338).fork()).ldelim();
+	                if (message.ext4SyncFileEnter != null && message.hasOwnProperty("ext4SyncFileEnter"))
+	                    $root.perfetto.protos.Ext4SyncFileEnterFtraceEvent.encode(message.ext4SyncFileEnter, writer.uint32(/* id 43, wireType 2 =*/346).fork()).ldelim();
+	                if (message.ext4SyncFileExit != null && message.hasOwnProperty("ext4SyncFileExit"))
+	                    $root.perfetto.protos.Ext4SyncFileExitFtraceEvent.encode(message.ext4SyncFileExit, writer.uint32(/* id 44, wireType 2 =*/354).fork()).ldelim();
+	                if (message.blockRqIssue != null && message.hasOwnProperty("blockRqIssue"))
+	                    $root.perfetto.protos.BlockRqIssueFtraceEvent.encode(message.blockRqIssue, writer.uint32(/* id 45, wireType 2 =*/362).fork()).ldelim();
+	                if (message.mmVmscanDirectReclaimBegin != null && message.hasOwnProperty("mmVmscanDirectReclaimBegin"))
+	                    $root.perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent.encode(message.mmVmscanDirectReclaimBegin, writer.uint32(/* id 46, wireType 2 =*/370).fork()).ldelim();
+	                if (message.mmVmscanDirectReclaimEnd != null && message.hasOwnProperty("mmVmscanDirectReclaimEnd"))
+	                    $root.perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent.encode(message.mmVmscanDirectReclaimEnd, writer.uint32(/* id 47, wireType 2 =*/378).fork()).ldelim();
+	                if (message.mmVmscanKswapdWake != null && message.hasOwnProperty("mmVmscanKswapdWake"))
+	                    $root.perfetto.protos.MmVmscanKswapdWakeFtraceEvent.encode(message.mmVmscanKswapdWake, writer.uint32(/* id 48, wireType 2 =*/386).fork()).ldelim();
+	                if (message.mmVmscanKswapdSleep != null && message.hasOwnProperty("mmVmscanKswapdSleep"))
+	                    $root.perfetto.protos.MmVmscanKswapdSleepFtraceEvent.encode(message.mmVmscanKswapdSleep, writer.uint32(/* id 49, wireType 2 =*/394).fork()).ldelim();
+	                if (message.binderTransaction != null && message.hasOwnProperty("binderTransaction"))
+	                    $root.perfetto.protos.BinderTransactionFtraceEvent.encode(message.binderTransaction, writer.uint32(/* id 50, wireType 2 =*/402).fork()).ldelim();
+	                if (message.binderTransactionReceived != null && message.hasOwnProperty("binderTransactionReceived"))
+	                    $root.perfetto.protos.BinderTransactionReceivedFtraceEvent.encode(message.binderTransactionReceived, writer.uint32(/* id 51, wireType 2 =*/410).fork()).ldelim();
+	                if (message.binderLock != null && message.hasOwnProperty("binderLock"))
+	                    $root.perfetto.protos.BinderLockFtraceEvent.encode(message.binderLock, writer.uint32(/* id 53, wireType 2 =*/426).fork()).ldelim();
+	                if (message.binderLocked != null && message.hasOwnProperty("binderLocked"))
+	                    $root.perfetto.protos.BinderLockedFtraceEvent.encode(message.binderLocked, writer.uint32(/* id 54, wireType 2 =*/434).fork()).ldelim();
+	                if (message.binderUnlock != null && message.hasOwnProperty("binderUnlock"))
+	                    $root.perfetto.protos.BinderUnlockFtraceEvent.encode(message.binderUnlock, writer.uint32(/* id 55, wireType 2 =*/442).fork()).ldelim();
+	                if (message.cgroupAttachTask != null && message.hasOwnProperty("cgroupAttachTask"))
+	                    $root.perfetto.protos.CgroupAttachTaskFtraceEvent.encode(message.cgroupAttachTask, writer.uint32(/* id 67, wireType 2 =*/538).fork()).ldelim();
+	                if (message.cgroupMkdir != null && message.hasOwnProperty("cgroupMkdir"))
+	                    $root.perfetto.protos.CgroupMkdirFtraceEvent.encode(message.cgroupMkdir, writer.uint32(/* id 68, wireType 2 =*/546).fork()).ldelim();
+	                if (message.cgroupRemount != null && message.hasOwnProperty("cgroupRemount"))
+	                    $root.perfetto.protos.CgroupRemountFtraceEvent.encode(message.cgroupRemount, writer.uint32(/* id 69, wireType 2 =*/554).fork()).ldelim();
+	                if (message.cgroupRmdir != null && message.hasOwnProperty("cgroupRmdir"))
+	                    $root.perfetto.protos.CgroupRmdirFtraceEvent.encode(message.cgroupRmdir, writer.uint32(/* id 70, wireType 2 =*/562).fork()).ldelim();
+	                if (message.cgroupTransferTasks != null && message.hasOwnProperty("cgroupTransferTasks"))
+	                    $root.perfetto.protos.CgroupTransferTasksFtraceEvent.encode(message.cgroupTransferTasks, writer.uint32(/* id 71, wireType 2 =*/570).fork()).ldelim();
+	                if (message.cgroupDestroyRoot != null && message.hasOwnProperty("cgroupDestroyRoot"))
+	                    $root.perfetto.protos.CgroupDestroyRootFtraceEvent.encode(message.cgroupDestroyRoot, writer.uint32(/* id 72, wireType 2 =*/578).fork()).ldelim();
+	                if (message.cgroupRelease != null && message.hasOwnProperty("cgroupRelease"))
+	                    $root.perfetto.protos.CgroupReleaseFtraceEvent.encode(message.cgroupRelease, writer.uint32(/* id 73, wireType 2 =*/586).fork()).ldelim();
+	                if (message.cgroupRename != null && message.hasOwnProperty("cgroupRename"))
+	                    $root.perfetto.protos.CgroupRenameFtraceEvent.encode(message.cgroupRename, writer.uint32(/* id 74, wireType 2 =*/594).fork()).ldelim();
+	                if (message.cgroupSetupRoot != null && message.hasOwnProperty("cgroupSetupRoot"))
+	                    $root.perfetto.protos.CgroupSetupRootFtraceEvent.encode(message.cgroupSetupRoot, writer.uint32(/* id 75, wireType 2 =*/602).fork()).ldelim();
+	                if (message.blockRqComplete != null && message.hasOwnProperty("blockRqComplete"))
+	                    $root.perfetto.protos.BlockRqCompleteFtraceEvent.encode(message.blockRqComplete, writer.uint32(/* id 125, wireType 2 =*/1002).fork()).ldelim();
+	                if (message.ext4EsLookupExtentEnter != null && message.hasOwnProperty("ext4EsLookupExtentEnter"))
+	                    $root.perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent.encode(message.ext4EsLookupExtentEnter, writer.uint32(/* id 153, wireType 2 =*/1226).fork()).ldelim();
+	                if (message.ext4EsLookupExtentExit != null && message.hasOwnProperty("ext4EsLookupExtentExit"))
+	                    $root.perfetto.protos.Ext4EsLookupExtentExitFtraceEvent.encode(message.ext4EsLookupExtentExit, writer.uint32(/* id 154, wireType 2 =*/1234).fork()).ldelim();
+	                if (message.ext4LoadInode != null && message.hasOwnProperty("ext4LoadInode"))
+	                    $root.perfetto.protos.Ext4LoadInodeFtraceEvent.encode(message.ext4LoadInode, writer.uint32(/* id 190, wireType 2 =*/1522).fork()).ldelim();
+	                if (message.f2fsGetDataBlock != null && message.hasOwnProperty("f2fsGetDataBlock"))
+	                    $root.perfetto.protos.F2fsGetDataBlockFtraceEvent.encode(message.f2fsGetDataBlock, writer.uint32(/* id 246, wireType 2 =*/1970).fork()).ldelim();
+	                if (message.f2fsIget != null && message.hasOwnProperty("f2fsIget"))
+	                    $root.perfetto.protos.F2fsIgetFtraceEvent.encode(message.f2fsIget, writer.uint32(/* id 248, wireType 2 =*/1986).fork()).ldelim();
+	                if (message.f2fsSyncFileEnter != null && message.hasOwnProperty("f2fsSyncFileEnter"))
+	                    $root.perfetto.protos.F2fsSyncFileEnterFtraceEvent.encode(message.f2fsSyncFileEnter, writer.uint32(/* id 255, wireType 2 =*/2042).fork()).ldelim();
+	                if (message.f2fsSyncFileExit != null && message.hasOwnProperty("f2fsSyncFileExit"))
+	                    $root.perfetto.protos.F2fsSyncFileExitFtraceEvent.encode(message.f2fsSyncFileExit, writer.uint32(/* id 256, wireType 2 =*/2050).fork()).ldelim();
+	                if (message.f2fsWriteBegin != null && message.hasOwnProperty("f2fsWriteBegin"))
+	                    $root.perfetto.protos.F2fsWriteBeginFtraceEvent.encode(message.f2fsWriteBegin, writer.uint32(/* id 271, wireType 2 =*/2170).fork()).ldelim();
+	                if (message.f2fsWriteEnd != null && message.hasOwnProperty("f2fsWriteEnd"))
+	                    $root.perfetto.protos.F2fsWriteEndFtraceEvent.encode(message.f2fsWriteEnd, writer.uint32(/* id 273, wireType 2 =*/2186).fork()).ldelim();
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified FtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.FtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IFtraceEvent} message FtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            FtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a FtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.FtraceEvent} FtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            FtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.FtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.timestamp = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.pid = reader.uint32();
+	                        break;
+	                    case 4:
+	                        message.schedSwitch = $root.perfetto.protos.SchedSwitchFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 5:
+	                        message.cpufreqInteractiveAlready = $root.perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 6:
+	                        message.cpufreqInteractiveBoost = $root.perfetto.protos.CpufreqInteractiveBoostFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 7:
+	                        message.cpufreqInteractiveNotyet = $root.perfetto.protos.CpufreqInteractiveNotyetFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 8:
+	                        message.cpufreqInteractiveSetspeed = $root.perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 9:
+	                        message.cpufreqInteractiveTarget = $root.perfetto.protos.CpufreqInteractiveTargetFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 10:
+	                        message.cpufreqInteractiveUnboost = $root.perfetto.protos.CpufreqInteractiveUnboostFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 11:
+	                        message.cpuFrequency = $root.perfetto.protos.CpuFrequencyFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 12:
+	                        message.cpuFrequencyLimits = $root.perfetto.protos.CpuFrequencyLimitsFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 13:
+	                        message.cpuIdle = $root.perfetto.protos.CpuIdleFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 16:
+	                        message.clockSetRate = $root.perfetto.protos.ClockSetRateFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 17:
+	                        message.schedWakeup = $root.perfetto.protos.SchedWakeupFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 18:
+	                        message.schedBlockedReason = $root.perfetto.protos.SchedBlockedReasonFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 19:
+	                        message.schedCpuHotplug = $root.perfetto.protos.SchedCpuHotplugFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 35:
+	                        message.lowmemoryKill = $root.perfetto.protos.LowmemoryKillFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 41:
+	                        message.ext4DaWriteBegin = $root.perfetto.protos.Ext4DaWriteBeginFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 42:
+	                        message.ext4DaWriteEnd = $root.perfetto.protos.Ext4DaWriteEndFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 43:
+	                        message.ext4SyncFileEnter = $root.perfetto.protos.Ext4SyncFileEnterFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 44:
+	                        message.ext4SyncFileExit = $root.perfetto.protos.Ext4SyncFileExitFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 45:
+	                        message.blockRqIssue = $root.perfetto.protos.BlockRqIssueFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 46:
+	                        message.mmVmscanDirectReclaimBegin = $root.perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 47:
+	                        message.mmVmscanDirectReclaimEnd = $root.perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 48:
+	                        message.mmVmscanKswapdWake = $root.perfetto.protos.MmVmscanKswapdWakeFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 49:
+	                        message.mmVmscanKswapdSleep = $root.perfetto.protos.MmVmscanKswapdSleepFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 50:
+	                        message.binderTransaction = $root.perfetto.protos.BinderTransactionFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 51:
+	                        message.binderTransactionReceived = $root.perfetto.protos.BinderTransactionReceivedFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 53:
+	                        message.binderLock = $root.perfetto.protos.BinderLockFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 54:
+	                        message.binderLocked = $root.perfetto.protos.BinderLockedFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 55:
+	                        message.binderUnlock = $root.perfetto.protos.BinderUnlockFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 67:
+	                        message.cgroupAttachTask = $root.perfetto.protos.CgroupAttachTaskFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 68:
+	                        message.cgroupMkdir = $root.perfetto.protos.CgroupMkdirFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 69:
+	                        message.cgroupRemount = $root.perfetto.protos.CgroupRemountFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 70:
+	                        message.cgroupRmdir = $root.perfetto.protos.CgroupRmdirFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 71:
+	                        message.cgroupTransferTasks = $root.perfetto.protos.CgroupTransferTasksFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 72:
+	                        message.cgroupDestroyRoot = $root.perfetto.protos.CgroupDestroyRootFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 73:
+	                        message.cgroupRelease = $root.perfetto.protos.CgroupReleaseFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 74:
+	                        message.cgroupRename = $root.perfetto.protos.CgroupRenameFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 75:
+	                        message.cgroupSetupRoot = $root.perfetto.protos.CgroupSetupRootFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 125:
+	                        message.blockRqComplete = $root.perfetto.protos.BlockRqCompleteFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 153:
+	                        message.ext4EsLookupExtentEnter = $root.perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 154:
+	                        message.ext4EsLookupExtentExit = $root.perfetto.protos.Ext4EsLookupExtentExitFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 190:
+	                        message.ext4LoadInode = $root.perfetto.protos.Ext4LoadInodeFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 246:
+	                        message.f2fsGetDataBlock = $root.perfetto.protos.F2fsGetDataBlockFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 248:
+	                        message.f2fsIget = $root.perfetto.protos.F2fsIgetFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 255:
+	                        message.f2fsSyncFileEnter = $root.perfetto.protos.F2fsSyncFileEnterFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 256:
+	                        message.f2fsSyncFileExit = $root.perfetto.protos.F2fsSyncFileExitFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 271:
+	                        message.f2fsWriteBegin = $root.perfetto.protos.F2fsWriteBeginFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    case 273:
+	                        message.f2fsWriteEnd = $root.perfetto.protos.F2fsWriteEndFtraceEvent.decode(reader, reader.uint32());
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a FtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.FtraceEvent} FtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            FtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a FtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            FtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                var properties = {};
+	                if (message.timestamp != null && message.hasOwnProperty("timestamp"))
+	                    if (!$util.isInteger(message.timestamp) && !(message.timestamp && $util.isInteger(message.timestamp.low) && $util.isInteger(message.timestamp.high)))
+	                        return "timestamp: integer|Long expected";
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    if (!$util.isInteger(message.pid))
+	                        return "pid: integer expected";
+	                if (message.schedSwitch != null && message.hasOwnProperty("schedSwitch")) {
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.SchedSwitchFtraceEvent.verify(message.schedSwitch);
+	                        if (error)
+	                            return "schedSwitch." + error;
+	                    }
+	                }
+	                if (message.cpufreqInteractiveAlready != null && message.hasOwnProperty("cpufreqInteractiveAlready")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent.verify(message.cpufreqInteractiveAlready);
+	                        if (error)
+	                            return "cpufreqInteractiveAlready." + error;
+	                    }
+	                }
+	                if (message.cpufreqInteractiveBoost != null && message.hasOwnProperty("cpufreqInteractiveBoost")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CpufreqInteractiveBoostFtraceEvent.verify(message.cpufreqInteractiveBoost);
+	                        if (error)
+	                            return "cpufreqInteractiveBoost." + error;
+	                    }
+	                }
+	                if (message.cpufreqInteractiveNotyet != null && message.hasOwnProperty("cpufreqInteractiveNotyet")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CpufreqInteractiveNotyetFtraceEvent.verify(message.cpufreqInteractiveNotyet);
+	                        if (error)
+	                            return "cpufreqInteractiveNotyet." + error;
+	                    }
+	                }
+	                if (message.cpufreqInteractiveSetspeed != null && message.hasOwnProperty("cpufreqInteractiveSetspeed")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent.verify(message.cpufreqInteractiveSetspeed);
+	                        if (error)
+	                            return "cpufreqInteractiveSetspeed." + error;
+	                    }
+	                }
+	                if (message.cpufreqInteractiveTarget != null && message.hasOwnProperty("cpufreqInteractiveTarget")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CpufreqInteractiveTargetFtraceEvent.verify(message.cpufreqInteractiveTarget);
+	                        if (error)
+	                            return "cpufreqInteractiveTarget." + error;
+	                    }
+	                }
+	                if (message.cpufreqInteractiveUnboost != null && message.hasOwnProperty("cpufreqInteractiveUnboost")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CpufreqInteractiveUnboostFtraceEvent.verify(message.cpufreqInteractiveUnboost);
+	                        if (error)
+	                            return "cpufreqInteractiveUnboost." + error;
+	                    }
+	                }
+	                if (message.cpuFrequency != null && message.hasOwnProperty("cpuFrequency")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CpuFrequencyFtraceEvent.verify(message.cpuFrequency);
+	                        if (error)
+	                            return "cpuFrequency." + error;
+	                    }
+	                }
+	                if (message.cpuFrequencyLimits != null && message.hasOwnProperty("cpuFrequencyLimits")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CpuFrequencyLimitsFtraceEvent.verify(message.cpuFrequencyLimits);
+	                        if (error)
+	                            return "cpuFrequencyLimits." + error;
+	                    }
+	                }
+	                if (message.cpuIdle != null && message.hasOwnProperty("cpuIdle")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CpuIdleFtraceEvent.verify(message.cpuIdle);
+	                        if (error)
+	                            return "cpuIdle." + error;
+	                    }
+	                }
+	                if (message.clockSetRate != null && message.hasOwnProperty("clockSetRate")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.ClockSetRateFtraceEvent.verify(message.clockSetRate);
+	                        if (error)
+	                            return "clockSetRate." + error;
+	                    }
+	                }
+	                if (message.schedWakeup != null && message.hasOwnProperty("schedWakeup")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.SchedWakeupFtraceEvent.verify(message.schedWakeup);
+	                        if (error)
+	                            return "schedWakeup." + error;
+	                    }
+	                }
+	                if (message.schedBlockedReason != null && message.hasOwnProperty("schedBlockedReason")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.SchedBlockedReasonFtraceEvent.verify(message.schedBlockedReason);
+	                        if (error)
+	                            return "schedBlockedReason." + error;
+	                    }
+	                }
+	                if (message.schedCpuHotplug != null && message.hasOwnProperty("schedCpuHotplug")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.SchedCpuHotplugFtraceEvent.verify(message.schedCpuHotplug);
+	                        if (error)
+	                            return "schedCpuHotplug." + error;
+	                    }
+	                }
+	                if (message.lowmemoryKill != null && message.hasOwnProperty("lowmemoryKill")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.LowmemoryKillFtraceEvent.verify(message.lowmemoryKill);
+	                        if (error)
+	                            return "lowmemoryKill." + error;
+	                    }
+	                }
+	                if (message.ext4DaWriteBegin != null && message.hasOwnProperty("ext4DaWriteBegin")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.Ext4DaWriteBeginFtraceEvent.verify(message.ext4DaWriteBegin);
+	                        if (error)
+	                            return "ext4DaWriteBegin." + error;
+	                    }
+	                }
+	                if (message.ext4DaWriteEnd != null && message.hasOwnProperty("ext4DaWriteEnd")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.Ext4DaWriteEndFtraceEvent.verify(message.ext4DaWriteEnd);
+	                        if (error)
+	                            return "ext4DaWriteEnd." + error;
+	                    }
+	                }
+	                if (message.ext4SyncFileEnter != null && message.hasOwnProperty("ext4SyncFileEnter")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.Ext4SyncFileEnterFtraceEvent.verify(message.ext4SyncFileEnter);
+	                        if (error)
+	                            return "ext4SyncFileEnter." + error;
+	                    }
+	                }
+	                if (message.ext4SyncFileExit != null && message.hasOwnProperty("ext4SyncFileExit")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.Ext4SyncFileExitFtraceEvent.verify(message.ext4SyncFileExit);
+	                        if (error)
+	                            return "ext4SyncFileExit." + error;
+	                    }
+	                }
+	                if (message.blockRqIssue != null && message.hasOwnProperty("blockRqIssue")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.BlockRqIssueFtraceEvent.verify(message.blockRqIssue);
+	                        if (error)
+	                            return "blockRqIssue." + error;
+	                    }
+	                }
+	                if (message.mmVmscanDirectReclaimBegin != null && message.hasOwnProperty("mmVmscanDirectReclaimBegin")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent.verify(message.mmVmscanDirectReclaimBegin);
+	                        if (error)
+	                            return "mmVmscanDirectReclaimBegin." + error;
+	                    }
+	                }
+	                if (message.mmVmscanDirectReclaimEnd != null && message.hasOwnProperty("mmVmscanDirectReclaimEnd")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent.verify(message.mmVmscanDirectReclaimEnd);
+	                        if (error)
+	                            return "mmVmscanDirectReclaimEnd." + error;
+	                    }
+	                }
+	                if (message.mmVmscanKswapdWake != null && message.hasOwnProperty("mmVmscanKswapdWake")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.MmVmscanKswapdWakeFtraceEvent.verify(message.mmVmscanKswapdWake);
+	                        if (error)
+	                            return "mmVmscanKswapdWake." + error;
+	                    }
+	                }
+	                if (message.mmVmscanKswapdSleep != null && message.hasOwnProperty("mmVmscanKswapdSleep")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.MmVmscanKswapdSleepFtraceEvent.verify(message.mmVmscanKswapdSleep);
+	                        if (error)
+	                            return "mmVmscanKswapdSleep." + error;
+	                    }
+	                }
+	                if (message.binderTransaction != null && message.hasOwnProperty("binderTransaction")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.BinderTransactionFtraceEvent.verify(message.binderTransaction);
+	                        if (error)
+	                            return "binderTransaction." + error;
+	                    }
+	                }
+	                if (message.binderTransactionReceived != null && message.hasOwnProperty("binderTransactionReceived")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.BinderTransactionReceivedFtraceEvent.verify(message.binderTransactionReceived);
+	                        if (error)
+	                            return "binderTransactionReceived." + error;
+	                    }
+	                }
+	                if (message.binderLock != null && message.hasOwnProperty("binderLock")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.BinderLockFtraceEvent.verify(message.binderLock);
+	                        if (error)
+	                            return "binderLock." + error;
+	                    }
+	                }
+	                if (message.binderLocked != null && message.hasOwnProperty("binderLocked")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.BinderLockedFtraceEvent.verify(message.binderLocked);
+	                        if (error)
+	                            return "binderLocked." + error;
+	                    }
+	                }
+	                if (message.binderUnlock != null && message.hasOwnProperty("binderUnlock")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.BinderUnlockFtraceEvent.verify(message.binderUnlock);
+	                        if (error)
+	                            return "binderUnlock." + error;
+	                    }
+	                }
+	                if (message.cgroupAttachTask != null && message.hasOwnProperty("cgroupAttachTask")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CgroupAttachTaskFtraceEvent.verify(message.cgroupAttachTask);
+	                        if (error)
+	                            return "cgroupAttachTask." + error;
+	                    }
+	                }
+	                if (message.cgroupMkdir != null && message.hasOwnProperty("cgroupMkdir")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CgroupMkdirFtraceEvent.verify(message.cgroupMkdir);
+	                        if (error)
+	                            return "cgroupMkdir." + error;
+	                    }
+	                }
+	                if (message.cgroupRemount != null && message.hasOwnProperty("cgroupRemount")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CgroupRemountFtraceEvent.verify(message.cgroupRemount);
+	                        if (error)
+	                            return "cgroupRemount." + error;
+	                    }
+	                }
+	                if (message.cgroupRmdir != null && message.hasOwnProperty("cgroupRmdir")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CgroupRmdirFtraceEvent.verify(message.cgroupRmdir);
+	                        if (error)
+	                            return "cgroupRmdir." + error;
+	                    }
+	                }
+	                if (message.cgroupTransferTasks != null && message.hasOwnProperty("cgroupTransferTasks")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CgroupTransferTasksFtraceEvent.verify(message.cgroupTransferTasks);
+	                        if (error)
+	                            return "cgroupTransferTasks." + error;
+	                    }
+	                }
+	                if (message.cgroupDestroyRoot != null && message.hasOwnProperty("cgroupDestroyRoot")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CgroupDestroyRootFtraceEvent.verify(message.cgroupDestroyRoot);
+	                        if (error)
+	                            return "cgroupDestroyRoot." + error;
+	                    }
+	                }
+	                if (message.cgroupRelease != null && message.hasOwnProperty("cgroupRelease")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CgroupReleaseFtraceEvent.verify(message.cgroupRelease);
+	                        if (error)
+	                            return "cgroupRelease." + error;
+	                    }
+	                }
+	                if (message.cgroupRename != null && message.hasOwnProperty("cgroupRename")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CgroupRenameFtraceEvent.verify(message.cgroupRename);
+	                        if (error)
+	                            return "cgroupRename." + error;
+	                    }
+	                }
+	                if (message.cgroupSetupRoot != null && message.hasOwnProperty("cgroupSetupRoot")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.CgroupSetupRootFtraceEvent.verify(message.cgroupSetupRoot);
+	                        if (error)
+	                            return "cgroupSetupRoot." + error;
+	                    }
+	                }
+	                if (message.blockRqComplete != null && message.hasOwnProperty("blockRqComplete")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.BlockRqCompleteFtraceEvent.verify(message.blockRqComplete);
+	                        if (error)
+	                            return "blockRqComplete." + error;
+	                    }
+	                }
+	                if (message.ext4EsLookupExtentEnter != null && message.hasOwnProperty("ext4EsLookupExtentEnter")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent.verify(message.ext4EsLookupExtentEnter);
+	                        if (error)
+	                            return "ext4EsLookupExtentEnter." + error;
+	                    }
+	                }
+	                if (message.ext4EsLookupExtentExit != null && message.hasOwnProperty("ext4EsLookupExtentExit")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.Ext4EsLookupExtentExitFtraceEvent.verify(message.ext4EsLookupExtentExit);
+	                        if (error)
+	                            return "ext4EsLookupExtentExit." + error;
+	                    }
+	                }
+	                if (message.ext4LoadInode != null && message.hasOwnProperty("ext4LoadInode")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.Ext4LoadInodeFtraceEvent.verify(message.ext4LoadInode);
+	                        if (error)
+	                            return "ext4LoadInode." + error;
+	                    }
+	                }
+	                if (message.f2fsGetDataBlock != null && message.hasOwnProperty("f2fsGetDataBlock")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.F2fsGetDataBlockFtraceEvent.verify(message.f2fsGetDataBlock);
+	                        if (error)
+	                            return "f2fsGetDataBlock." + error;
+	                    }
+	                }
+	                if (message.f2fsIget != null && message.hasOwnProperty("f2fsIget")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.F2fsIgetFtraceEvent.verify(message.f2fsIget);
+	                        if (error)
+	                            return "f2fsIget." + error;
+	                    }
+	                }
+	                if (message.f2fsSyncFileEnter != null && message.hasOwnProperty("f2fsSyncFileEnter")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.F2fsSyncFileEnterFtraceEvent.verify(message.f2fsSyncFileEnter);
+	                        if (error)
+	                            return "f2fsSyncFileEnter." + error;
+	                    }
+	                }
+	                if (message.f2fsSyncFileExit != null && message.hasOwnProperty("f2fsSyncFileExit")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.F2fsSyncFileExitFtraceEvent.verify(message.f2fsSyncFileExit);
+	                        if (error)
+	                            return "f2fsSyncFileExit." + error;
+	                    }
+	                }
+	                if (message.f2fsWriteBegin != null && message.hasOwnProperty("f2fsWriteBegin")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.F2fsWriteBeginFtraceEvent.verify(message.f2fsWriteBegin);
+	                        if (error)
+	                            return "f2fsWriteBegin." + error;
+	                    }
+	                }
+	                if (message.f2fsWriteEnd != null && message.hasOwnProperty("f2fsWriteEnd")) {
+	                    if (properties.event === 1)
+	                        return "event: multiple values";
+	                    properties.event = 1;
+	                    {
+	                        var error = $root.perfetto.protos.F2fsWriteEndFtraceEvent.verify(message.f2fsWriteEnd);
+	                        if (error)
+	                            return "f2fsWriteEnd." + error;
+	                    }
+	                }
+	                return null;
+	            };
+
+	            /**
+	             * Creates a FtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.FtraceEvent} FtraceEvent
+	             */
+	            FtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.FtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.FtraceEvent();
+	                if (object.timestamp != null)
+	                    if ($util.Long)
+	                        (message.timestamp = $util.Long.fromValue(object.timestamp)).unsigned = true;
+	                    else if (typeof object.timestamp === "string")
+	                        message.timestamp = parseInt(object.timestamp, 10);
+	                    else if (typeof object.timestamp === "number")
+	                        message.timestamp = object.timestamp;
+	                    else if (typeof object.timestamp === "object")
+	                        message.timestamp = new $util.LongBits(object.timestamp.low >>> 0, object.timestamp.high >>> 0).toNumber(true);
+	                if (object.pid != null)
+	                    message.pid = object.pid >>> 0;
+	                if (object.schedSwitch != null) {
+	                    if (typeof object.schedSwitch !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.schedSwitch: object expected");
+	                    message.schedSwitch = $root.perfetto.protos.SchedSwitchFtraceEvent.fromObject(object.schedSwitch);
+	                }
+	                if (object.cpufreqInteractiveAlready != null) {
+	                    if (typeof object.cpufreqInteractiveAlready !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cpufreqInteractiveAlready: object expected");
+	                    message.cpufreqInteractiveAlready = $root.perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent.fromObject(object.cpufreqInteractiveAlready);
+	                }
+	                if (object.cpufreqInteractiveBoost != null) {
+	                    if (typeof object.cpufreqInteractiveBoost !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cpufreqInteractiveBoost: object expected");
+	                    message.cpufreqInteractiveBoost = $root.perfetto.protos.CpufreqInteractiveBoostFtraceEvent.fromObject(object.cpufreqInteractiveBoost);
+	                }
+	                if (object.cpufreqInteractiveNotyet != null) {
+	                    if (typeof object.cpufreqInteractiveNotyet !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cpufreqInteractiveNotyet: object expected");
+	                    message.cpufreqInteractiveNotyet = $root.perfetto.protos.CpufreqInteractiveNotyetFtraceEvent.fromObject(object.cpufreqInteractiveNotyet);
+	                }
+	                if (object.cpufreqInteractiveSetspeed != null) {
+	                    if (typeof object.cpufreqInteractiveSetspeed !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cpufreqInteractiveSetspeed: object expected");
+	                    message.cpufreqInteractiveSetspeed = $root.perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent.fromObject(object.cpufreqInteractiveSetspeed);
+	                }
+	                if (object.cpufreqInteractiveTarget != null) {
+	                    if (typeof object.cpufreqInteractiveTarget !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cpufreqInteractiveTarget: object expected");
+	                    message.cpufreqInteractiveTarget = $root.perfetto.protos.CpufreqInteractiveTargetFtraceEvent.fromObject(object.cpufreqInteractiveTarget);
+	                }
+	                if (object.cpufreqInteractiveUnboost != null) {
+	                    if (typeof object.cpufreqInteractiveUnboost !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cpufreqInteractiveUnboost: object expected");
+	                    message.cpufreqInteractiveUnboost = $root.perfetto.protos.CpufreqInteractiveUnboostFtraceEvent.fromObject(object.cpufreqInteractiveUnboost);
+	                }
+	                if (object.cpuFrequency != null) {
+	                    if (typeof object.cpuFrequency !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cpuFrequency: object expected");
+	                    message.cpuFrequency = $root.perfetto.protos.CpuFrequencyFtraceEvent.fromObject(object.cpuFrequency);
+	                }
+	                if (object.cpuFrequencyLimits != null) {
+	                    if (typeof object.cpuFrequencyLimits !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cpuFrequencyLimits: object expected");
+	                    message.cpuFrequencyLimits = $root.perfetto.protos.CpuFrequencyLimitsFtraceEvent.fromObject(object.cpuFrequencyLimits);
+	                }
+	                if (object.cpuIdle != null) {
+	                    if (typeof object.cpuIdle !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cpuIdle: object expected");
+	                    message.cpuIdle = $root.perfetto.protos.CpuIdleFtraceEvent.fromObject(object.cpuIdle);
+	                }
+	                if (object.clockSetRate != null) {
+	                    if (typeof object.clockSetRate !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.clockSetRate: object expected");
+	                    message.clockSetRate = $root.perfetto.protos.ClockSetRateFtraceEvent.fromObject(object.clockSetRate);
+	                }
+	                if (object.schedWakeup != null) {
+	                    if (typeof object.schedWakeup !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.schedWakeup: object expected");
+	                    message.schedWakeup = $root.perfetto.protos.SchedWakeupFtraceEvent.fromObject(object.schedWakeup);
+	                }
+	                if (object.schedBlockedReason != null) {
+	                    if (typeof object.schedBlockedReason !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.schedBlockedReason: object expected");
+	                    message.schedBlockedReason = $root.perfetto.protos.SchedBlockedReasonFtraceEvent.fromObject(object.schedBlockedReason);
+	                }
+	                if (object.schedCpuHotplug != null) {
+	                    if (typeof object.schedCpuHotplug !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.schedCpuHotplug: object expected");
+	                    message.schedCpuHotplug = $root.perfetto.protos.SchedCpuHotplugFtraceEvent.fromObject(object.schedCpuHotplug);
+	                }
+	                if (object.lowmemoryKill != null) {
+	                    if (typeof object.lowmemoryKill !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.lowmemoryKill: object expected");
+	                    message.lowmemoryKill = $root.perfetto.protos.LowmemoryKillFtraceEvent.fromObject(object.lowmemoryKill);
+	                }
+	                if (object.ext4DaWriteBegin != null) {
+	                    if (typeof object.ext4DaWriteBegin !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.ext4DaWriteBegin: object expected");
+	                    message.ext4DaWriteBegin = $root.perfetto.protos.Ext4DaWriteBeginFtraceEvent.fromObject(object.ext4DaWriteBegin);
+	                }
+	                if (object.ext4DaWriteEnd != null) {
+	                    if (typeof object.ext4DaWriteEnd !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.ext4DaWriteEnd: object expected");
+	                    message.ext4DaWriteEnd = $root.perfetto.protos.Ext4DaWriteEndFtraceEvent.fromObject(object.ext4DaWriteEnd);
+	                }
+	                if (object.ext4SyncFileEnter != null) {
+	                    if (typeof object.ext4SyncFileEnter !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.ext4SyncFileEnter: object expected");
+	                    message.ext4SyncFileEnter = $root.perfetto.protos.Ext4SyncFileEnterFtraceEvent.fromObject(object.ext4SyncFileEnter);
+	                }
+	                if (object.ext4SyncFileExit != null) {
+	                    if (typeof object.ext4SyncFileExit !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.ext4SyncFileExit: object expected");
+	                    message.ext4SyncFileExit = $root.perfetto.protos.Ext4SyncFileExitFtraceEvent.fromObject(object.ext4SyncFileExit);
+	                }
+	                if (object.blockRqIssue != null) {
+	                    if (typeof object.blockRqIssue !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.blockRqIssue: object expected");
+	                    message.blockRqIssue = $root.perfetto.protos.BlockRqIssueFtraceEvent.fromObject(object.blockRqIssue);
+	                }
+	                if (object.mmVmscanDirectReclaimBegin != null) {
+	                    if (typeof object.mmVmscanDirectReclaimBegin !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.mmVmscanDirectReclaimBegin: object expected");
+	                    message.mmVmscanDirectReclaimBegin = $root.perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent.fromObject(object.mmVmscanDirectReclaimBegin);
+	                }
+	                if (object.mmVmscanDirectReclaimEnd != null) {
+	                    if (typeof object.mmVmscanDirectReclaimEnd !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.mmVmscanDirectReclaimEnd: object expected");
+	                    message.mmVmscanDirectReclaimEnd = $root.perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent.fromObject(object.mmVmscanDirectReclaimEnd);
+	                }
+	                if (object.mmVmscanKswapdWake != null) {
+	                    if (typeof object.mmVmscanKswapdWake !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.mmVmscanKswapdWake: object expected");
+	                    message.mmVmscanKswapdWake = $root.perfetto.protos.MmVmscanKswapdWakeFtraceEvent.fromObject(object.mmVmscanKswapdWake);
+	                }
+	                if (object.mmVmscanKswapdSleep != null) {
+	                    if (typeof object.mmVmscanKswapdSleep !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.mmVmscanKswapdSleep: object expected");
+	                    message.mmVmscanKswapdSleep = $root.perfetto.protos.MmVmscanKswapdSleepFtraceEvent.fromObject(object.mmVmscanKswapdSleep);
+	                }
+	                if (object.binderTransaction != null) {
+	                    if (typeof object.binderTransaction !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.binderTransaction: object expected");
+	                    message.binderTransaction = $root.perfetto.protos.BinderTransactionFtraceEvent.fromObject(object.binderTransaction);
+	                }
+	                if (object.binderTransactionReceived != null) {
+	                    if (typeof object.binderTransactionReceived !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.binderTransactionReceived: object expected");
+	                    message.binderTransactionReceived = $root.perfetto.protos.BinderTransactionReceivedFtraceEvent.fromObject(object.binderTransactionReceived);
+	                }
+	                if (object.binderLock != null) {
+	                    if (typeof object.binderLock !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.binderLock: object expected");
+	                    message.binderLock = $root.perfetto.protos.BinderLockFtraceEvent.fromObject(object.binderLock);
+	                }
+	                if (object.binderLocked != null) {
+	                    if (typeof object.binderLocked !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.binderLocked: object expected");
+	                    message.binderLocked = $root.perfetto.protos.BinderLockedFtraceEvent.fromObject(object.binderLocked);
+	                }
+	                if (object.binderUnlock != null) {
+	                    if (typeof object.binderUnlock !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.binderUnlock: object expected");
+	                    message.binderUnlock = $root.perfetto.protos.BinderUnlockFtraceEvent.fromObject(object.binderUnlock);
+	                }
+	                if (object.cgroupAttachTask != null) {
+	                    if (typeof object.cgroupAttachTask !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cgroupAttachTask: object expected");
+	                    message.cgroupAttachTask = $root.perfetto.protos.CgroupAttachTaskFtraceEvent.fromObject(object.cgroupAttachTask);
+	                }
+	                if (object.cgroupMkdir != null) {
+	                    if (typeof object.cgroupMkdir !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cgroupMkdir: object expected");
+	                    message.cgroupMkdir = $root.perfetto.protos.CgroupMkdirFtraceEvent.fromObject(object.cgroupMkdir);
+	                }
+	                if (object.cgroupRemount != null) {
+	                    if (typeof object.cgroupRemount !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cgroupRemount: object expected");
+	                    message.cgroupRemount = $root.perfetto.protos.CgroupRemountFtraceEvent.fromObject(object.cgroupRemount);
+	                }
+	                if (object.cgroupRmdir != null) {
+	                    if (typeof object.cgroupRmdir !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cgroupRmdir: object expected");
+	                    message.cgroupRmdir = $root.perfetto.protos.CgroupRmdirFtraceEvent.fromObject(object.cgroupRmdir);
+	                }
+	                if (object.cgroupTransferTasks != null) {
+	                    if (typeof object.cgroupTransferTasks !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cgroupTransferTasks: object expected");
+	                    message.cgroupTransferTasks = $root.perfetto.protos.CgroupTransferTasksFtraceEvent.fromObject(object.cgroupTransferTasks);
+	                }
+	                if (object.cgroupDestroyRoot != null) {
+	                    if (typeof object.cgroupDestroyRoot !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cgroupDestroyRoot: object expected");
+	                    message.cgroupDestroyRoot = $root.perfetto.protos.CgroupDestroyRootFtraceEvent.fromObject(object.cgroupDestroyRoot);
+	                }
+	                if (object.cgroupRelease != null) {
+	                    if (typeof object.cgroupRelease !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cgroupRelease: object expected");
+	                    message.cgroupRelease = $root.perfetto.protos.CgroupReleaseFtraceEvent.fromObject(object.cgroupRelease);
+	                }
+	                if (object.cgroupRename != null) {
+	                    if (typeof object.cgroupRename !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cgroupRename: object expected");
+	                    message.cgroupRename = $root.perfetto.protos.CgroupRenameFtraceEvent.fromObject(object.cgroupRename);
+	                }
+	                if (object.cgroupSetupRoot != null) {
+	                    if (typeof object.cgroupSetupRoot !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.cgroupSetupRoot: object expected");
+	                    message.cgroupSetupRoot = $root.perfetto.protos.CgroupSetupRootFtraceEvent.fromObject(object.cgroupSetupRoot);
+	                }
+	                if (object.blockRqComplete != null) {
+	                    if (typeof object.blockRqComplete !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.blockRqComplete: object expected");
+	                    message.blockRqComplete = $root.perfetto.protos.BlockRqCompleteFtraceEvent.fromObject(object.blockRqComplete);
+	                }
+	                if (object.ext4EsLookupExtentEnter != null) {
+	                    if (typeof object.ext4EsLookupExtentEnter !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.ext4EsLookupExtentEnter: object expected");
+	                    message.ext4EsLookupExtentEnter = $root.perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent.fromObject(object.ext4EsLookupExtentEnter);
+	                }
+	                if (object.ext4EsLookupExtentExit != null) {
+	                    if (typeof object.ext4EsLookupExtentExit !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.ext4EsLookupExtentExit: object expected");
+	                    message.ext4EsLookupExtentExit = $root.perfetto.protos.Ext4EsLookupExtentExitFtraceEvent.fromObject(object.ext4EsLookupExtentExit);
+	                }
+	                if (object.ext4LoadInode != null) {
+	                    if (typeof object.ext4LoadInode !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.ext4LoadInode: object expected");
+	                    message.ext4LoadInode = $root.perfetto.protos.Ext4LoadInodeFtraceEvent.fromObject(object.ext4LoadInode);
+	                }
+	                if (object.f2fsGetDataBlock != null) {
+	                    if (typeof object.f2fsGetDataBlock !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.f2fsGetDataBlock: object expected");
+	                    message.f2fsGetDataBlock = $root.perfetto.protos.F2fsGetDataBlockFtraceEvent.fromObject(object.f2fsGetDataBlock);
+	                }
+	                if (object.f2fsIget != null) {
+	                    if (typeof object.f2fsIget !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.f2fsIget: object expected");
+	                    message.f2fsIget = $root.perfetto.protos.F2fsIgetFtraceEvent.fromObject(object.f2fsIget);
+	                }
+	                if (object.f2fsSyncFileEnter != null) {
+	                    if (typeof object.f2fsSyncFileEnter !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.f2fsSyncFileEnter: object expected");
+	                    message.f2fsSyncFileEnter = $root.perfetto.protos.F2fsSyncFileEnterFtraceEvent.fromObject(object.f2fsSyncFileEnter);
+	                }
+	                if (object.f2fsSyncFileExit != null) {
+	                    if (typeof object.f2fsSyncFileExit !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.f2fsSyncFileExit: object expected");
+	                    message.f2fsSyncFileExit = $root.perfetto.protos.F2fsSyncFileExitFtraceEvent.fromObject(object.f2fsSyncFileExit);
+	                }
+	                if (object.f2fsWriteBegin != null) {
+	                    if (typeof object.f2fsWriteBegin !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.f2fsWriteBegin: object expected");
+	                    message.f2fsWriteBegin = $root.perfetto.protos.F2fsWriteBeginFtraceEvent.fromObject(object.f2fsWriteBegin);
+	                }
+	                if (object.f2fsWriteEnd != null) {
+	                    if (typeof object.f2fsWriteEnd !== "object")
+	                        throw TypeError(".perfetto.protos.FtraceEvent.f2fsWriteEnd: object expected");
+	                    message.f2fsWriteEnd = $root.perfetto.protos.F2fsWriteEndFtraceEvent.fromObject(object.f2fsWriteEnd);
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a FtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @static
+	             * @param {perfetto.protos.FtraceEvent} message FtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            FtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.timestamp = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.timestamp = options.longs === String ? "0" : 0;
+	                    object.pid = 0;
+	                }
+	                if (message.timestamp != null && message.hasOwnProperty("timestamp"))
+	                    if (typeof message.timestamp === "number")
+	                        object.timestamp = options.longs === String ? String(message.timestamp) : message.timestamp;
+	                    else
+	                        object.timestamp = options.longs === String ? $util.Long.prototype.toString.call(message.timestamp) : options.longs === Number ? new $util.LongBits(message.timestamp.low >>> 0, message.timestamp.high >>> 0).toNumber(true) : message.timestamp;
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    object.pid = message.pid;
+	                if (message.schedSwitch != null && message.hasOwnProperty("schedSwitch")) {
+	                    object.schedSwitch = $root.perfetto.protos.SchedSwitchFtraceEvent.toObject(message.schedSwitch, options);
+	                    if (options.oneofs)
+	                        object.event = "schedSwitch";
+	                }
+	                if (message.cpufreqInteractiveAlready != null && message.hasOwnProperty("cpufreqInteractiveAlready")) {
+	                    object.cpufreqInteractiveAlready = $root.perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent.toObject(message.cpufreqInteractiveAlready, options);
+	                    if (options.oneofs)
+	                        object.event = "cpufreqInteractiveAlready";
+	                }
+	                if (message.cpufreqInteractiveBoost != null && message.hasOwnProperty("cpufreqInteractiveBoost")) {
+	                    object.cpufreqInteractiveBoost = $root.perfetto.protos.CpufreqInteractiveBoostFtraceEvent.toObject(message.cpufreqInteractiveBoost, options);
+	                    if (options.oneofs)
+	                        object.event = "cpufreqInteractiveBoost";
+	                }
+	                if (message.cpufreqInteractiveNotyet != null && message.hasOwnProperty("cpufreqInteractiveNotyet")) {
+	                    object.cpufreqInteractiveNotyet = $root.perfetto.protos.CpufreqInteractiveNotyetFtraceEvent.toObject(message.cpufreqInteractiveNotyet, options);
+	                    if (options.oneofs)
+	                        object.event = "cpufreqInteractiveNotyet";
+	                }
+	                if (message.cpufreqInteractiveSetspeed != null && message.hasOwnProperty("cpufreqInteractiveSetspeed")) {
+	                    object.cpufreqInteractiveSetspeed = $root.perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent.toObject(message.cpufreqInteractiveSetspeed, options);
+	                    if (options.oneofs)
+	                        object.event = "cpufreqInteractiveSetspeed";
+	                }
+	                if (message.cpufreqInteractiveTarget != null && message.hasOwnProperty("cpufreqInteractiveTarget")) {
+	                    object.cpufreqInteractiveTarget = $root.perfetto.protos.CpufreqInteractiveTargetFtraceEvent.toObject(message.cpufreqInteractiveTarget, options);
+	                    if (options.oneofs)
+	                        object.event = "cpufreqInteractiveTarget";
+	                }
+	                if (message.cpufreqInteractiveUnboost != null && message.hasOwnProperty("cpufreqInteractiveUnboost")) {
+	                    object.cpufreqInteractiveUnboost = $root.perfetto.protos.CpufreqInteractiveUnboostFtraceEvent.toObject(message.cpufreqInteractiveUnboost, options);
+	                    if (options.oneofs)
+	                        object.event = "cpufreqInteractiveUnboost";
+	                }
+	                if (message.cpuFrequency != null && message.hasOwnProperty("cpuFrequency")) {
+	                    object.cpuFrequency = $root.perfetto.protos.CpuFrequencyFtraceEvent.toObject(message.cpuFrequency, options);
+	                    if (options.oneofs)
+	                        object.event = "cpuFrequency";
+	                }
+	                if (message.cpuFrequencyLimits != null && message.hasOwnProperty("cpuFrequencyLimits")) {
+	                    object.cpuFrequencyLimits = $root.perfetto.protos.CpuFrequencyLimitsFtraceEvent.toObject(message.cpuFrequencyLimits, options);
+	                    if (options.oneofs)
+	                        object.event = "cpuFrequencyLimits";
+	                }
+	                if (message.cpuIdle != null && message.hasOwnProperty("cpuIdle")) {
+	                    object.cpuIdle = $root.perfetto.protos.CpuIdleFtraceEvent.toObject(message.cpuIdle, options);
+	                    if (options.oneofs)
+	                        object.event = "cpuIdle";
+	                }
+	                if (message.clockSetRate != null && message.hasOwnProperty("clockSetRate")) {
+	                    object.clockSetRate = $root.perfetto.protos.ClockSetRateFtraceEvent.toObject(message.clockSetRate, options);
+	                    if (options.oneofs)
+	                        object.event = "clockSetRate";
+	                }
+	                if (message.schedWakeup != null && message.hasOwnProperty("schedWakeup")) {
+	                    object.schedWakeup = $root.perfetto.protos.SchedWakeupFtraceEvent.toObject(message.schedWakeup, options);
+	                    if (options.oneofs)
+	                        object.event = "schedWakeup";
+	                }
+	                if (message.schedBlockedReason != null && message.hasOwnProperty("schedBlockedReason")) {
+	                    object.schedBlockedReason = $root.perfetto.protos.SchedBlockedReasonFtraceEvent.toObject(message.schedBlockedReason, options);
+	                    if (options.oneofs)
+	                        object.event = "schedBlockedReason";
+	                }
+	                if (message.schedCpuHotplug != null && message.hasOwnProperty("schedCpuHotplug")) {
+	                    object.schedCpuHotplug = $root.perfetto.protos.SchedCpuHotplugFtraceEvent.toObject(message.schedCpuHotplug, options);
+	                    if (options.oneofs)
+	                        object.event = "schedCpuHotplug";
+	                }
+	                if (message.lowmemoryKill != null && message.hasOwnProperty("lowmemoryKill")) {
+	                    object.lowmemoryKill = $root.perfetto.protos.LowmemoryKillFtraceEvent.toObject(message.lowmemoryKill, options);
+	                    if (options.oneofs)
+	                        object.event = "lowmemoryKill";
+	                }
+	                if (message.ext4DaWriteBegin != null && message.hasOwnProperty("ext4DaWriteBegin")) {
+	                    object.ext4DaWriteBegin = $root.perfetto.protos.Ext4DaWriteBeginFtraceEvent.toObject(message.ext4DaWriteBegin, options);
+	                    if (options.oneofs)
+	                        object.event = "ext4DaWriteBegin";
+	                }
+	                if (message.ext4DaWriteEnd != null && message.hasOwnProperty("ext4DaWriteEnd")) {
+	                    object.ext4DaWriteEnd = $root.perfetto.protos.Ext4DaWriteEndFtraceEvent.toObject(message.ext4DaWriteEnd, options);
+	                    if (options.oneofs)
+	                        object.event = "ext4DaWriteEnd";
+	                }
+	                if (message.ext4SyncFileEnter != null && message.hasOwnProperty("ext4SyncFileEnter")) {
+	                    object.ext4SyncFileEnter = $root.perfetto.protos.Ext4SyncFileEnterFtraceEvent.toObject(message.ext4SyncFileEnter, options);
+	                    if (options.oneofs)
+	                        object.event = "ext4SyncFileEnter";
+	                }
+	                if (message.ext4SyncFileExit != null && message.hasOwnProperty("ext4SyncFileExit")) {
+	                    object.ext4SyncFileExit = $root.perfetto.protos.Ext4SyncFileExitFtraceEvent.toObject(message.ext4SyncFileExit, options);
+	                    if (options.oneofs)
+	                        object.event = "ext4SyncFileExit";
+	                }
+	                if (message.blockRqIssue != null && message.hasOwnProperty("blockRqIssue")) {
+	                    object.blockRqIssue = $root.perfetto.protos.BlockRqIssueFtraceEvent.toObject(message.blockRqIssue, options);
+	                    if (options.oneofs)
+	                        object.event = "blockRqIssue";
+	                }
+	                if (message.mmVmscanDirectReclaimBegin != null && message.hasOwnProperty("mmVmscanDirectReclaimBegin")) {
+	                    object.mmVmscanDirectReclaimBegin = $root.perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent.toObject(message.mmVmscanDirectReclaimBegin, options);
+	                    if (options.oneofs)
+	                        object.event = "mmVmscanDirectReclaimBegin";
+	                }
+	                if (message.mmVmscanDirectReclaimEnd != null && message.hasOwnProperty("mmVmscanDirectReclaimEnd")) {
+	                    object.mmVmscanDirectReclaimEnd = $root.perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent.toObject(message.mmVmscanDirectReclaimEnd, options);
+	                    if (options.oneofs)
+	                        object.event = "mmVmscanDirectReclaimEnd";
+	                }
+	                if (message.mmVmscanKswapdWake != null && message.hasOwnProperty("mmVmscanKswapdWake")) {
+	                    object.mmVmscanKswapdWake = $root.perfetto.protos.MmVmscanKswapdWakeFtraceEvent.toObject(message.mmVmscanKswapdWake, options);
+	                    if (options.oneofs)
+	                        object.event = "mmVmscanKswapdWake";
+	                }
+	                if (message.mmVmscanKswapdSleep != null && message.hasOwnProperty("mmVmscanKswapdSleep")) {
+	                    object.mmVmscanKswapdSleep = $root.perfetto.protos.MmVmscanKswapdSleepFtraceEvent.toObject(message.mmVmscanKswapdSleep, options);
+	                    if (options.oneofs)
+	                        object.event = "mmVmscanKswapdSleep";
+	                }
+	                if (message.binderTransaction != null && message.hasOwnProperty("binderTransaction")) {
+	                    object.binderTransaction = $root.perfetto.protos.BinderTransactionFtraceEvent.toObject(message.binderTransaction, options);
+	                    if (options.oneofs)
+	                        object.event = "binderTransaction";
+	                }
+	                if (message.binderTransactionReceived != null && message.hasOwnProperty("binderTransactionReceived")) {
+	                    object.binderTransactionReceived = $root.perfetto.protos.BinderTransactionReceivedFtraceEvent.toObject(message.binderTransactionReceived, options);
+	                    if (options.oneofs)
+	                        object.event = "binderTransactionReceived";
+	                }
+	                if (message.binderLock != null && message.hasOwnProperty("binderLock")) {
+	                    object.binderLock = $root.perfetto.protos.BinderLockFtraceEvent.toObject(message.binderLock, options);
+	                    if (options.oneofs)
+	                        object.event = "binderLock";
+	                }
+	                if (message.binderLocked != null && message.hasOwnProperty("binderLocked")) {
+	                    object.binderLocked = $root.perfetto.protos.BinderLockedFtraceEvent.toObject(message.binderLocked, options);
+	                    if (options.oneofs)
+	                        object.event = "binderLocked";
+	                }
+	                if (message.binderUnlock != null && message.hasOwnProperty("binderUnlock")) {
+	                    object.binderUnlock = $root.perfetto.protos.BinderUnlockFtraceEvent.toObject(message.binderUnlock, options);
+	                    if (options.oneofs)
+	                        object.event = "binderUnlock";
+	                }
+	                if (message.cgroupAttachTask != null && message.hasOwnProperty("cgroupAttachTask")) {
+	                    object.cgroupAttachTask = $root.perfetto.protos.CgroupAttachTaskFtraceEvent.toObject(message.cgroupAttachTask, options);
+	                    if (options.oneofs)
+	                        object.event = "cgroupAttachTask";
+	                }
+	                if (message.cgroupMkdir != null && message.hasOwnProperty("cgroupMkdir")) {
+	                    object.cgroupMkdir = $root.perfetto.protos.CgroupMkdirFtraceEvent.toObject(message.cgroupMkdir, options);
+	                    if (options.oneofs)
+	                        object.event = "cgroupMkdir";
+	                }
+	                if (message.cgroupRemount != null && message.hasOwnProperty("cgroupRemount")) {
+	                    object.cgroupRemount = $root.perfetto.protos.CgroupRemountFtraceEvent.toObject(message.cgroupRemount, options);
+	                    if (options.oneofs)
+	                        object.event = "cgroupRemount";
+	                }
+	                if (message.cgroupRmdir != null && message.hasOwnProperty("cgroupRmdir")) {
+	                    object.cgroupRmdir = $root.perfetto.protos.CgroupRmdirFtraceEvent.toObject(message.cgroupRmdir, options);
+	                    if (options.oneofs)
+	                        object.event = "cgroupRmdir";
+	                }
+	                if (message.cgroupTransferTasks != null && message.hasOwnProperty("cgroupTransferTasks")) {
+	                    object.cgroupTransferTasks = $root.perfetto.protos.CgroupTransferTasksFtraceEvent.toObject(message.cgroupTransferTasks, options);
+	                    if (options.oneofs)
+	                        object.event = "cgroupTransferTasks";
+	                }
+	                if (message.cgroupDestroyRoot != null && message.hasOwnProperty("cgroupDestroyRoot")) {
+	                    object.cgroupDestroyRoot = $root.perfetto.protos.CgroupDestroyRootFtraceEvent.toObject(message.cgroupDestroyRoot, options);
+	                    if (options.oneofs)
+	                        object.event = "cgroupDestroyRoot";
+	                }
+	                if (message.cgroupRelease != null && message.hasOwnProperty("cgroupRelease")) {
+	                    object.cgroupRelease = $root.perfetto.protos.CgroupReleaseFtraceEvent.toObject(message.cgroupRelease, options);
+	                    if (options.oneofs)
+	                        object.event = "cgroupRelease";
+	                }
+	                if (message.cgroupRename != null && message.hasOwnProperty("cgroupRename")) {
+	                    object.cgroupRename = $root.perfetto.protos.CgroupRenameFtraceEvent.toObject(message.cgroupRename, options);
+	                    if (options.oneofs)
+	                        object.event = "cgroupRename";
+	                }
+	                if (message.cgroupSetupRoot != null && message.hasOwnProperty("cgroupSetupRoot")) {
+	                    object.cgroupSetupRoot = $root.perfetto.protos.CgroupSetupRootFtraceEvent.toObject(message.cgroupSetupRoot, options);
+	                    if (options.oneofs)
+	                        object.event = "cgroupSetupRoot";
+	                }
+	                if (message.blockRqComplete != null && message.hasOwnProperty("blockRqComplete")) {
+	                    object.blockRqComplete = $root.perfetto.protos.BlockRqCompleteFtraceEvent.toObject(message.blockRqComplete, options);
+	                    if (options.oneofs)
+	                        object.event = "blockRqComplete";
+	                }
+	                if (message.ext4EsLookupExtentEnter != null && message.hasOwnProperty("ext4EsLookupExtentEnter")) {
+	                    object.ext4EsLookupExtentEnter = $root.perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent.toObject(message.ext4EsLookupExtentEnter, options);
+	                    if (options.oneofs)
+	                        object.event = "ext4EsLookupExtentEnter";
+	                }
+	                if (message.ext4EsLookupExtentExit != null && message.hasOwnProperty("ext4EsLookupExtentExit")) {
+	                    object.ext4EsLookupExtentExit = $root.perfetto.protos.Ext4EsLookupExtentExitFtraceEvent.toObject(message.ext4EsLookupExtentExit, options);
+	                    if (options.oneofs)
+	                        object.event = "ext4EsLookupExtentExit";
+	                }
+	                if (message.ext4LoadInode != null && message.hasOwnProperty("ext4LoadInode")) {
+	                    object.ext4LoadInode = $root.perfetto.protos.Ext4LoadInodeFtraceEvent.toObject(message.ext4LoadInode, options);
+	                    if (options.oneofs)
+	                        object.event = "ext4LoadInode";
+	                }
+	                if (message.f2fsGetDataBlock != null && message.hasOwnProperty("f2fsGetDataBlock")) {
+	                    object.f2fsGetDataBlock = $root.perfetto.protos.F2fsGetDataBlockFtraceEvent.toObject(message.f2fsGetDataBlock, options);
+	                    if (options.oneofs)
+	                        object.event = "f2fsGetDataBlock";
+	                }
+	                if (message.f2fsIget != null && message.hasOwnProperty("f2fsIget")) {
+	                    object.f2fsIget = $root.perfetto.protos.F2fsIgetFtraceEvent.toObject(message.f2fsIget, options);
+	                    if (options.oneofs)
+	                        object.event = "f2fsIget";
+	                }
+	                if (message.f2fsSyncFileEnter != null && message.hasOwnProperty("f2fsSyncFileEnter")) {
+	                    object.f2fsSyncFileEnter = $root.perfetto.protos.F2fsSyncFileEnterFtraceEvent.toObject(message.f2fsSyncFileEnter, options);
+	                    if (options.oneofs)
+	                        object.event = "f2fsSyncFileEnter";
+	                }
+	                if (message.f2fsSyncFileExit != null && message.hasOwnProperty("f2fsSyncFileExit")) {
+	                    object.f2fsSyncFileExit = $root.perfetto.protos.F2fsSyncFileExitFtraceEvent.toObject(message.f2fsSyncFileExit, options);
+	                    if (options.oneofs)
+	                        object.event = "f2fsSyncFileExit";
+	                }
+	                if (message.f2fsWriteBegin != null && message.hasOwnProperty("f2fsWriteBegin")) {
+	                    object.f2fsWriteBegin = $root.perfetto.protos.F2fsWriteBeginFtraceEvent.toObject(message.f2fsWriteBegin, options);
+	                    if (options.oneofs)
+	                        object.event = "f2fsWriteBegin";
+	                }
+	                if (message.f2fsWriteEnd != null && message.hasOwnProperty("f2fsWriteEnd")) {
+	                    object.f2fsWriteEnd = $root.perfetto.protos.F2fsWriteEndFtraceEvent.toObject(message.f2fsWriteEnd, options);
+	                    if (options.oneofs)
+	                        object.event = "f2fsWriteEnd";
+	                }
+	                return object;
+	            };
+
+	            /**
+	             * Converts this FtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.FtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            FtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return FtraceEvent;
+	        })();
+
+	        protos.InodeFileMap = (function() {
+
+	            /**
+	             * Properties of an InodeFileMap.
+	             * @memberof perfetto.protos
+	             * @interface IInodeFileMap
+	             * @property {number|Long|null} [blockDeviceId] InodeFileMap blockDeviceId
+	             * @property {Array.<string>|null} [mountPoints] InodeFileMap mountPoints
+	             * @property {Array.<perfetto.protos.InodeFileMap.IEntry>|null} [entries] InodeFileMap entries
+	             */
+
+	            /**
+	             * Constructs a new InodeFileMap.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents an InodeFileMap.
+	             * @implements IInodeFileMap
+	             * @constructor
+	             * @param {perfetto.protos.IInodeFileMap=} [properties] Properties to set
+	             */
+	            function InodeFileMap(properties) {
+	                this.mountPoints = [];
+	                this.entries = [];
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * InodeFileMap blockDeviceId.
+	             * @member {number|Long} blockDeviceId
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @instance
+	             */
+	            InodeFileMap.prototype.blockDeviceId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * InodeFileMap mountPoints.
+	             * @member {Array.<string>} mountPoints
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @instance
+	             */
+	            InodeFileMap.prototype.mountPoints = $util.emptyArray;
+
+	            /**
+	             * InodeFileMap entries.
+	             * @member {Array.<perfetto.protos.InodeFileMap.IEntry>} entries
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @instance
+	             */
+	            InodeFileMap.prototype.entries = $util.emptyArray;
+
+	            /**
+	             * Creates a new InodeFileMap instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @static
+	             * @param {perfetto.protos.IInodeFileMap=} [properties] Properties to set
+	             * @returns {perfetto.protos.InodeFileMap} InodeFileMap instance
+	             */
+	            InodeFileMap.create = function create(properties) {
+	                return new InodeFileMap(properties);
+	            };
+
+	            /**
+	             * Encodes the specified InodeFileMap message. Does not implicitly {@link perfetto.protos.InodeFileMap.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @static
+	             * @param {perfetto.protos.IInodeFileMap} message InodeFileMap message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            InodeFileMap.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.blockDeviceId != null && message.hasOwnProperty("blockDeviceId"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.blockDeviceId);
+	                if (message.mountPoints != null && message.mountPoints.length)
+	                    for (var i = 0; i < message.mountPoints.length; ++i)
+	                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.mountPoints[i]);
+	                if (message.entries != null && message.entries.length)
+	                    for (var i = 0; i < message.entries.length; ++i)
+	                        $root.perfetto.protos.InodeFileMap.Entry.encode(message.entries[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified InodeFileMap message, length delimited. Does not implicitly {@link perfetto.protos.InodeFileMap.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @static
+	             * @param {perfetto.protos.IInodeFileMap} message InodeFileMap message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            InodeFileMap.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes an InodeFileMap message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.InodeFileMap} InodeFileMap
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            InodeFileMap.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.InodeFileMap();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.blockDeviceId = reader.uint64();
+	                        break;
+	                    case 2:
+	                        if (!(message.mountPoints && message.mountPoints.length))
+	                            message.mountPoints = [];
+	                        message.mountPoints.push(reader.string());
+	                        break;
+	                    case 3:
+	                        if (!(message.entries && message.entries.length))
+	                            message.entries = [];
+	                        message.entries.push($root.perfetto.protos.InodeFileMap.Entry.decode(reader, reader.uint32()));
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes an InodeFileMap message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.InodeFileMap} InodeFileMap
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            InodeFileMap.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies an InodeFileMap message.
+	             * @function verify
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            InodeFileMap.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.blockDeviceId != null && message.hasOwnProperty("blockDeviceId"))
+	                    if (!$util.isInteger(message.blockDeviceId) && !(message.blockDeviceId && $util.isInteger(message.blockDeviceId.low) && $util.isInteger(message.blockDeviceId.high)))
+	                        return "blockDeviceId: integer|Long expected";
+	                if (message.mountPoints != null && message.hasOwnProperty("mountPoints")) {
+	                    if (!Array.isArray(message.mountPoints))
+	                        return "mountPoints: array expected";
+	                    for (var i = 0; i < message.mountPoints.length; ++i)
+	                        if (!$util.isString(message.mountPoints[i]))
+	                            return "mountPoints: string[] expected";
+	                }
+	                if (message.entries != null && message.hasOwnProperty("entries")) {
+	                    if (!Array.isArray(message.entries))
+	                        return "entries: array expected";
+	                    for (var i = 0; i < message.entries.length; ++i) {
+	                        var error = $root.perfetto.protos.InodeFileMap.Entry.verify(message.entries[i]);
+	                        if (error)
+	                            return "entries." + error;
+	                    }
+	                }
+	                return null;
+	            };
+
+	            /**
+	             * Creates an InodeFileMap message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.InodeFileMap} InodeFileMap
+	             */
+	            InodeFileMap.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.InodeFileMap)
+	                    return object;
+	                var message = new $root.perfetto.protos.InodeFileMap();
+	                if (object.blockDeviceId != null)
+	                    if ($util.Long)
+	                        (message.blockDeviceId = $util.Long.fromValue(object.blockDeviceId)).unsigned = true;
+	                    else if (typeof object.blockDeviceId === "string")
+	                        message.blockDeviceId = parseInt(object.blockDeviceId, 10);
+	                    else if (typeof object.blockDeviceId === "number")
+	                        message.blockDeviceId = object.blockDeviceId;
+	                    else if (typeof object.blockDeviceId === "object")
+	                        message.blockDeviceId = new $util.LongBits(object.blockDeviceId.low >>> 0, object.blockDeviceId.high >>> 0).toNumber(true);
+	                if (object.mountPoints) {
+	                    if (!Array.isArray(object.mountPoints))
+	                        throw TypeError(".perfetto.protos.InodeFileMap.mountPoints: array expected");
+	                    message.mountPoints = [];
+	                    for (var i = 0; i < object.mountPoints.length; ++i)
+	                        message.mountPoints[i] = String(object.mountPoints[i]);
+	                }
+	                if (object.entries) {
+	                    if (!Array.isArray(object.entries))
+	                        throw TypeError(".perfetto.protos.InodeFileMap.entries: array expected");
+	                    message.entries = [];
+	                    for (var i = 0; i < object.entries.length; ++i) {
+	                        if (typeof object.entries[i] !== "object")
+	                            throw TypeError(".perfetto.protos.InodeFileMap.entries: object expected");
+	                        message.entries[i] = $root.perfetto.protos.InodeFileMap.Entry.fromObject(object.entries[i]);
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from an InodeFileMap message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @static
+	             * @param {perfetto.protos.InodeFileMap} message InodeFileMap
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            InodeFileMap.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.arrays || options.defaults) {
+	                    object.mountPoints = [];
+	                    object.entries = [];
+	                }
+	                if (options.defaults)
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.blockDeviceId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.blockDeviceId = options.longs === String ? "0" : 0;
+	                if (message.blockDeviceId != null && message.hasOwnProperty("blockDeviceId"))
+	                    if (typeof message.blockDeviceId === "number")
+	                        object.blockDeviceId = options.longs === String ? String(message.blockDeviceId) : message.blockDeviceId;
+	                    else
+	                        object.blockDeviceId = options.longs === String ? $util.Long.prototype.toString.call(message.blockDeviceId) : options.longs === Number ? new $util.LongBits(message.blockDeviceId.low >>> 0, message.blockDeviceId.high >>> 0).toNumber(true) : message.blockDeviceId;
+	                if (message.mountPoints && message.mountPoints.length) {
+	                    object.mountPoints = [];
+	                    for (var j = 0; j < message.mountPoints.length; ++j)
+	                        object.mountPoints[j] = message.mountPoints[j];
+	                }
+	                if (message.entries && message.entries.length) {
+	                    object.entries = [];
+	                    for (var j = 0; j < message.entries.length; ++j)
+	                        object.entries[j] = $root.perfetto.protos.InodeFileMap.Entry.toObject(message.entries[j], options);
+	                }
+	                return object;
+	            };
+
+	            /**
+	             * Converts this InodeFileMap to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.InodeFileMap
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            InodeFileMap.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            InodeFileMap.Entry = (function() {
+
+	                /**
+	                 * Properties of an Entry.
+	                 * @memberof perfetto.protos.InodeFileMap
+	                 * @interface IEntry
+	                 * @property {number|Long|null} [inodeNumber] Entry inodeNumber
+	                 * @property {Array.<string>|null} [paths] Entry paths
+	                 * @property {perfetto.protos.InodeFileMap.Entry.Type|null} [type] Entry type
+	                 */
+
+	                /**
+	                 * Constructs a new Entry.
+	                 * @memberof perfetto.protos.InodeFileMap
+	                 * @classdesc Represents an Entry.
+	                 * @implements IEntry
+	                 * @constructor
+	                 * @param {perfetto.protos.InodeFileMap.IEntry=} [properties] Properties to set
+	                 */
+	                function Entry(properties) {
+	                    this.paths = [];
+	                    if (properties)
+	                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                            if (properties[keys[i]] != null)
+	                                this[keys[i]] = properties[keys[i]];
+	                }
+
+	                /**
+	                 * Entry inodeNumber.
+	                 * @member {number|Long} inodeNumber
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @instance
+	                 */
+	                Entry.prototype.inodeNumber = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	                /**
+	                 * Entry paths.
+	                 * @member {Array.<string>} paths
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @instance
+	                 */
+	                Entry.prototype.paths = $util.emptyArray;
+
+	                /**
+	                 * Entry type.
+	                 * @member {perfetto.protos.InodeFileMap.Entry.Type} type
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @instance
+	                 */
+	                Entry.prototype.type = 0;
+
+	                /**
+	                 * Creates a new Entry instance using the specified properties.
+	                 * @function create
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @static
+	                 * @param {perfetto.protos.InodeFileMap.IEntry=} [properties] Properties to set
+	                 * @returns {perfetto.protos.InodeFileMap.Entry} Entry instance
+	                 */
+	                Entry.create = function create(properties) {
+	                    return new Entry(properties);
+	                };
+
+	                /**
+	                 * Encodes the specified Entry message. Does not implicitly {@link perfetto.protos.InodeFileMap.Entry.verify|verify} messages.
+	                 * @function encode
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @static
+	                 * @param {perfetto.protos.InodeFileMap.IEntry} message Entry message or plain object to encode
+	                 * @param {$protobuf.Writer} [writer] Writer to encode to
+	                 * @returns {$protobuf.Writer} Writer
+	                 */
+	                Entry.encode = function encode(message, writer) {
+	                    if (!writer)
+	                        writer = $Writer.create();
+	                    if (message.inodeNumber != null && message.hasOwnProperty("inodeNumber"))
+	                        writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.inodeNumber);
+	                    if (message.paths != null && message.paths.length)
+	                        for (var i = 0; i < message.paths.length; ++i)
+	                            writer.uint32(/* id 2, wireType 2 =*/18).string(message.paths[i]);
+	                    if (message.type != null && message.hasOwnProperty("type"))
+	                        writer.uint32(/* id 3, wireType 0 =*/24).int32(message.type);
+	                    return writer;
+	                };
+
+	                /**
+	                 * Encodes the specified Entry message, length delimited. Does not implicitly {@link perfetto.protos.InodeFileMap.Entry.verify|verify} messages.
+	                 * @function encodeDelimited
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @static
+	                 * @param {perfetto.protos.InodeFileMap.IEntry} message Entry message or plain object to encode
+	                 * @param {$protobuf.Writer} [writer] Writer to encode to
+	                 * @returns {$protobuf.Writer} Writer
+	                 */
+	                Entry.encodeDelimited = function encodeDelimited(message, writer) {
+	                    return this.encode(message, writer).ldelim();
+	                };
+
+	                /**
+	                 * Decodes an Entry message from the specified reader or buffer.
+	                 * @function decode
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @static
+	                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	                 * @param {number} [length] Message length if known beforehand
+	                 * @returns {perfetto.protos.InodeFileMap.Entry} Entry
+	                 * @throws {Error} If the payload is not a reader or valid buffer
+	                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	                 */
+	                Entry.decode = function decode(reader, length) {
+	                    if (!(reader instanceof $Reader))
+	                        reader = $Reader.create(reader);
+	                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.InodeFileMap.Entry();
+	                    while (reader.pos < end) {
+	                        var tag = reader.uint32();
+	                        switch (tag >>> 3) {
+	                        case 1:
+	                            message.inodeNumber = reader.uint64();
+	                            break;
+	                        case 2:
+	                            if (!(message.paths && message.paths.length))
+	                                message.paths = [];
+	                            message.paths.push(reader.string());
+	                            break;
+	                        case 3:
+	                            message.type = reader.int32();
+	                            break;
+	                        default:
+	                            reader.skipType(tag & 7);
+	                            break;
+	                        }
+	                    }
+	                    return message;
+	                };
+
+	                /**
+	                 * Decodes an Entry message from the specified reader or buffer, length delimited.
+	                 * @function decodeDelimited
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @static
+	                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	                 * @returns {perfetto.protos.InodeFileMap.Entry} Entry
+	                 * @throws {Error} If the payload is not a reader or valid buffer
+	                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	                 */
+	                Entry.decodeDelimited = function decodeDelimited(reader) {
+	                    if (!(reader instanceof $Reader))
+	                        reader = new $Reader(reader);
+	                    return this.decode(reader, reader.uint32());
+	                };
+
+	                /**
+	                 * Verifies an Entry message.
+	                 * @function verify
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @static
+	                 * @param {Object.<string,*>} message Plain object to verify
+	                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	                 */
+	                Entry.verify = function verify(message) {
+	                    if (typeof message !== "object" || message === null)
+	                        return "object expected";
+	                    if (message.inodeNumber != null && message.hasOwnProperty("inodeNumber"))
+	                        if (!$util.isInteger(message.inodeNumber) && !(message.inodeNumber && $util.isInteger(message.inodeNumber.low) && $util.isInteger(message.inodeNumber.high)))
+	                            return "inodeNumber: integer|Long expected";
+	                    if (message.paths != null && message.hasOwnProperty("paths")) {
+	                        if (!Array.isArray(message.paths))
+	                            return "paths: array expected";
+	                        for (var i = 0; i < message.paths.length; ++i)
+	                            if (!$util.isString(message.paths[i]))
+	                                return "paths: string[] expected";
+	                    }
+	                    if (message.type != null && message.hasOwnProperty("type"))
+	                        switch (message.type) {
+	                        default:
+	                            return "type: enum value expected";
+	                        case 0:
+	                        case 1:
+	                        case 2:
+	                            break;
+	                        }
+	                    return null;
+	                };
+
+	                /**
+	                 * Creates an Entry message from a plain object. Also converts values to their respective internal types.
+	                 * @function fromObject
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @static
+	                 * @param {Object.<string,*>} object Plain object
+	                 * @returns {perfetto.protos.InodeFileMap.Entry} Entry
+	                 */
+	                Entry.fromObject = function fromObject(object) {
+	                    if (object instanceof $root.perfetto.protos.InodeFileMap.Entry)
+	                        return object;
+	                    var message = new $root.perfetto.protos.InodeFileMap.Entry();
+	                    if (object.inodeNumber != null)
+	                        if ($util.Long)
+	                            (message.inodeNumber = $util.Long.fromValue(object.inodeNumber)).unsigned = true;
+	                        else if (typeof object.inodeNumber === "string")
+	                            message.inodeNumber = parseInt(object.inodeNumber, 10);
+	                        else if (typeof object.inodeNumber === "number")
+	                            message.inodeNumber = object.inodeNumber;
+	                        else if (typeof object.inodeNumber === "object")
+	                            message.inodeNumber = new $util.LongBits(object.inodeNumber.low >>> 0, object.inodeNumber.high >>> 0).toNumber(true);
+	                    if (object.paths) {
+	                        if (!Array.isArray(object.paths))
+	                            throw TypeError(".perfetto.protos.InodeFileMap.Entry.paths: array expected");
+	                        message.paths = [];
+	                        for (var i = 0; i < object.paths.length; ++i)
+	                            message.paths[i] = String(object.paths[i]);
+	                    }
+	                    switch (object.type) {
+	                    case "UNKNOWN":
+	                    case 0:
+	                        message.type = 0;
+	                        break;
+	                    case "FILE":
+	                    case 1:
+	                        message.type = 1;
+	                        break;
+	                    case "DIRECTORY":
+	                    case 2:
+	                        message.type = 2;
+	                        break;
+	                    }
+	                    return message;
+	                };
+
+	                /**
+	                 * Creates a plain object from an Entry message. Also converts values to other types if specified.
+	                 * @function toObject
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @static
+	                 * @param {perfetto.protos.InodeFileMap.Entry} message Entry
+	                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+	                 * @returns {Object.<string,*>} Plain object
+	                 */
+	                Entry.toObject = function toObject(message, options) {
+	                    if (!options)
+	                        options = {};
+	                    var object = {};
+	                    if (options.arrays || options.defaults)
+	                        object.paths = [];
+	                    if (options.defaults) {
+	                        if ($util.Long) {
+	                            var long = new $util.Long(0, 0, true);
+	                            object.inodeNumber = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                        } else
+	                            object.inodeNumber = options.longs === String ? "0" : 0;
+	                        object.type = options.enums === String ? "UNKNOWN" : 0;
+	                    }
+	                    if (message.inodeNumber != null && message.hasOwnProperty("inodeNumber"))
+	                        if (typeof message.inodeNumber === "number")
+	                            object.inodeNumber = options.longs === String ? String(message.inodeNumber) : message.inodeNumber;
+	                        else
+	                            object.inodeNumber = options.longs === String ? $util.Long.prototype.toString.call(message.inodeNumber) : options.longs === Number ? new $util.LongBits(message.inodeNumber.low >>> 0, message.inodeNumber.high >>> 0).toNumber(true) : message.inodeNumber;
+	                    if (message.paths && message.paths.length) {
+	                        object.paths = [];
+	                        for (var j = 0; j < message.paths.length; ++j)
+	                            object.paths[j] = message.paths[j];
+	                    }
+	                    if (message.type != null && message.hasOwnProperty("type"))
+	                        object.type = options.enums === String ? $root.perfetto.protos.InodeFileMap.Entry.Type[message.type] : message.type;
+	                    return object;
+	                };
+
+	                /**
+	                 * Converts this Entry to JSON.
+	                 * @function toJSON
+	                 * @memberof perfetto.protos.InodeFileMap.Entry
+	                 * @instance
+	                 * @returns {Object.<string,*>} JSON object
+	                 */
+	                Entry.prototype.toJSON = function toJSON() {
+	                    return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	                };
+
+	                /**
+	                 * Type enum.
+	                 * @name perfetto.protos.InodeFileMap.Entry.Type
+	                 * @enum {string}
+	                 * @property {number} UNKNOWN=0 UNKNOWN value
+	                 * @property {number} FILE=1 FILE value
+	                 * @property {number} DIRECTORY=2 DIRECTORY value
+	                 */
+	                Entry.Type = (function() {
+	                    var valuesById = {}, values = Object.create(valuesById);
+	                    values[valuesById[0] = "UNKNOWN"] = 0;
+	                    values[valuesById[1] = "FILE"] = 1;
+	                    values[valuesById[2] = "DIRECTORY"] = 2;
+	                    return values;
+	                })();
+
+	                return Entry;
+	            })();
+
+	            return InodeFileMap;
+	        })();
+
+	        protos.ProcessTree = (function() {
+
+	            /**
+	             * Properties of a ProcessTree.
+	             * @memberof perfetto.protos
+	             * @interface IProcessTree
+	             * @property {Array.<perfetto.protos.ProcessTree.IProcess>|null} [processes] ProcessTree processes
+	             * @property {Array.<perfetto.protos.ProcessTree.IThread>|null} [threads] ProcessTree threads
+	             */
+
+	            /**
+	             * Constructs a new ProcessTree.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a ProcessTree.
+	             * @implements IProcessTree
+	             * @constructor
+	             * @param {perfetto.protos.IProcessTree=} [properties] Properties to set
+	             */
+	            function ProcessTree(properties) {
+	                this.processes = [];
+	                this.threads = [];
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * ProcessTree processes.
+	             * @member {Array.<perfetto.protos.ProcessTree.IProcess>} processes
+	             * @memberof perfetto.protos.ProcessTree
+	             * @instance
+	             */
+	            ProcessTree.prototype.processes = $util.emptyArray;
+
+	            /**
+	             * ProcessTree threads.
+	             * @member {Array.<perfetto.protos.ProcessTree.IThread>} threads
+	             * @memberof perfetto.protos.ProcessTree
+	             * @instance
+	             */
+	            ProcessTree.prototype.threads = $util.emptyArray;
+
+	            /**
+	             * Creates a new ProcessTree instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.ProcessTree
+	             * @static
+	             * @param {perfetto.protos.IProcessTree=} [properties] Properties to set
+	             * @returns {perfetto.protos.ProcessTree} ProcessTree instance
+	             */
+	            ProcessTree.create = function create(properties) {
+	                return new ProcessTree(properties);
+	            };
+
+	            /**
+	             * Encodes the specified ProcessTree message. Does not implicitly {@link perfetto.protos.ProcessTree.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.ProcessTree
+	             * @static
+	             * @param {perfetto.protos.IProcessTree} message ProcessTree message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            ProcessTree.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.processes != null && message.processes.length)
+	                    for (var i = 0; i < message.processes.length; ++i)
+	                        $root.perfetto.protos.ProcessTree.Process.encode(message.processes[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+	                if (message.threads != null && message.threads.length)
+	                    for (var i = 0; i < message.threads.length; ++i)
+	                        $root.perfetto.protos.ProcessTree.Thread.encode(message.threads[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified ProcessTree message, length delimited. Does not implicitly {@link perfetto.protos.ProcessTree.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.ProcessTree
+	             * @static
+	             * @param {perfetto.protos.IProcessTree} message ProcessTree message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            ProcessTree.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a ProcessTree message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.ProcessTree
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.ProcessTree} ProcessTree
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            ProcessTree.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.ProcessTree();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        if (!(message.processes && message.processes.length))
+	                            message.processes = [];
+	                        message.processes.push($root.perfetto.protos.ProcessTree.Process.decode(reader, reader.uint32()));
+	                        break;
+	                    case 2:
+	                        if (!(message.threads && message.threads.length))
+	                            message.threads = [];
+	                        message.threads.push($root.perfetto.protos.ProcessTree.Thread.decode(reader, reader.uint32()));
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a ProcessTree message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.ProcessTree
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.ProcessTree} ProcessTree
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            ProcessTree.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a ProcessTree message.
+	             * @function verify
+	             * @memberof perfetto.protos.ProcessTree
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            ProcessTree.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.processes != null && message.hasOwnProperty("processes")) {
+	                    if (!Array.isArray(message.processes))
+	                        return "processes: array expected";
+	                    for (var i = 0; i < message.processes.length; ++i) {
+	                        var error = $root.perfetto.protos.ProcessTree.Process.verify(message.processes[i]);
+	                        if (error)
+	                            return "processes." + error;
+	                    }
+	                }
+	                if (message.threads != null && message.hasOwnProperty("threads")) {
+	                    if (!Array.isArray(message.threads))
+	                        return "threads: array expected";
+	                    for (var i = 0; i < message.threads.length; ++i) {
+	                        var error = $root.perfetto.protos.ProcessTree.Thread.verify(message.threads[i]);
+	                        if (error)
+	                            return "threads." + error;
+	                    }
+	                }
+	                return null;
+	            };
+
+	            /**
+	             * Creates a ProcessTree message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.ProcessTree
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.ProcessTree} ProcessTree
+	             */
+	            ProcessTree.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.ProcessTree)
+	                    return object;
+	                var message = new $root.perfetto.protos.ProcessTree();
+	                if (object.processes) {
+	                    if (!Array.isArray(object.processes))
+	                        throw TypeError(".perfetto.protos.ProcessTree.processes: array expected");
+	                    message.processes = [];
+	                    for (var i = 0; i < object.processes.length; ++i) {
+	                        if (typeof object.processes[i] !== "object")
+	                            throw TypeError(".perfetto.protos.ProcessTree.processes: object expected");
+	                        message.processes[i] = $root.perfetto.protos.ProcessTree.Process.fromObject(object.processes[i]);
+	                    }
+	                }
+	                if (object.threads) {
+	                    if (!Array.isArray(object.threads))
+	                        throw TypeError(".perfetto.protos.ProcessTree.threads: array expected");
+	                    message.threads = [];
+	                    for (var i = 0; i < object.threads.length; ++i) {
+	                        if (typeof object.threads[i] !== "object")
+	                            throw TypeError(".perfetto.protos.ProcessTree.threads: object expected");
+	                        message.threads[i] = $root.perfetto.protos.ProcessTree.Thread.fromObject(object.threads[i]);
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a ProcessTree message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.ProcessTree
+	             * @static
+	             * @param {perfetto.protos.ProcessTree} message ProcessTree
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            ProcessTree.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.arrays || options.defaults) {
+	                    object.processes = [];
+	                    object.threads = [];
+	                }
+	                if (message.processes && message.processes.length) {
+	                    object.processes = [];
+	                    for (var j = 0; j < message.processes.length; ++j)
+	                        object.processes[j] = $root.perfetto.protos.ProcessTree.Process.toObject(message.processes[j], options);
+	                }
+	                if (message.threads && message.threads.length) {
+	                    object.threads = [];
+	                    for (var j = 0; j < message.threads.length; ++j)
+	                        object.threads[j] = $root.perfetto.protos.ProcessTree.Thread.toObject(message.threads[j], options);
+	                }
+	                return object;
+	            };
+
+	            /**
+	             * Converts this ProcessTree to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.ProcessTree
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            ProcessTree.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            ProcessTree.Thread = (function() {
+
+	                /**
+	                 * Properties of a Thread.
+	                 * @memberof perfetto.protos.ProcessTree
+	                 * @interface IThread
+	                 * @property {number|null} [tid] Thread tid
+	                 * @property {number|null} [tgid] Thread tgid
+	                 * @property {string|null} [name] Thread name
+	                 */
+
+	                /**
+	                 * Constructs a new Thread.
+	                 * @memberof perfetto.protos.ProcessTree
+	                 * @classdesc Represents a Thread.
+	                 * @implements IThread
+	                 * @constructor
+	                 * @param {perfetto.protos.ProcessTree.IThread=} [properties] Properties to set
+	                 */
+	                function Thread(properties) {
+	                    if (properties)
+	                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                            if (properties[keys[i]] != null)
+	                                this[keys[i]] = properties[keys[i]];
+	                }
+
+	                /**
+	                 * Thread tid.
+	                 * @member {number} tid
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @instance
+	                 */
+	                Thread.prototype.tid = 0;
+
+	                /**
+	                 * Thread tgid.
+	                 * @member {number} tgid
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @instance
+	                 */
+	                Thread.prototype.tgid = 0;
+
+	                /**
+	                 * Thread name.
+	                 * @member {string} name
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @instance
+	                 */
+	                Thread.prototype.name = "";
+
+	                /**
+	                 * Creates a new Thread instance using the specified properties.
+	                 * @function create
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @static
+	                 * @param {perfetto.protos.ProcessTree.IThread=} [properties] Properties to set
+	                 * @returns {perfetto.protos.ProcessTree.Thread} Thread instance
+	                 */
+	                Thread.create = function create(properties) {
+	                    return new Thread(properties);
+	                };
+
+	                /**
+	                 * Encodes the specified Thread message. Does not implicitly {@link perfetto.protos.ProcessTree.Thread.verify|verify} messages.
+	                 * @function encode
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @static
+	                 * @param {perfetto.protos.ProcessTree.IThread} message Thread message or plain object to encode
+	                 * @param {$protobuf.Writer} [writer] Writer to encode to
+	                 * @returns {$protobuf.Writer} Writer
+	                 */
+	                Thread.encode = function encode(message, writer) {
+	                    if (!writer)
+	                        writer = $Writer.create();
+	                    if (message.tid != null && message.hasOwnProperty("tid"))
+	                        writer.uint32(/* id 1, wireType 0 =*/8).int32(message.tid);
+	                    if (message.name != null && message.hasOwnProperty("name"))
+	                        writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+	                    if (message.tgid != null && message.hasOwnProperty("tgid"))
+	                        writer.uint32(/* id 3, wireType 0 =*/24).int32(message.tgid);
+	                    return writer;
+	                };
+
+	                /**
+	                 * Encodes the specified Thread message, length delimited. Does not implicitly {@link perfetto.protos.ProcessTree.Thread.verify|verify} messages.
+	                 * @function encodeDelimited
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @static
+	                 * @param {perfetto.protos.ProcessTree.IThread} message Thread message or plain object to encode
+	                 * @param {$protobuf.Writer} [writer] Writer to encode to
+	                 * @returns {$protobuf.Writer} Writer
+	                 */
+	                Thread.encodeDelimited = function encodeDelimited(message, writer) {
+	                    return this.encode(message, writer).ldelim();
+	                };
+
+	                /**
+	                 * Decodes a Thread message from the specified reader or buffer.
+	                 * @function decode
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @static
+	                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	                 * @param {number} [length] Message length if known beforehand
+	                 * @returns {perfetto.protos.ProcessTree.Thread} Thread
+	                 * @throws {Error} If the payload is not a reader or valid buffer
+	                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	                 */
+	                Thread.decode = function decode(reader, length) {
+	                    if (!(reader instanceof $Reader))
+	                        reader = $Reader.create(reader);
+	                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.ProcessTree.Thread();
+	                    while (reader.pos < end) {
+	                        var tag = reader.uint32();
+	                        switch (tag >>> 3) {
+	                        case 1:
+	                            message.tid = reader.int32();
+	                            break;
+	                        case 3:
+	                            message.tgid = reader.int32();
+	                            break;
+	                        case 2:
+	                            message.name = reader.string();
+	                            break;
+	                        default:
+	                            reader.skipType(tag & 7);
+	                            break;
+	                        }
+	                    }
+	                    return message;
+	                };
+
+	                /**
+	                 * Decodes a Thread message from the specified reader or buffer, length delimited.
+	                 * @function decodeDelimited
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @static
+	                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	                 * @returns {perfetto.protos.ProcessTree.Thread} Thread
+	                 * @throws {Error} If the payload is not a reader or valid buffer
+	                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	                 */
+	                Thread.decodeDelimited = function decodeDelimited(reader) {
+	                    if (!(reader instanceof $Reader))
+	                        reader = new $Reader(reader);
+	                    return this.decode(reader, reader.uint32());
+	                };
+
+	                /**
+	                 * Verifies a Thread message.
+	                 * @function verify
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @static
+	                 * @param {Object.<string,*>} message Plain object to verify
+	                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	                 */
+	                Thread.verify = function verify(message) {
+	                    if (typeof message !== "object" || message === null)
+	                        return "object expected";
+	                    if (message.tid != null && message.hasOwnProperty("tid"))
+	                        if (!$util.isInteger(message.tid))
+	                            return "tid: integer expected";
+	                    if (message.tgid != null && message.hasOwnProperty("tgid"))
+	                        if (!$util.isInteger(message.tgid))
+	                            return "tgid: integer expected";
+	                    if (message.name != null && message.hasOwnProperty("name"))
+	                        if (!$util.isString(message.name))
+	                            return "name: string expected";
+	                    return null;
+	                };
+
+	                /**
+	                 * Creates a Thread message from a plain object. Also converts values to their respective internal types.
+	                 * @function fromObject
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @static
+	                 * @param {Object.<string,*>} object Plain object
+	                 * @returns {perfetto.protos.ProcessTree.Thread} Thread
+	                 */
+	                Thread.fromObject = function fromObject(object) {
+	                    if (object instanceof $root.perfetto.protos.ProcessTree.Thread)
+	                        return object;
+	                    var message = new $root.perfetto.protos.ProcessTree.Thread();
+	                    if (object.tid != null)
+	                        message.tid = object.tid | 0;
+	                    if (object.tgid != null)
+	                        message.tgid = object.tgid | 0;
+	                    if (object.name != null)
+	                        message.name = String(object.name);
+	                    return message;
+	                };
+
+	                /**
+	                 * Creates a plain object from a Thread message. Also converts values to other types if specified.
+	                 * @function toObject
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @static
+	                 * @param {perfetto.protos.ProcessTree.Thread} message Thread
+	                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+	                 * @returns {Object.<string,*>} Plain object
+	                 */
+	                Thread.toObject = function toObject(message, options) {
+	                    if (!options)
+	                        options = {};
+	                    var object = {};
+	                    if (options.defaults) {
+	                        object.tid = 0;
+	                        object.name = "";
+	                        object.tgid = 0;
+	                    }
+	                    if (message.tid != null && message.hasOwnProperty("tid"))
+	                        object.tid = message.tid;
+	                    if (message.name != null && message.hasOwnProperty("name"))
+	                        object.name = message.name;
+	                    if (message.tgid != null && message.hasOwnProperty("tgid"))
+	                        object.tgid = message.tgid;
+	                    return object;
+	                };
+
+	                /**
+	                 * Converts this Thread to JSON.
+	                 * @function toJSON
+	                 * @memberof perfetto.protos.ProcessTree.Thread
+	                 * @instance
+	                 * @returns {Object.<string,*>} JSON object
+	                 */
+	                Thread.prototype.toJSON = function toJSON() {
+	                    return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	                };
+
+	                return Thread;
+	            })();
+
+	            ProcessTree.Process = (function() {
+
+	                /**
+	                 * Properties of a Process.
+	                 * @memberof perfetto.protos.ProcessTree
+	                 * @interface IProcess
+	                 * @property {number|null} [pid] Process pid
+	                 * @property {number|null} [ppid] Process ppid
+	                 * @property {Array.<string>|null} [cmdline] Process cmdline
+	                 * @property {Array.<perfetto.protos.ProcessTree.IThread>|null} [threadsDeprecated] Process threadsDeprecated
+	                 */
+
+	                /**
+	                 * Constructs a new Process.
+	                 * @memberof perfetto.protos.ProcessTree
+	                 * @classdesc Represents a Process.
+	                 * @implements IProcess
+	                 * @constructor
+	                 * @param {perfetto.protos.ProcessTree.IProcess=} [properties] Properties to set
+	                 */
+	                function Process(properties) {
+	                    this.cmdline = [];
+	                    this.threadsDeprecated = [];
+	                    if (properties)
+	                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                            if (properties[keys[i]] != null)
+	                                this[keys[i]] = properties[keys[i]];
+	                }
+
+	                /**
+	                 * Process pid.
+	                 * @member {number} pid
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @instance
+	                 */
+	                Process.prototype.pid = 0;
+
+	                /**
+	                 * Process ppid.
+	                 * @member {number} ppid
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @instance
+	                 */
+	                Process.prototype.ppid = 0;
+
+	                /**
+	                 * Process cmdline.
+	                 * @member {Array.<string>} cmdline
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @instance
+	                 */
+	                Process.prototype.cmdline = $util.emptyArray;
+
+	                /**
+	                 * Process threadsDeprecated.
+	                 * @member {Array.<perfetto.protos.ProcessTree.IThread>} threadsDeprecated
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @instance
+	                 */
+	                Process.prototype.threadsDeprecated = $util.emptyArray;
+
+	                /**
+	                 * Creates a new Process instance using the specified properties.
+	                 * @function create
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @static
+	                 * @param {perfetto.protos.ProcessTree.IProcess=} [properties] Properties to set
+	                 * @returns {perfetto.protos.ProcessTree.Process} Process instance
+	                 */
+	                Process.create = function create(properties) {
+	                    return new Process(properties);
+	                };
+
+	                /**
+	                 * Encodes the specified Process message. Does not implicitly {@link perfetto.protos.ProcessTree.Process.verify|verify} messages.
+	                 * @function encode
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @static
+	                 * @param {perfetto.protos.ProcessTree.IProcess} message Process message or plain object to encode
+	                 * @param {$protobuf.Writer} [writer] Writer to encode to
+	                 * @returns {$protobuf.Writer} Writer
+	                 */
+	                Process.encode = function encode(message, writer) {
+	                    if (!writer)
+	                        writer = $Writer.create();
+	                    if (message.pid != null && message.hasOwnProperty("pid"))
+	                        writer.uint32(/* id 1, wireType 0 =*/8).int32(message.pid);
+	                    if (message.ppid != null && message.hasOwnProperty("ppid"))
+	                        writer.uint32(/* id 2, wireType 0 =*/16).int32(message.ppid);
+	                    if (message.cmdline != null && message.cmdline.length)
+	                        for (var i = 0; i < message.cmdline.length; ++i)
+	                            writer.uint32(/* id 3, wireType 2 =*/26).string(message.cmdline[i]);
+	                    if (message.threadsDeprecated != null && message.threadsDeprecated.length)
+	                        for (var i = 0; i < message.threadsDeprecated.length; ++i)
+	                            $root.perfetto.protos.ProcessTree.Thread.encode(message.threadsDeprecated[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+	                    return writer;
+	                };
+
+	                /**
+	                 * Encodes the specified Process message, length delimited. Does not implicitly {@link perfetto.protos.ProcessTree.Process.verify|verify} messages.
+	                 * @function encodeDelimited
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @static
+	                 * @param {perfetto.protos.ProcessTree.IProcess} message Process message or plain object to encode
+	                 * @param {$protobuf.Writer} [writer] Writer to encode to
+	                 * @returns {$protobuf.Writer} Writer
+	                 */
+	                Process.encodeDelimited = function encodeDelimited(message, writer) {
+	                    return this.encode(message, writer).ldelim();
+	                };
+
+	                /**
+	                 * Decodes a Process message from the specified reader or buffer.
+	                 * @function decode
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @static
+	                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	                 * @param {number} [length] Message length if known beforehand
+	                 * @returns {perfetto.protos.ProcessTree.Process} Process
+	                 * @throws {Error} If the payload is not a reader or valid buffer
+	                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	                 */
+	                Process.decode = function decode(reader, length) {
+	                    if (!(reader instanceof $Reader))
+	                        reader = $Reader.create(reader);
+	                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.ProcessTree.Process();
+	                    while (reader.pos < end) {
+	                        var tag = reader.uint32();
+	                        switch (tag >>> 3) {
+	                        case 1:
+	                            message.pid = reader.int32();
+	                            break;
+	                        case 2:
+	                            message.ppid = reader.int32();
+	                            break;
+	                        case 3:
+	                            if (!(message.cmdline && message.cmdline.length))
+	                                message.cmdline = [];
+	                            message.cmdline.push(reader.string());
+	                            break;
+	                        case 4:
+	                            if (!(message.threadsDeprecated && message.threadsDeprecated.length))
+	                                message.threadsDeprecated = [];
+	                            message.threadsDeprecated.push($root.perfetto.protos.ProcessTree.Thread.decode(reader, reader.uint32()));
+	                            break;
+	                        default:
+	                            reader.skipType(tag & 7);
+	                            break;
+	                        }
+	                    }
+	                    return message;
+	                };
+
+	                /**
+	                 * Decodes a Process message from the specified reader or buffer, length delimited.
+	                 * @function decodeDelimited
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @static
+	                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	                 * @returns {perfetto.protos.ProcessTree.Process} Process
+	                 * @throws {Error} If the payload is not a reader or valid buffer
+	                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	                 */
+	                Process.decodeDelimited = function decodeDelimited(reader) {
+	                    if (!(reader instanceof $Reader))
+	                        reader = new $Reader(reader);
+	                    return this.decode(reader, reader.uint32());
+	                };
+
+	                /**
+	                 * Verifies a Process message.
+	                 * @function verify
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @static
+	                 * @param {Object.<string,*>} message Plain object to verify
+	                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	                 */
+	                Process.verify = function verify(message) {
+	                    if (typeof message !== "object" || message === null)
+	                        return "object expected";
+	                    if (message.pid != null && message.hasOwnProperty("pid"))
+	                        if (!$util.isInteger(message.pid))
+	                            return "pid: integer expected";
+	                    if (message.ppid != null && message.hasOwnProperty("ppid"))
+	                        if (!$util.isInteger(message.ppid))
+	                            return "ppid: integer expected";
+	                    if (message.cmdline != null && message.hasOwnProperty("cmdline")) {
+	                        if (!Array.isArray(message.cmdline))
+	                            return "cmdline: array expected";
+	                        for (var i = 0; i < message.cmdline.length; ++i)
+	                            if (!$util.isString(message.cmdline[i]))
+	                                return "cmdline: string[] expected";
+	                    }
+	                    if (message.threadsDeprecated != null && message.hasOwnProperty("threadsDeprecated")) {
+	                        if (!Array.isArray(message.threadsDeprecated))
+	                            return "threadsDeprecated: array expected";
+	                        for (var i = 0; i < message.threadsDeprecated.length; ++i) {
+	                            var error = $root.perfetto.protos.ProcessTree.Thread.verify(message.threadsDeprecated[i]);
+	                            if (error)
+	                                return "threadsDeprecated." + error;
+	                        }
+	                    }
+	                    return null;
+	                };
+
+	                /**
+	                 * Creates a Process message from a plain object. Also converts values to their respective internal types.
+	                 * @function fromObject
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @static
+	                 * @param {Object.<string,*>} object Plain object
+	                 * @returns {perfetto.protos.ProcessTree.Process} Process
+	                 */
+	                Process.fromObject = function fromObject(object) {
+	                    if (object instanceof $root.perfetto.protos.ProcessTree.Process)
+	                        return object;
+	                    var message = new $root.perfetto.protos.ProcessTree.Process();
+	                    if (object.pid != null)
+	                        message.pid = object.pid | 0;
+	                    if (object.ppid != null)
+	                        message.ppid = object.ppid | 0;
+	                    if (object.cmdline) {
+	                        if (!Array.isArray(object.cmdline))
+	                            throw TypeError(".perfetto.protos.ProcessTree.Process.cmdline: array expected");
+	                        message.cmdline = [];
+	                        for (var i = 0; i < object.cmdline.length; ++i)
+	                            message.cmdline[i] = String(object.cmdline[i]);
+	                    }
+	                    if (object.threadsDeprecated) {
+	                        if (!Array.isArray(object.threadsDeprecated))
+	                            throw TypeError(".perfetto.protos.ProcessTree.Process.threadsDeprecated: array expected");
+	                        message.threadsDeprecated = [];
+	                        for (var i = 0; i < object.threadsDeprecated.length; ++i) {
+	                            if (typeof object.threadsDeprecated[i] !== "object")
+	                                throw TypeError(".perfetto.protos.ProcessTree.Process.threadsDeprecated: object expected");
+	                            message.threadsDeprecated[i] = $root.perfetto.protos.ProcessTree.Thread.fromObject(object.threadsDeprecated[i]);
+	                        }
+	                    }
+	                    return message;
+	                };
+
+	                /**
+	                 * Creates a plain object from a Process message. Also converts values to other types if specified.
+	                 * @function toObject
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @static
+	                 * @param {perfetto.protos.ProcessTree.Process} message Process
+	                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+	                 * @returns {Object.<string,*>} Plain object
+	                 */
+	                Process.toObject = function toObject(message, options) {
+	                    if (!options)
+	                        options = {};
+	                    var object = {};
+	                    if (options.arrays || options.defaults) {
+	                        object.cmdline = [];
+	                        object.threadsDeprecated = [];
+	                    }
+	                    if (options.defaults) {
+	                        object.pid = 0;
+	                        object.ppid = 0;
+	                    }
+	                    if (message.pid != null && message.hasOwnProperty("pid"))
+	                        object.pid = message.pid;
+	                    if (message.ppid != null && message.hasOwnProperty("ppid"))
+	                        object.ppid = message.ppid;
+	                    if (message.cmdline && message.cmdline.length) {
+	                        object.cmdline = [];
+	                        for (var j = 0; j < message.cmdline.length; ++j)
+	                            object.cmdline[j] = message.cmdline[j];
+	                    }
+	                    if (message.threadsDeprecated && message.threadsDeprecated.length) {
+	                        object.threadsDeprecated = [];
+	                        for (var j = 0; j < message.threadsDeprecated.length; ++j)
+	                            object.threadsDeprecated[j] = $root.perfetto.protos.ProcessTree.Thread.toObject(message.threadsDeprecated[j], options);
+	                    }
+	                    return object;
+	                };
+
+	                /**
+	                 * Converts this Process to JSON.
+	                 * @function toJSON
+	                 * @memberof perfetto.protos.ProcessTree.Process
+	                 * @instance
+	                 * @returns {Object.<string,*>} JSON object
+	                 */
+	                Process.prototype.toJSON = function toJSON() {
+	                    return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	                };
+
+	                return Process;
+	            })();
+
+	            return ProcessTree;
+	        })();
+
+	        protos.BinderLockedFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a BinderLockedFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IBinderLockedFtraceEvent
+	             * @property {string|null} [tag] BinderLockedFtraceEvent tag
+	             */
+
+	            /**
+	             * Constructs a new BinderLockedFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a BinderLockedFtraceEvent.
+	             * @implements IBinderLockedFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IBinderLockedFtraceEvent=} [properties] Properties to set
+	             */
+	            function BinderLockedFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * BinderLockedFtraceEvent tag.
+	             * @member {string} tag
+	             * @memberof perfetto.protos.BinderLockedFtraceEvent
+	             * @instance
+	             */
+	            BinderLockedFtraceEvent.prototype.tag = "";
+
+	            /**
+	             * Creates a new BinderLockedFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.BinderLockedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderLockedFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.BinderLockedFtraceEvent} BinderLockedFtraceEvent instance
+	             */
+	            BinderLockedFtraceEvent.create = function create(properties) {
+	                return new BinderLockedFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified BinderLockedFtraceEvent message. Does not implicitly {@link perfetto.protos.BinderLockedFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.BinderLockedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderLockedFtraceEvent} message BinderLockedFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BinderLockedFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.tag != null && message.hasOwnProperty("tag"))
+	                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.tag);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified BinderLockedFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.BinderLockedFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.BinderLockedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderLockedFtraceEvent} message BinderLockedFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BinderLockedFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a BinderLockedFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.BinderLockedFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.BinderLockedFtraceEvent} BinderLockedFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BinderLockedFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.BinderLockedFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.tag = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a BinderLockedFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.BinderLockedFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.BinderLockedFtraceEvent} BinderLockedFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BinderLockedFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a BinderLockedFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.BinderLockedFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            BinderLockedFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.tag != null && message.hasOwnProperty("tag"))
+	                    if (!$util.isString(message.tag))
+	                        return "tag: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a BinderLockedFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.BinderLockedFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.BinderLockedFtraceEvent} BinderLockedFtraceEvent
+	             */
+	            BinderLockedFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.BinderLockedFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.BinderLockedFtraceEvent();
+	                if (object.tag != null)
+	                    message.tag = String(object.tag);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a BinderLockedFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.BinderLockedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.BinderLockedFtraceEvent} message BinderLockedFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            BinderLockedFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults)
+	                    object.tag = "";
+	                if (message.tag != null && message.hasOwnProperty("tag"))
+	                    object.tag = message.tag;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this BinderLockedFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.BinderLockedFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            BinderLockedFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return BinderLockedFtraceEvent;
+	        })();
+
+	        protos.BinderLockFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a BinderLockFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IBinderLockFtraceEvent
+	             * @property {string|null} [tag] BinderLockFtraceEvent tag
+	             */
+
+	            /**
+	             * Constructs a new BinderLockFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a BinderLockFtraceEvent.
+	             * @implements IBinderLockFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IBinderLockFtraceEvent=} [properties] Properties to set
+	             */
+	            function BinderLockFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * BinderLockFtraceEvent tag.
+	             * @member {string} tag
+	             * @memberof perfetto.protos.BinderLockFtraceEvent
+	             * @instance
+	             */
+	            BinderLockFtraceEvent.prototype.tag = "";
+
+	            /**
+	             * Creates a new BinderLockFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.BinderLockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderLockFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.BinderLockFtraceEvent} BinderLockFtraceEvent instance
+	             */
+	            BinderLockFtraceEvent.create = function create(properties) {
+	                return new BinderLockFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified BinderLockFtraceEvent message. Does not implicitly {@link perfetto.protos.BinderLockFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.BinderLockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderLockFtraceEvent} message BinderLockFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BinderLockFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.tag != null && message.hasOwnProperty("tag"))
+	                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.tag);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified BinderLockFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.BinderLockFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.BinderLockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderLockFtraceEvent} message BinderLockFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BinderLockFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a BinderLockFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.BinderLockFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.BinderLockFtraceEvent} BinderLockFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BinderLockFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.BinderLockFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.tag = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a BinderLockFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.BinderLockFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.BinderLockFtraceEvent} BinderLockFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BinderLockFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a BinderLockFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.BinderLockFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            BinderLockFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.tag != null && message.hasOwnProperty("tag"))
+	                    if (!$util.isString(message.tag))
+	                        return "tag: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a BinderLockFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.BinderLockFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.BinderLockFtraceEvent} BinderLockFtraceEvent
+	             */
+	            BinderLockFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.BinderLockFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.BinderLockFtraceEvent();
+	                if (object.tag != null)
+	                    message.tag = String(object.tag);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a BinderLockFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.BinderLockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.BinderLockFtraceEvent} message BinderLockFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            BinderLockFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults)
+	                    object.tag = "";
+	                if (message.tag != null && message.hasOwnProperty("tag"))
+	                    object.tag = message.tag;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this BinderLockFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.BinderLockFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            BinderLockFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return BinderLockFtraceEvent;
+	        })();
+
+	        protos.BinderTransactionFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a BinderTransactionFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IBinderTransactionFtraceEvent
+	             * @property {number|null} [debugId] BinderTransactionFtraceEvent debugId
+	             * @property {number|null} [targetNode] BinderTransactionFtraceEvent targetNode
+	             * @property {number|null} [toProc] BinderTransactionFtraceEvent toProc
+	             * @property {number|null} [toThread] BinderTransactionFtraceEvent toThread
+	             * @property {number|null} [reply] BinderTransactionFtraceEvent reply
+	             * @property {number|null} [code] BinderTransactionFtraceEvent code
+	             * @property {number|null} [flags] BinderTransactionFtraceEvent flags
+	             */
+
+	            /**
+	             * Constructs a new BinderTransactionFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a BinderTransactionFtraceEvent.
+	             * @implements IBinderTransactionFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IBinderTransactionFtraceEvent=} [properties] Properties to set
+	             */
+	            function BinderTransactionFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * BinderTransactionFtraceEvent debugId.
+	             * @member {number} debugId
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @instance
+	             */
+	            BinderTransactionFtraceEvent.prototype.debugId = 0;
+
+	            /**
+	             * BinderTransactionFtraceEvent targetNode.
+	             * @member {number} targetNode
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @instance
+	             */
+	            BinderTransactionFtraceEvent.prototype.targetNode = 0;
+
+	            /**
+	             * BinderTransactionFtraceEvent toProc.
+	             * @member {number} toProc
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @instance
+	             */
+	            BinderTransactionFtraceEvent.prototype.toProc = 0;
+
+	            /**
+	             * BinderTransactionFtraceEvent toThread.
+	             * @member {number} toThread
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @instance
+	             */
+	            BinderTransactionFtraceEvent.prototype.toThread = 0;
+
+	            /**
+	             * BinderTransactionFtraceEvent reply.
+	             * @member {number} reply
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @instance
+	             */
+	            BinderTransactionFtraceEvent.prototype.reply = 0;
+
+	            /**
+	             * BinderTransactionFtraceEvent code.
+	             * @member {number} code
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @instance
+	             */
+	            BinderTransactionFtraceEvent.prototype.code = 0;
+
+	            /**
+	             * BinderTransactionFtraceEvent flags.
+	             * @member {number} flags
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @instance
+	             */
+	            BinderTransactionFtraceEvent.prototype.flags = 0;
+
+	            /**
+	             * Creates a new BinderTransactionFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderTransactionFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.BinderTransactionFtraceEvent} BinderTransactionFtraceEvent instance
+	             */
+	            BinderTransactionFtraceEvent.create = function create(properties) {
+	                return new BinderTransactionFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified BinderTransactionFtraceEvent message. Does not implicitly {@link perfetto.protos.BinderTransactionFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderTransactionFtraceEvent} message BinderTransactionFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BinderTransactionFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.debugId != null && message.hasOwnProperty("debugId"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.debugId);
+	                if (message.targetNode != null && message.hasOwnProperty("targetNode"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.targetNode);
+	                if (message.toProc != null && message.hasOwnProperty("toProc"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.toProc);
+	                if (message.toThread != null && message.hasOwnProperty("toThread"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).int32(message.toThread);
+	                if (message.reply != null && message.hasOwnProperty("reply"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).int32(message.reply);
+	                if (message.code != null && message.hasOwnProperty("code"))
+	                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.code);
+	                if (message.flags != null && message.hasOwnProperty("flags"))
+	                    writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.flags);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified BinderTransactionFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.BinderTransactionFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderTransactionFtraceEvent} message BinderTransactionFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BinderTransactionFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a BinderTransactionFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.BinderTransactionFtraceEvent} BinderTransactionFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BinderTransactionFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.BinderTransactionFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.debugId = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.targetNode = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.toProc = reader.int32();
+	                        break;
+	                    case 4:
+	                        message.toThread = reader.int32();
+	                        break;
+	                    case 5:
+	                        message.reply = reader.int32();
+	                        break;
+	                    case 6:
+	                        message.code = reader.uint32();
+	                        break;
+	                    case 7:
+	                        message.flags = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a BinderTransactionFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.BinderTransactionFtraceEvent} BinderTransactionFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BinderTransactionFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a BinderTransactionFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            BinderTransactionFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.debugId != null && message.hasOwnProperty("debugId"))
+	                    if (!$util.isInteger(message.debugId))
+	                        return "debugId: integer expected";
+	                if (message.targetNode != null && message.hasOwnProperty("targetNode"))
+	                    if (!$util.isInteger(message.targetNode))
+	                        return "targetNode: integer expected";
+	                if (message.toProc != null && message.hasOwnProperty("toProc"))
+	                    if (!$util.isInteger(message.toProc))
+	                        return "toProc: integer expected";
+	                if (message.toThread != null && message.hasOwnProperty("toThread"))
+	                    if (!$util.isInteger(message.toThread))
+	                        return "toThread: integer expected";
+	                if (message.reply != null && message.hasOwnProperty("reply"))
+	                    if (!$util.isInteger(message.reply))
+	                        return "reply: integer expected";
+	                if (message.code != null && message.hasOwnProperty("code"))
+	                    if (!$util.isInteger(message.code))
+	                        return "code: integer expected";
+	                if (message.flags != null && message.hasOwnProperty("flags"))
+	                    if (!$util.isInteger(message.flags))
+	                        return "flags: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a BinderTransactionFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.BinderTransactionFtraceEvent} BinderTransactionFtraceEvent
+	             */
+	            BinderTransactionFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.BinderTransactionFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.BinderTransactionFtraceEvent();
+	                if (object.debugId != null)
+	                    message.debugId = object.debugId | 0;
+	                if (object.targetNode != null)
+	                    message.targetNode = object.targetNode | 0;
+	                if (object.toProc != null)
+	                    message.toProc = object.toProc | 0;
+	                if (object.toThread != null)
+	                    message.toThread = object.toThread | 0;
+	                if (object.reply != null)
+	                    message.reply = object.reply | 0;
+	                if (object.code != null)
+	                    message.code = object.code >>> 0;
+	                if (object.flags != null)
+	                    message.flags = object.flags >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a BinderTransactionFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.BinderTransactionFtraceEvent} message BinderTransactionFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            BinderTransactionFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.debugId = 0;
+	                    object.targetNode = 0;
+	                    object.toProc = 0;
+	                    object.toThread = 0;
+	                    object.reply = 0;
+	                    object.code = 0;
+	                    object.flags = 0;
+	                }
+	                if (message.debugId != null && message.hasOwnProperty("debugId"))
+	                    object.debugId = message.debugId;
+	                if (message.targetNode != null && message.hasOwnProperty("targetNode"))
+	                    object.targetNode = message.targetNode;
+	                if (message.toProc != null && message.hasOwnProperty("toProc"))
+	                    object.toProc = message.toProc;
+	                if (message.toThread != null && message.hasOwnProperty("toThread"))
+	                    object.toThread = message.toThread;
+	                if (message.reply != null && message.hasOwnProperty("reply"))
+	                    object.reply = message.reply;
+	                if (message.code != null && message.hasOwnProperty("code"))
+	                    object.code = message.code;
+	                if (message.flags != null && message.hasOwnProperty("flags"))
+	                    object.flags = message.flags;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this BinderTransactionFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.BinderTransactionFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            BinderTransactionFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return BinderTransactionFtraceEvent;
+	        })();
+
+	        protos.BinderTransactionReceivedFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a BinderTransactionReceivedFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IBinderTransactionReceivedFtraceEvent
+	             * @property {number|null} [debugId] BinderTransactionReceivedFtraceEvent debugId
+	             */
+
+	            /**
+	             * Constructs a new BinderTransactionReceivedFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a BinderTransactionReceivedFtraceEvent.
+	             * @implements IBinderTransactionReceivedFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IBinderTransactionReceivedFtraceEvent=} [properties] Properties to set
+	             */
+	            function BinderTransactionReceivedFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * BinderTransactionReceivedFtraceEvent debugId.
+	             * @member {number} debugId
+	             * @memberof perfetto.protos.BinderTransactionReceivedFtraceEvent
+	             * @instance
+	             */
+	            BinderTransactionReceivedFtraceEvent.prototype.debugId = 0;
+
+	            /**
+	             * Creates a new BinderTransactionReceivedFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.BinderTransactionReceivedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderTransactionReceivedFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.BinderTransactionReceivedFtraceEvent} BinderTransactionReceivedFtraceEvent instance
+	             */
+	            BinderTransactionReceivedFtraceEvent.create = function create(properties) {
+	                return new BinderTransactionReceivedFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified BinderTransactionReceivedFtraceEvent message. Does not implicitly {@link perfetto.protos.BinderTransactionReceivedFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.BinderTransactionReceivedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderTransactionReceivedFtraceEvent} message BinderTransactionReceivedFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BinderTransactionReceivedFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.debugId != null && message.hasOwnProperty("debugId"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.debugId);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified BinderTransactionReceivedFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.BinderTransactionReceivedFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.BinderTransactionReceivedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderTransactionReceivedFtraceEvent} message BinderTransactionReceivedFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BinderTransactionReceivedFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a BinderTransactionReceivedFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.BinderTransactionReceivedFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.BinderTransactionReceivedFtraceEvent} BinderTransactionReceivedFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BinderTransactionReceivedFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.BinderTransactionReceivedFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.debugId = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a BinderTransactionReceivedFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.BinderTransactionReceivedFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.BinderTransactionReceivedFtraceEvent} BinderTransactionReceivedFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BinderTransactionReceivedFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a BinderTransactionReceivedFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.BinderTransactionReceivedFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            BinderTransactionReceivedFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.debugId != null && message.hasOwnProperty("debugId"))
+	                    if (!$util.isInteger(message.debugId))
+	                        return "debugId: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a BinderTransactionReceivedFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.BinderTransactionReceivedFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.BinderTransactionReceivedFtraceEvent} BinderTransactionReceivedFtraceEvent
+	             */
+	            BinderTransactionReceivedFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.BinderTransactionReceivedFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.BinderTransactionReceivedFtraceEvent();
+	                if (object.debugId != null)
+	                    message.debugId = object.debugId | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a BinderTransactionReceivedFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.BinderTransactionReceivedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.BinderTransactionReceivedFtraceEvent} message BinderTransactionReceivedFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            BinderTransactionReceivedFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults)
+	                    object.debugId = 0;
+	                if (message.debugId != null && message.hasOwnProperty("debugId"))
+	                    object.debugId = message.debugId;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this BinderTransactionReceivedFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.BinderTransactionReceivedFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            BinderTransactionReceivedFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return BinderTransactionReceivedFtraceEvent;
+	        })();
+
+	        protos.BinderUnlockFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a BinderUnlockFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IBinderUnlockFtraceEvent
+	             * @property {string|null} [tag] BinderUnlockFtraceEvent tag
+	             */
+
+	            /**
+	             * Constructs a new BinderUnlockFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a BinderUnlockFtraceEvent.
+	             * @implements IBinderUnlockFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IBinderUnlockFtraceEvent=} [properties] Properties to set
+	             */
+	            function BinderUnlockFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * BinderUnlockFtraceEvent tag.
+	             * @member {string} tag
+	             * @memberof perfetto.protos.BinderUnlockFtraceEvent
+	             * @instance
+	             */
+	            BinderUnlockFtraceEvent.prototype.tag = "";
+
+	            /**
+	             * Creates a new BinderUnlockFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.BinderUnlockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderUnlockFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.BinderUnlockFtraceEvent} BinderUnlockFtraceEvent instance
+	             */
+	            BinderUnlockFtraceEvent.create = function create(properties) {
+	                return new BinderUnlockFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified BinderUnlockFtraceEvent message. Does not implicitly {@link perfetto.protos.BinderUnlockFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.BinderUnlockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderUnlockFtraceEvent} message BinderUnlockFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BinderUnlockFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.tag != null && message.hasOwnProperty("tag"))
+	                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.tag);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified BinderUnlockFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.BinderUnlockFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.BinderUnlockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBinderUnlockFtraceEvent} message BinderUnlockFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BinderUnlockFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a BinderUnlockFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.BinderUnlockFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.BinderUnlockFtraceEvent} BinderUnlockFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BinderUnlockFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.BinderUnlockFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.tag = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a BinderUnlockFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.BinderUnlockFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.BinderUnlockFtraceEvent} BinderUnlockFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BinderUnlockFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a BinderUnlockFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.BinderUnlockFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            BinderUnlockFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.tag != null && message.hasOwnProperty("tag"))
+	                    if (!$util.isString(message.tag))
+	                        return "tag: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a BinderUnlockFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.BinderUnlockFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.BinderUnlockFtraceEvent} BinderUnlockFtraceEvent
+	             */
+	            BinderUnlockFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.BinderUnlockFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.BinderUnlockFtraceEvent();
+	                if (object.tag != null)
+	                    message.tag = String(object.tag);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a BinderUnlockFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.BinderUnlockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.BinderUnlockFtraceEvent} message BinderUnlockFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            BinderUnlockFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults)
+	                    object.tag = "";
+	                if (message.tag != null && message.hasOwnProperty("tag"))
+	                    object.tag = message.tag;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this BinderUnlockFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.BinderUnlockFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            BinderUnlockFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return BinderUnlockFtraceEvent;
+	        })();
+
+	        protos.BlockRqCompleteFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a BlockRqCompleteFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IBlockRqCompleteFtraceEvent
+	             * @property {number|Long|null} [dev] BlockRqCompleteFtraceEvent dev
+	             * @property {number|Long|null} [sector] BlockRqCompleteFtraceEvent sector
+	             * @property {number|null} [nrSector] BlockRqCompleteFtraceEvent nrSector
+	             * @property {number|null} [errors] BlockRqCompleteFtraceEvent errors
+	             * @property {string|null} [rwbs] BlockRqCompleteFtraceEvent rwbs
+	             * @property {string|null} [cmd] BlockRqCompleteFtraceEvent cmd
+	             */
+
+	            /**
+	             * Constructs a new BlockRqCompleteFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a BlockRqCompleteFtraceEvent.
+	             * @implements IBlockRqCompleteFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IBlockRqCompleteFtraceEvent=} [properties] Properties to set
+	             */
+	            function BlockRqCompleteFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * BlockRqCompleteFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @instance
+	             */
+	            BlockRqCompleteFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * BlockRqCompleteFtraceEvent sector.
+	             * @member {number|Long} sector
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @instance
+	             */
+	            BlockRqCompleteFtraceEvent.prototype.sector = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * BlockRqCompleteFtraceEvent nrSector.
+	             * @member {number} nrSector
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @instance
+	             */
+	            BlockRqCompleteFtraceEvent.prototype.nrSector = 0;
+
+	            /**
+	             * BlockRqCompleteFtraceEvent errors.
+	             * @member {number} errors
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @instance
+	             */
+	            BlockRqCompleteFtraceEvent.prototype.errors = 0;
+
+	            /**
+	             * BlockRqCompleteFtraceEvent rwbs.
+	             * @member {string} rwbs
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @instance
+	             */
+	            BlockRqCompleteFtraceEvent.prototype.rwbs = "";
+
+	            /**
+	             * BlockRqCompleteFtraceEvent cmd.
+	             * @member {string} cmd
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @instance
+	             */
+	            BlockRqCompleteFtraceEvent.prototype.cmd = "";
+
+	            /**
+	             * Creates a new BlockRqCompleteFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBlockRqCompleteFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.BlockRqCompleteFtraceEvent} BlockRqCompleteFtraceEvent instance
+	             */
+	            BlockRqCompleteFtraceEvent.create = function create(properties) {
+	                return new BlockRqCompleteFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified BlockRqCompleteFtraceEvent message. Does not implicitly {@link perfetto.protos.BlockRqCompleteFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBlockRqCompleteFtraceEvent} message BlockRqCompleteFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BlockRqCompleteFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.sector != null && message.hasOwnProperty("sector"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.sector);
+	                if (message.nrSector != null && message.hasOwnProperty("nrSector"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.nrSector);
+	                if (message.errors != null && message.hasOwnProperty("errors"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).int32(message.errors);
+	                if (message.rwbs != null && message.hasOwnProperty("rwbs"))
+	                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.rwbs);
+	                if (message.cmd != null && message.hasOwnProperty("cmd"))
+	                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.cmd);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified BlockRqCompleteFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.BlockRqCompleteFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBlockRqCompleteFtraceEvent} message BlockRqCompleteFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BlockRqCompleteFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a BlockRqCompleteFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.BlockRqCompleteFtraceEvent} BlockRqCompleteFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BlockRqCompleteFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.BlockRqCompleteFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.sector = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.nrSector = reader.uint32();
+	                        break;
+	                    case 4:
+	                        message.errors = reader.int32();
+	                        break;
+	                    case 5:
+	                        message.rwbs = reader.string();
+	                        break;
+	                    case 6:
+	                        message.cmd = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a BlockRqCompleteFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.BlockRqCompleteFtraceEvent} BlockRqCompleteFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BlockRqCompleteFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a BlockRqCompleteFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            BlockRqCompleteFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.sector != null && message.hasOwnProperty("sector"))
+	                    if (!$util.isInteger(message.sector) && !(message.sector && $util.isInteger(message.sector.low) && $util.isInteger(message.sector.high)))
+	                        return "sector: integer|Long expected";
+	                if (message.nrSector != null && message.hasOwnProperty("nrSector"))
+	                    if (!$util.isInteger(message.nrSector))
+	                        return "nrSector: integer expected";
+	                if (message.errors != null && message.hasOwnProperty("errors"))
+	                    if (!$util.isInteger(message.errors))
+	                        return "errors: integer expected";
+	                if (message.rwbs != null && message.hasOwnProperty("rwbs"))
+	                    if (!$util.isString(message.rwbs))
+	                        return "rwbs: string expected";
+	                if (message.cmd != null && message.hasOwnProperty("cmd"))
+	                    if (!$util.isString(message.cmd))
+	                        return "cmd: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a BlockRqCompleteFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.BlockRqCompleteFtraceEvent} BlockRqCompleteFtraceEvent
+	             */
+	            BlockRqCompleteFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.BlockRqCompleteFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.BlockRqCompleteFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.sector != null)
+	                    if ($util.Long)
+	                        (message.sector = $util.Long.fromValue(object.sector)).unsigned = true;
+	                    else if (typeof object.sector === "string")
+	                        message.sector = parseInt(object.sector, 10);
+	                    else if (typeof object.sector === "number")
+	                        message.sector = object.sector;
+	                    else if (typeof object.sector === "object")
+	                        message.sector = new $util.LongBits(object.sector.low >>> 0, object.sector.high >>> 0).toNumber(true);
+	                if (object.nrSector != null)
+	                    message.nrSector = object.nrSector >>> 0;
+	                if (object.errors != null)
+	                    message.errors = object.errors | 0;
+	                if (object.rwbs != null)
+	                    message.rwbs = String(object.rwbs);
+	                if (object.cmd != null)
+	                    message.cmd = String(object.cmd);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a BlockRqCompleteFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.BlockRqCompleteFtraceEvent} message BlockRqCompleteFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            BlockRqCompleteFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.sector = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.sector = options.longs === String ? "0" : 0;
+	                    object.nrSector = 0;
+	                    object.errors = 0;
+	                    object.rwbs = "";
+	                    object.cmd = "";
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.sector != null && message.hasOwnProperty("sector"))
+	                    if (typeof message.sector === "number")
+	                        object.sector = options.longs === String ? String(message.sector) : message.sector;
+	                    else
+	                        object.sector = options.longs === String ? $util.Long.prototype.toString.call(message.sector) : options.longs === Number ? new $util.LongBits(message.sector.low >>> 0, message.sector.high >>> 0).toNumber(true) : message.sector;
+	                if (message.nrSector != null && message.hasOwnProperty("nrSector"))
+	                    object.nrSector = message.nrSector;
+	                if (message.errors != null && message.hasOwnProperty("errors"))
+	                    object.errors = message.errors;
+	                if (message.rwbs != null && message.hasOwnProperty("rwbs"))
+	                    object.rwbs = message.rwbs;
+	                if (message.cmd != null && message.hasOwnProperty("cmd"))
+	                    object.cmd = message.cmd;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this BlockRqCompleteFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.BlockRqCompleteFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            BlockRqCompleteFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return BlockRqCompleteFtraceEvent;
+	        })();
+
+	        protos.BlockRqIssueFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a BlockRqIssueFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IBlockRqIssueFtraceEvent
+	             * @property {number|Long|null} [dev] BlockRqIssueFtraceEvent dev
+	             * @property {number|Long|null} [sector] BlockRqIssueFtraceEvent sector
+	             * @property {number|null} [nrSector] BlockRqIssueFtraceEvent nrSector
+	             * @property {number|null} [bytes] BlockRqIssueFtraceEvent bytes
+	             * @property {string|null} [rwbs] BlockRqIssueFtraceEvent rwbs
+	             * @property {string|null} [comm] BlockRqIssueFtraceEvent comm
+	             * @property {string|null} [cmd] BlockRqIssueFtraceEvent cmd
+	             */
+
+	            /**
+	             * Constructs a new BlockRqIssueFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a BlockRqIssueFtraceEvent.
+	             * @implements IBlockRqIssueFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IBlockRqIssueFtraceEvent=} [properties] Properties to set
+	             */
+	            function BlockRqIssueFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * BlockRqIssueFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @instance
+	             */
+	            BlockRqIssueFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * BlockRqIssueFtraceEvent sector.
+	             * @member {number|Long} sector
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @instance
+	             */
+	            BlockRqIssueFtraceEvent.prototype.sector = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * BlockRqIssueFtraceEvent nrSector.
+	             * @member {number} nrSector
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @instance
+	             */
+	            BlockRqIssueFtraceEvent.prototype.nrSector = 0;
+
+	            /**
+	             * BlockRqIssueFtraceEvent bytes.
+	             * @member {number} bytes
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @instance
+	             */
+	            BlockRqIssueFtraceEvent.prototype.bytes = 0;
+
+	            /**
+	             * BlockRqIssueFtraceEvent rwbs.
+	             * @member {string} rwbs
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @instance
+	             */
+	            BlockRqIssueFtraceEvent.prototype.rwbs = "";
+
+	            /**
+	             * BlockRqIssueFtraceEvent comm.
+	             * @member {string} comm
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @instance
+	             */
+	            BlockRqIssueFtraceEvent.prototype.comm = "";
+
+	            /**
+	             * BlockRqIssueFtraceEvent cmd.
+	             * @member {string} cmd
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @instance
+	             */
+	            BlockRqIssueFtraceEvent.prototype.cmd = "";
+
+	            /**
+	             * Creates a new BlockRqIssueFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBlockRqIssueFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.BlockRqIssueFtraceEvent} BlockRqIssueFtraceEvent instance
+	             */
+	            BlockRqIssueFtraceEvent.create = function create(properties) {
+	                return new BlockRqIssueFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified BlockRqIssueFtraceEvent message. Does not implicitly {@link perfetto.protos.BlockRqIssueFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBlockRqIssueFtraceEvent} message BlockRqIssueFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BlockRqIssueFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.sector != null && message.hasOwnProperty("sector"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.sector);
+	                if (message.nrSector != null && message.hasOwnProperty("nrSector"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.nrSector);
+	                if (message.bytes != null && message.hasOwnProperty("bytes"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.bytes);
+	                if (message.rwbs != null && message.hasOwnProperty("rwbs"))
+	                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.rwbs);
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.comm);
+	                if (message.cmd != null && message.hasOwnProperty("cmd"))
+	                    writer.uint32(/* id 7, wireType 2 =*/58).string(message.cmd);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified BlockRqIssueFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.BlockRqIssueFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IBlockRqIssueFtraceEvent} message BlockRqIssueFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            BlockRqIssueFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a BlockRqIssueFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.BlockRqIssueFtraceEvent} BlockRqIssueFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BlockRqIssueFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.BlockRqIssueFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.sector = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.nrSector = reader.uint32();
+	                        break;
+	                    case 4:
+	                        message.bytes = reader.uint32();
+	                        break;
+	                    case 5:
+	                        message.rwbs = reader.string();
+	                        break;
+	                    case 6:
+	                        message.comm = reader.string();
+	                        break;
+	                    case 7:
+	                        message.cmd = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a BlockRqIssueFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.BlockRqIssueFtraceEvent} BlockRqIssueFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            BlockRqIssueFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a BlockRqIssueFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            BlockRqIssueFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.sector != null && message.hasOwnProperty("sector"))
+	                    if (!$util.isInteger(message.sector) && !(message.sector && $util.isInteger(message.sector.low) && $util.isInteger(message.sector.high)))
+	                        return "sector: integer|Long expected";
+	                if (message.nrSector != null && message.hasOwnProperty("nrSector"))
+	                    if (!$util.isInteger(message.nrSector))
+	                        return "nrSector: integer expected";
+	                if (message.bytes != null && message.hasOwnProperty("bytes"))
+	                    if (!$util.isInteger(message.bytes))
+	                        return "bytes: integer expected";
+	                if (message.rwbs != null && message.hasOwnProperty("rwbs"))
+	                    if (!$util.isString(message.rwbs))
+	                        return "rwbs: string expected";
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    if (!$util.isString(message.comm))
+	                        return "comm: string expected";
+	                if (message.cmd != null && message.hasOwnProperty("cmd"))
+	                    if (!$util.isString(message.cmd))
+	                        return "cmd: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a BlockRqIssueFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.BlockRqIssueFtraceEvent} BlockRqIssueFtraceEvent
+	             */
+	            BlockRqIssueFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.BlockRqIssueFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.BlockRqIssueFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.sector != null)
+	                    if ($util.Long)
+	                        (message.sector = $util.Long.fromValue(object.sector)).unsigned = true;
+	                    else if (typeof object.sector === "string")
+	                        message.sector = parseInt(object.sector, 10);
+	                    else if (typeof object.sector === "number")
+	                        message.sector = object.sector;
+	                    else if (typeof object.sector === "object")
+	                        message.sector = new $util.LongBits(object.sector.low >>> 0, object.sector.high >>> 0).toNumber(true);
+	                if (object.nrSector != null)
+	                    message.nrSector = object.nrSector >>> 0;
+	                if (object.bytes != null)
+	                    message.bytes = object.bytes >>> 0;
+	                if (object.rwbs != null)
+	                    message.rwbs = String(object.rwbs);
+	                if (object.comm != null)
+	                    message.comm = String(object.comm);
+	                if (object.cmd != null)
+	                    message.cmd = String(object.cmd);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a BlockRqIssueFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.BlockRqIssueFtraceEvent} message BlockRqIssueFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            BlockRqIssueFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.sector = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.sector = options.longs === String ? "0" : 0;
+	                    object.nrSector = 0;
+	                    object.bytes = 0;
+	                    object.rwbs = "";
+	                    object.comm = "";
+	                    object.cmd = "";
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.sector != null && message.hasOwnProperty("sector"))
+	                    if (typeof message.sector === "number")
+	                        object.sector = options.longs === String ? String(message.sector) : message.sector;
+	                    else
+	                        object.sector = options.longs === String ? $util.Long.prototype.toString.call(message.sector) : options.longs === Number ? new $util.LongBits(message.sector.low >>> 0, message.sector.high >>> 0).toNumber(true) : message.sector;
+	                if (message.nrSector != null && message.hasOwnProperty("nrSector"))
+	                    object.nrSector = message.nrSector;
+	                if (message.bytes != null && message.hasOwnProperty("bytes"))
+	                    object.bytes = message.bytes;
+	                if (message.rwbs != null && message.hasOwnProperty("rwbs"))
+	                    object.rwbs = message.rwbs;
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    object.comm = message.comm;
+	                if (message.cmd != null && message.hasOwnProperty("cmd"))
+	                    object.cmd = message.cmd;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this BlockRqIssueFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.BlockRqIssueFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            BlockRqIssueFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return BlockRqIssueFtraceEvent;
+	        })();
+
+	        protos.CgroupAttachTaskFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CgroupAttachTaskFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICgroupAttachTaskFtraceEvent
+	             * @property {number|null} [dstRoot] CgroupAttachTaskFtraceEvent dstRoot
+	             * @property {number|null} [dstId] CgroupAttachTaskFtraceEvent dstId
+	             * @property {number|null} [pid] CgroupAttachTaskFtraceEvent pid
+	             * @property {string|null} [comm] CgroupAttachTaskFtraceEvent comm
+	             * @property {string|null} [cname] CgroupAttachTaskFtraceEvent cname
+	             */
+
+	            /**
+	             * Constructs a new CgroupAttachTaskFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CgroupAttachTaskFtraceEvent.
+	             * @implements ICgroupAttachTaskFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICgroupAttachTaskFtraceEvent=} [properties] Properties to set
+	             */
+	            function CgroupAttachTaskFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CgroupAttachTaskFtraceEvent dstRoot.
+	             * @member {number} dstRoot
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @instance
+	             */
+	            CgroupAttachTaskFtraceEvent.prototype.dstRoot = 0;
+
+	            /**
+	             * CgroupAttachTaskFtraceEvent dstId.
+	             * @member {number} dstId
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @instance
+	             */
+	            CgroupAttachTaskFtraceEvent.prototype.dstId = 0;
+
+	            /**
+	             * CgroupAttachTaskFtraceEvent pid.
+	             * @member {number} pid
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @instance
+	             */
+	            CgroupAttachTaskFtraceEvent.prototype.pid = 0;
+
+	            /**
+	             * CgroupAttachTaskFtraceEvent comm.
+	             * @member {string} comm
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @instance
+	             */
+	            CgroupAttachTaskFtraceEvent.prototype.comm = "";
+
+	            /**
+	             * CgroupAttachTaskFtraceEvent cname.
+	             * @member {string} cname
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @instance
+	             */
+	            CgroupAttachTaskFtraceEvent.prototype.cname = "";
+
+	            /**
+	             * Creates a new CgroupAttachTaskFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupAttachTaskFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CgroupAttachTaskFtraceEvent} CgroupAttachTaskFtraceEvent instance
+	             */
+	            CgroupAttachTaskFtraceEvent.create = function create(properties) {
+	                return new CgroupAttachTaskFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CgroupAttachTaskFtraceEvent message. Does not implicitly {@link perfetto.protos.CgroupAttachTaskFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupAttachTaskFtraceEvent} message CgroupAttachTaskFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupAttachTaskFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dstRoot != null && message.hasOwnProperty("dstRoot"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.dstRoot);
+	                if (message.dstId != null && message.hasOwnProperty("dstId"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.dstId);
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.pid);
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.comm);
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.cname);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CgroupAttachTaskFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CgroupAttachTaskFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupAttachTaskFtraceEvent} message CgroupAttachTaskFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupAttachTaskFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CgroupAttachTaskFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CgroupAttachTaskFtraceEvent} CgroupAttachTaskFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupAttachTaskFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CgroupAttachTaskFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dstRoot = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.dstId = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.pid = reader.int32();
+	                        break;
+	                    case 4:
+	                        message.comm = reader.string();
+	                        break;
+	                    case 5:
+	                        message.cname = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CgroupAttachTaskFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CgroupAttachTaskFtraceEvent} CgroupAttachTaskFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupAttachTaskFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CgroupAttachTaskFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CgroupAttachTaskFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dstRoot != null && message.hasOwnProperty("dstRoot"))
+	                    if (!$util.isInteger(message.dstRoot))
+	                        return "dstRoot: integer expected";
+	                if (message.dstId != null && message.hasOwnProperty("dstId"))
+	                    if (!$util.isInteger(message.dstId))
+	                        return "dstId: integer expected";
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    if (!$util.isInteger(message.pid))
+	                        return "pid: integer expected";
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    if (!$util.isString(message.comm))
+	                        return "comm: string expected";
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    if (!$util.isString(message.cname))
+	                        return "cname: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CgroupAttachTaskFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CgroupAttachTaskFtraceEvent} CgroupAttachTaskFtraceEvent
+	             */
+	            CgroupAttachTaskFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CgroupAttachTaskFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CgroupAttachTaskFtraceEvent();
+	                if (object.dstRoot != null)
+	                    message.dstRoot = object.dstRoot | 0;
+	                if (object.dstId != null)
+	                    message.dstId = object.dstId | 0;
+	                if (object.pid != null)
+	                    message.pid = object.pid | 0;
+	                if (object.comm != null)
+	                    message.comm = String(object.comm);
+	                if (object.cname != null)
+	                    message.cname = String(object.cname);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CgroupAttachTaskFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CgroupAttachTaskFtraceEvent} message CgroupAttachTaskFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CgroupAttachTaskFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.dstRoot = 0;
+	                    object.dstId = 0;
+	                    object.pid = 0;
+	                    object.comm = "";
+	                    object.cname = "";
+	                }
+	                if (message.dstRoot != null && message.hasOwnProperty("dstRoot"))
+	                    object.dstRoot = message.dstRoot;
+	                if (message.dstId != null && message.hasOwnProperty("dstId"))
+	                    object.dstId = message.dstId;
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    object.pid = message.pid;
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    object.comm = message.comm;
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    object.cname = message.cname;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CgroupAttachTaskFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CgroupAttachTaskFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CgroupAttachTaskFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CgroupAttachTaskFtraceEvent;
+	        })();
+
+	        protos.CgroupDestroyRootFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CgroupDestroyRootFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICgroupDestroyRootFtraceEvent
+	             * @property {number|null} [root] CgroupDestroyRootFtraceEvent root
+	             * @property {number|null} [ssMask] CgroupDestroyRootFtraceEvent ssMask
+	             * @property {string|null} [name] CgroupDestroyRootFtraceEvent name
+	             */
+
+	            /**
+	             * Constructs a new CgroupDestroyRootFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CgroupDestroyRootFtraceEvent.
+	             * @implements ICgroupDestroyRootFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICgroupDestroyRootFtraceEvent=} [properties] Properties to set
+	             */
+	            function CgroupDestroyRootFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CgroupDestroyRootFtraceEvent root.
+	             * @member {number} root
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @instance
+	             */
+	            CgroupDestroyRootFtraceEvent.prototype.root = 0;
+
+	            /**
+	             * CgroupDestroyRootFtraceEvent ssMask.
+	             * @member {number} ssMask
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @instance
+	             */
+	            CgroupDestroyRootFtraceEvent.prototype.ssMask = 0;
+
+	            /**
+	             * CgroupDestroyRootFtraceEvent name.
+	             * @member {string} name
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @instance
+	             */
+	            CgroupDestroyRootFtraceEvent.prototype.name = "";
+
+	            /**
+	             * Creates a new CgroupDestroyRootFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupDestroyRootFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CgroupDestroyRootFtraceEvent} CgroupDestroyRootFtraceEvent instance
+	             */
+	            CgroupDestroyRootFtraceEvent.create = function create(properties) {
+	                return new CgroupDestroyRootFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CgroupDestroyRootFtraceEvent message. Does not implicitly {@link perfetto.protos.CgroupDestroyRootFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupDestroyRootFtraceEvent} message CgroupDestroyRootFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupDestroyRootFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.root);
+	                if (message.ssMask != null && message.hasOwnProperty("ssMask"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.ssMask);
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CgroupDestroyRootFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CgroupDestroyRootFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupDestroyRootFtraceEvent} message CgroupDestroyRootFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupDestroyRootFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CgroupDestroyRootFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CgroupDestroyRootFtraceEvent} CgroupDestroyRootFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupDestroyRootFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CgroupDestroyRootFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.root = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.ssMask = reader.uint32();
+	                        break;
+	                    case 3:
+	                        message.name = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CgroupDestroyRootFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CgroupDestroyRootFtraceEvent} CgroupDestroyRootFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupDestroyRootFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CgroupDestroyRootFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CgroupDestroyRootFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    if (!$util.isInteger(message.root))
+	                        return "root: integer expected";
+	                if (message.ssMask != null && message.hasOwnProperty("ssMask"))
+	                    if (!$util.isInteger(message.ssMask))
+	                        return "ssMask: integer expected";
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    if (!$util.isString(message.name))
+	                        return "name: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CgroupDestroyRootFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CgroupDestroyRootFtraceEvent} CgroupDestroyRootFtraceEvent
+	             */
+	            CgroupDestroyRootFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CgroupDestroyRootFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CgroupDestroyRootFtraceEvent();
+	                if (object.root != null)
+	                    message.root = object.root | 0;
+	                if (object.ssMask != null)
+	                    message.ssMask = object.ssMask >>> 0;
+	                if (object.name != null)
+	                    message.name = String(object.name);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CgroupDestroyRootFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CgroupDestroyRootFtraceEvent} message CgroupDestroyRootFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CgroupDestroyRootFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.root = 0;
+	                    object.ssMask = 0;
+	                    object.name = "";
+	                }
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    object.root = message.root;
+	                if (message.ssMask != null && message.hasOwnProperty("ssMask"))
+	                    object.ssMask = message.ssMask;
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    object.name = message.name;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CgroupDestroyRootFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CgroupDestroyRootFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CgroupDestroyRootFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CgroupDestroyRootFtraceEvent;
+	        })();
+
+	        protos.CgroupMkdirFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CgroupMkdirFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICgroupMkdirFtraceEvent
+	             * @property {number|null} [root] CgroupMkdirFtraceEvent root
+	             * @property {number|null} [id] CgroupMkdirFtraceEvent id
+	             * @property {string|null} [cname] CgroupMkdirFtraceEvent cname
+	             */
+
+	            /**
+	             * Constructs a new CgroupMkdirFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CgroupMkdirFtraceEvent.
+	             * @implements ICgroupMkdirFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICgroupMkdirFtraceEvent=} [properties] Properties to set
+	             */
+	            function CgroupMkdirFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CgroupMkdirFtraceEvent root.
+	             * @member {number} root
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @instance
+	             */
+	            CgroupMkdirFtraceEvent.prototype.root = 0;
+
+	            /**
+	             * CgroupMkdirFtraceEvent id.
+	             * @member {number} id
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @instance
+	             */
+	            CgroupMkdirFtraceEvent.prototype.id = 0;
+
+	            /**
+	             * CgroupMkdirFtraceEvent cname.
+	             * @member {string} cname
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @instance
+	             */
+	            CgroupMkdirFtraceEvent.prototype.cname = "";
+
+	            /**
+	             * Creates a new CgroupMkdirFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupMkdirFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CgroupMkdirFtraceEvent} CgroupMkdirFtraceEvent instance
+	             */
+	            CgroupMkdirFtraceEvent.create = function create(properties) {
+	                return new CgroupMkdirFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CgroupMkdirFtraceEvent message. Does not implicitly {@link perfetto.protos.CgroupMkdirFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupMkdirFtraceEvent} message CgroupMkdirFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupMkdirFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.root);
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.id);
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.cname);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CgroupMkdirFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CgroupMkdirFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupMkdirFtraceEvent} message CgroupMkdirFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupMkdirFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CgroupMkdirFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CgroupMkdirFtraceEvent} CgroupMkdirFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupMkdirFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CgroupMkdirFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.root = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.id = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.cname = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CgroupMkdirFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CgroupMkdirFtraceEvent} CgroupMkdirFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupMkdirFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CgroupMkdirFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CgroupMkdirFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    if (!$util.isInteger(message.root))
+	                        return "root: integer expected";
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    if (!$util.isInteger(message.id))
+	                        return "id: integer expected";
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    if (!$util.isString(message.cname))
+	                        return "cname: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CgroupMkdirFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CgroupMkdirFtraceEvent} CgroupMkdirFtraceEvent
+	             */
+	            CgroupMkdirFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CgroupMkdirFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CgroupMkdirFtraceEvent();
+	                if (object.root != null)
+	                    message.root = object.root | 0;
+	                if (object.id != null)
+	                    message.id = object.id | 0;
+	                if (object.cname != null)
+	                    message.cname = String(object.cname);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CgroupMkdirFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CgroupMkdirFtraceEvent} message CgroupMkdirFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CgroupMkdirFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.root = 0;
+	                    object.id = 0;
+	                    object.cname = "";
+	                }
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    object.root = message.root;
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    object.id = message.id;
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    object.cname = message.cname;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CgroupMkdirFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CgroupMkdirFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CgroupMkdirFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CgroupMkdirFtraceEvent;
+	        })();
+
+	        protos.CgroupReleaseFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CgroupReleaseFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICgroupReleaseFtraceEvent
+	             * @property {number|null} [root] CgroupReleaseFtraceEvent root
+	             * @property {number|null} [id] CgroupReleaseFtraceEvent id
+	             * @property {string|null} [cname] CgroupReleaseFtraceEvent cname
+	             */
+
+	            /**
+	             * Constructs a new CgroupReleaseFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CgroupReleaseFtraceEvent.
+	             * @implements ICgroupReleaseFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICgroupReleaseFtraceEvent=} [properties] Properties to set
+	             */
+	            function CgroupReleaseFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CgroupReleaseFtraceEvent root.
+	             * @member {number} root
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @instance
+	             */
+	            CgroupReleaseFtraceEvent.prototype.root = 0;
+
+	            /**
+	             * CgroupReleaseFtraceEvent id.
+	             * @member {number} id
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @instance
+	             */
+	            CgroupReleaseFtraceEvent.prototype.id = 0;
+
+	            /**
+	             * CgroupReleaseFtraceEvent cname.
+	             * @member {string} cname
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @instance
+	             */
+	            CgroupReleaseFtraceEvent.prototype.cname = "";
+
+	            /**
+	             * Creates a new CgroupReleaseFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupReleaseFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CgroupReleaseFtraceEvent} CgroupReleaseFtraceEvent instance
+	             */
+	            CgroupReleaseFtraceEvent.create = function create(properties) {
+	                return new CgroupReleaseFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CgroupReleaseFtraceEvent message. Does not implicitly {@link perfetto.protos.CgroupReleaseFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupReleaseFtraceEvent} message CgroupReleaseFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupReleaseFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.root);
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.id);
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.cname);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CgroupReleaseFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CgroupReleaseFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupReleaseFtraceEvent} message CgroupReleaseFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupReleaseFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CgroupReleaseFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CgroupReleaseFtraceEvent} CgroupReleaseFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupReleaseFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CgroupReleaseFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.root = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.id = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.cname = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CgroupReleaseFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CgroupReleaseFtraceEvent} CgroupReleaseFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupReleaseFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CgroupReleaseFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CgroupReleaseFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    if (!$util.isInteger(message.root))
+	                        return "root: integer expected";
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    if (!$util.isInteger(message.id))
+	                        return "id: integer expected";
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    if (!$util.isString(message.cname))
+	                        return "cname: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CgroupReleaseFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CgroupReleaseFtraceEvent} CgroupReleaseFtraceEvent
+	             */
+	            CgroupReleaseFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CgroupReleaseFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CgroupReleaseFtraceEvent();
+	                if (object.root != null)
+	                    message.root = object.root | 0;
+	                if (object.id != null)
+	                    message.id = object.id | 0;
+	                if (object.cname != null)
+	                    message.cname = String(object.cname);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CgroupReleaseFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CgroupReleaseFtraceEvent} message CgroupReleaseFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CgroupReleaseFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.root = 0;
+	                    object.id = 0;
+	                    object.cname = "";
+	                }
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    object.root = message.root;
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    object.id = message.id;
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    object.cname = message.cname;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CgroupReleaseFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CgroupReleaseFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CgroupReleaseFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CgroupReleaseFtraceEvent;
+	        })();
+
+	        protos.CgroupRemountFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CgroupRemountFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICgroupRemountFtraceEvent
+	             * @property {number|null} [root] CgroupRemountFtraceEvent root
+	             * @property {number|null} [ssMask] CgroupRemountFtraceEvent ssMask
+	             * @property {string|null} [name] CgroupRemountFtraceEvent name
+	             */
+
+	            /**
+	             * Constructs a new CgroupRemountFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CgroupRemountFtraceEvent.
+	             * @implements ICgroupRemountFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICgroupRemountFtraceEvent=} [properties] Properties to set
+	             */
+	            function CgroupRemountFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CgroupRemountFtraceEvent root.
+	             * @member {number} root
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @instance
+	             */
+	            CgroupRemountFtraceEvent.prototype.root = 0;
+
+	            /**
+	             * CgroupRemountFtraceEvent ssMask.
+	             * @member {number} ssMask
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @instance
+	             */
+	            CgroupRemountFtraceEvent.prototype.ssMask = 0;
+
+	            /**
+	             * CgroupRemountFtraceEvent name.
+	             * @member {string} name
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @instance
+	             */
+	            CgroupRemountFtraceEvent.prototype.name = "";
+
+	            /**
+	             * Creates a new CgroupRemountFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupRemountFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CgroupRemountFtraceEvent} CgroupRemountFtraceEvent instance
+	             */
+	            CgroupRemountFtraceEvent.create = function create(properties) {
+	                return new CgroupRemountFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CgroupRemountFtraceEvent message. Does not implicitly {@link perfetto.protos.CgroupRemountFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupRemountFtraceEvent} message CgroupRemountFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupRemountFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.root);
+	                if (message.ssMask != null && message.hasOwnProperty("ssMask"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.ssMask);
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CgroupRemountFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CgroupRemountFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupRemountFtraceEvent} message CgroupRemountFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupRemountFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CgroupRemountFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CgroupRemountFtraceEvent} CgroupRemountFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupRemountFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CgroupRemountFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.root = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.ssMask = reader.uint32();
+	                        break;
+	                    case 3:
+	                        message.name = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CgroupRemountFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CgroupRemountFtraceEvent} CgroupRemountFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupRemountFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CgroupRemountFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CgroupRemountFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    if (!$util.isInteger(message.root))
+	                        return "root: integer expected";
+	                if (message.ssMask != null && message.hasOwnProperty("ssMask"))
+	                    if (!$util.isInteger(message.ssMask))
+	                        return "ssMask: integer expected";
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    if (!$util.isString(message.name))
+	                        return "name: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CgroupRemountFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CgroupRemountFtraceEvent} CgroupRemountFtraceEvent
+	             */
+	            CgroupRemountFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CgroupRemountFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CgroupRemountFtraceEvent();
+	                if (object.root != null)
+	                    message.root = object.root | 0;
+	                if (object.ssMask != null)
+	                    message.ssMask = object.ssMask >>> 0;
+	                if (object.name != null)
+	                    message.name = String(object.name);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CgroupRemountFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CgroupRemountFtraceEvent} message CgroupRemountFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CgroupRemountFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.root = 0;
+	                    object.ssMask = 0;
+	                    object.name = "";
+	                }
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    object.root = message.root;
+	                if (message.ssMask != null && message.hasOwnProperty("ssMask"))
+	                    object.ssMask = message.ssMask;
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    object.name = message.name;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CgroupRemountFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CgroupRemountFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CgroupRemountFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CgroupRemountFtraceEvent;
+	        })();
+
+	        protos.CgroupRenameFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CgroupRenameFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICgroupRenameFtraceEvent
+	             * @property {number|null} [root] CgroupRenameFtraceEvent root
+	             * @property {number|null} [id] CgroupRenameFtraceEvent id
+	             * @property {string|null} [cname] CgroupRenameFtraceEvent cname
+	             */
+
+	            /**
+	             * Constructs a new CgroupRenameFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CgroupRenameFtraceEvent.
+	             * @implements ICgroupRenameFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICgroupRenameFtraceEvent=} [properties] Properties to set
+	             */
+	            function CgroupRenameFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CgroupRenameFtraceEvent root.
+	             * @member {number} root
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @instance
+	             */
+	            CgroupRenameFtraceEvent.prototype.root = 0;
+
+	            /**
+	             * CgroupRenameFtraceEvent id.
+	             * @member {number} id
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @instance
+	             */
+	            CgroupRenameFtraceEvent.prototype.id = 0;
+
+	            /**
+	             * CgroupRenameFtraceEvent cname.
+	             * @member {string} cname
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @instance
+	             */
+	            CgroupRenameFtraceEvent.prototype.cname = "";
+
+	            /**
+	             * Creates a new CgroupRenameFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupRenameFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CgroupRenameFtraceEvent} CgroupRenameFtraceEvent instance
+	             */
+	            CgroupRenameFtraceEvent.create = function create(properties) {
+	                return new CgroupRenameFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CgroupRenameFtraceEvent message. Does not implicitly {@link perfetto.protos.CgroupRenameFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupRenameFtraceEvent} message CgroupRenameFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupRenameFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.root);
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.id);
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.cname);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CgroupRenameFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CgroupRenameFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupRenameFtraceEvent} message CgroupRenameFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupRenameFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CgroupRenameFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CgroupRenameFtraceEvent} CgroupRenameFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupRenameFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CgroupRenameFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.root = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.id = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.cname = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CgroupRenameFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CgroupRenameFtraceEvent} CgroupRenameFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupRenameFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CgroupRenameFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CgroupRenameFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    if (!$util.isInteger(message.root))
+	                        return "root: integer expected";
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    if (!$util.isInteger(message.id))
+	                        return "id: integer expected";
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    if (!$util.isString(message.cname))
+	                        return "cname: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CgroupRenameFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CgroupRenameFtraceEvent} CgroupRenameFtraceEvent
+	             */
+	            CgroupRenameFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CgroupRenameFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CgroupRenameFtraceEvent();
+	                if (object.root != null)
+	                    message.root = object.root | 0;
+	                if (object.id != null)
+	                    message.id = object.id | 0;
+	                if (object.cname != null)
+	                    message.cname = String(object.cname);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CgroupRenameFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CgroupRenameFtraceEvent} message CgroupRenameFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CgroupRenameFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.root = 0;
+	                    object.id = 0;
+	                    object.cname = "";
+	                }
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    object.root = message.root;
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    object.id = message.id;
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    object.cname = message.cname;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CgroupRenameFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CgroupRenameFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CgroupRenameFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CgroupRenameFtraceEvent;
+	        })();
+
+	        protos.CgroupRmdirFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CgroupRmdirFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICgroupRmdirFtraceEvent
+	             * @property {number|null} [root] CgroupRmdirFtraceEvent root
+	             * @property {number|null} [id] CgroupRmdirFtraceEvent id
+	             * @property {string|null} [cname] CgroupRmdirFtraceEvent cname
+	             */
+
+	            /**
+	             * Constructs a new CgroupRmdirFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CgroupRmdirFtraceEvent.
+	             * @implements ICgroupRmdirFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICgroupRmdirFtraceEvent=} [properties] Properties to set
+	             */
+	            function CgroupRmdirFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CgroupRmdirFtraceEvent root.
+	             * @member {number} root
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @instance
+	             */
+	            CgroupRmdirFtraceEvent.prototype.root = 0;
+
+	            /**
+	             * CgroupRmdirFtraceEvent id.
+	             * @member {number} id
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @instance
+	             */
+	            CgroupRmdirFtraceEvent.prototype.id = 0;
+
+	            /**
+	             * CgroupRmdirFtraceEvent cname.
+	             * @member {string} cname
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @instance
+	             */
+	            CgroupRmdirFtraceEvent.prototype.cname = "";
+
+	            /**
+	             * Creates a new CgroupRmdirFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupRmdirFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CgroupRmdirFtraceEvent} CgroupRmdirFtraceEvent instance
+	             */
+	            CgroupRmdirFtraceEvent.create = function create(properties) {
+	                return new CgroupRmdirFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CgroupRmdirFtraceEvent message. Does not implicitly {@link perfetto.protos.CgroupRmdirFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupRmdirFtraceEvent} message CgroupRmdirFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupRmdirFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.root);
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.id);
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.cname);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CgroupRmdirFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CgroupRmdirFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupRmdirFtraceEvent} message CgroupRmdirFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupRmdirFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CgroupRmdirFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CgroupRmdirFtraceEvent} CgroupRmdirFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupRmdirFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CgroupRmdirFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.root = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.id = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.cname = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CgroupRmdirFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CgroupRmdirFtraceEvent} CgroupRmdirFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupRmdirFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CgroupRmdirFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CgroupRmdirFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    if (!$util.isInteger(message.root))
+	                        return "root: integer expected";
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    if (!$util.isInteger(message.id))
+	                        return "id: integer expected";
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    if (!$util.isString(message.cname))
+	                        return "cname: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CgroupRmdirFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CgroupRmdirFtraceEvent} CgroupRmdirFtraceEvent
+	             */
+	            CgroupRmdirFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CgroupRmdirFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CgroupRmdirFtraceEvent();
+	                if (object.root != null)
+	                    message.root = object.root | 0;
+	                if (object.id != null)
+	                    message.id = object.id | 0;
+	                if (object.cname != null)
+	                    message.cname = String(object.cname);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CgroupRmdirFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CgroupRmdirFtraceEvent} message CgroupRmdirFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CgroupRmdirFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.root = 0;
+	                    object.id = 0;
+	                    object.cname = "";
+	                }
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    object.root = message.root;
+	                if (message.id != null && message.hasOwnProperty("id"))
+	                    object.id = message.id;
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    object.cname = message.cname;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CgroupRmdirFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CgroupRmdirFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CgroupRmdirFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CgroupRmdirFtraceEvent;
+	        })();
+
+	        protos.CgroupSetupRootFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CgroupSetupRootFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICgroupSetupRootFtraceEvent
+	             * @property {number|null} [root] CgroupSetupRootFtraceEvent root
+	             * @property {number|null} [ssMask] CgroupSetupRootFtraceEvent ssMask
+	             * @property {string|null} [name] CgroupSetupRootFtraceEvent name
+	             */
+
+	            /**
+	             * Constructs a new CgroupSetupRootFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CgroupSetupRootFtraceEvent.
+	             * @implements ICgroupSetupRootFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICgroupSetupRootFtraceEvent=} [properties] Properties to set
+	             */
+	            function CgroupSetupRootFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CgroupSetupRootFtraceEvent root.
+	             * @member {number} root
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @instance
+	             */
+	            CgroupSetupRootFtraceEvent.prototype.root = 0;
+
+	            /**
+	             * CgroupSetupRootFtraceEvent ssMask.
+	             * @member {number} ssMask
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @instance
+	             */
+	            CgroupSetupRootFtraceEvent.prototype.ssMask = 0;
+
+	            /**
+	             * CgroupSetupRootFtraceEvent name.
+	             * @member {string} name
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @instance
+	             */
+	            CgroupSetupRootFtraceEvent.prototype.name = "";
+
+	            /**
+	             * Creates a new CgroupSetupRootFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupSetupRootFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CgroupSetupRootFtraceEvent} CgroupSetupRootFtraceEvent instance
+	             */
+	            CgroupSetupRootFtraceEvent.create = function create(properties) {
+	                return new CgroupSetupRootFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CgroupSetupRootFtraceEvent message. Does not implicitly {@link perfetto.protos.CgroupSetupRootFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupSetupRootFtraceEvent} message CgroupSetupRootFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupSetupRootFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.root);
+	                if (message.ssMask != null && message.hasOwnProperty("ssMask"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.ssMask);
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CgroupSetupRootFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CgroupSetupRootFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupSetupRootFtraceEvent} message CgroupSetupRootFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupSetupRootFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CgroupSetupRootFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CgroupSetupRootFtraceEvent} CgroupSetupRootFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupSetupRootFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CgroupSetupRootFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.root = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.ssMask = reader.uint32();
+	                        break;
+	                    case 3:
+	                        message.name = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CgroupSetupRootFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CgroupSetupRootFtraceEvent} CgroupSetupRootFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupSetupRootFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CgroupSetupRootFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CgroupSetupRootFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    if (!$util.isInteger(message.root))
+	                        return "root: integer expected";
+	                if (message.ssMask != null && message.hasOwnProperty("ssMask"))
+	                    if (!$util.isInteger(message.ssMask))
+	                        return "ssMask: integer expected";
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    if (!$util.isString(message.name))
+	                        return "name: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CgroupSetupRootFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CgroupSetupRootFtraceEvent} CgroupSetupRootFtraceEvent
+	             */
+	            CgroupSetupRootFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CgroupSetupRootFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CgroupSetupRootFtraceEvent();
+	                if (object.root != null)
+	                    message.root = object.root | 0;
+	                if (object.ssMask != null)
+	                    message.ssMask = object.ssMask >>> 0;
+	                if (object.name != null)
+	                    message.name = String(object.name);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CgroupSetupRootFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CgroupSetupRootFtraceEvent} message CgroupSetupRootFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CgroupSetupRootFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.root = 0;
+	                    object.ssMask = 0;
+	                    object.name = "";
+	                }
+	                if (message.root != null && message.hasOwnProperty("root"))
+	                    object.root = message.root;
+	                if (message.ssMask != null && message.hasOwnProperty("ssMask"))
+	                    object.ssMask = message.ssMask;
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    object.name = message.name;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CgroupSetupRootFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CgroupSetupRootFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CgroupSetupRootFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CgroupSetupRootFtraceEvent;
+	        })();
+
+	        protos.CgroupTransferTasksFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CgroupTransferTasksFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICgroupTransferTasksFtraceEvent
+	             * @property {number|null} [dstRoot] CgroupTransferTasksFtraceEvent dstRoot
+	             * @property {number|null} [dstId] CgroupTransferTasksFtraceEvent dstId
+	             * @property {number|null} [pid] CgroupTransferTasksFtraceEvent pid
+	             * @property {string|null} [comm] CgroupTransferTasksFtraceEvent comm
+	             * @property {string|null} [cname] CgroupTransferTasksFtraceEvent cname
+	             */
+
+	            /**
+	             * Constructs a new CgroupTransferTasksFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CgroupTransferTasksFtraceEvent.
+	             * @implements ICgroupTransferTasksFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICgroupTransferTasksFtraceEvent=} [properties] Properties to set
+	             */
+	            function CgroupTransferTasksFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CgroupTransferTasksFtraceEvent dstRoot.
+	             * @member {number} dstRoot
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @instance
+	             */
+	            CgroupTransferTasksFtraceEvent.prototype.dstRoot = 0;
+
+	            /**
+	             * CgroupTransferTasksFtraceEvent dstId.
+	             * @member {number} dstId
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @instance
+	             */
+	            CgroupTransferTasksFtraceEvent.prototype.dstId = 0;
+
+	            /**
+	             * CgroupTransferTasksFtraceEvent pid.
+	             * @member {number} pid
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @instance
+	             */
+	            CgroupTransferTasksFtraceEvent.prototype.pid = 0;
+
+	            /**
+	             * CgroupTransferTasksFtraceEvent comm.
+	             * @member {string} comm
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @instance
+	             */
+	            CgroupTransferTasksFtraceEvent.prototype.comm = "";
+
+	            /**
+	             * CgroupTransferTasksFtraceEvent cname.
+	             * @member {string} cname
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @instance
+	             */
+	            CgroupTransferTasksFtraceEvent.prototype.cname = "";
+
+	            /**
+	             * Creates a new CgroupTransferTasksFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupTransferTasksFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CgroupTransferTasksFtraceEvent} CgroupTransferTasksFtraceEvent instance
+	             */
+	            CgroupTransferTasksFtraceEvent.create = function create(properties) {
+	                return new CgroupTransferTasksFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CgroupTransferTasksFtraceEvent message. Does not implicitly {@link perfetto.protos.CgroupTransferTasksFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupTransferTasksFtraceEvent} message CgroupTransferTasksFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupTransferTasksFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dstRoot != null && message.hasOwnProperty("dstRoot"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.dstRoot);
+	                if (message.dstId != null && message.hasOwnProperty("dstId"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.dstId);
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.pid);
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.comm);
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.cname);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CgroupTransferTasksFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CgroupTransferTasksFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICgroupTransferTasksFtraceEvent} message CgroupTransferTasksFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CgroupTransferTasksFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CgroupTransferTasksFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CgroupTransferTasksFtraceEvent} CgroupTransferTasksFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupTransferTasksFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CgroupTransferTasksFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dstRoot = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.dstId = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.pid = reader.int32();
+	                        break;
+	                    case 4:
+	                        message.comm = reader.string();
+	                        break;
+	                    case 5:
+	                        message.cname = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CgroupTransferTasksFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CgroupTransferTasksFtraceEvent} CgroupTransferTasksFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CgroupTransferTasksFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CgroupTransferTasksFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CgroupTransferTasksFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dstRoot != null && message.hasOwnProperty("dstRoot"))
+	                    if (!$util.isInteger(message.dstRoot))
+	                        return "dstRoot: integer expected";
+	                if (message.dstId != null && message.hasOwnProperty("dstId"))
+	                    if (!$util.isInteger(message.dstId))
+	                        return "dstId: integer expected";
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    if (!$util.isInteger(message.pid))
+	                        return "pid: integer expected";
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    if (!$util.isString(message.comm))
+	                        return "comm: string expected";
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    if (!$util.isString(message.cname))
+	                        return "cname: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CgroupTransferTasksFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CgroupTransferTasksFtraceEvent} CgroupTransferTasksFtraceEvent
+	             */
+	            CgroupTransferTasksFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CgroupTransferTasksFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CgroupTransferTasksFtraceEvent();
+	                if (object.dstRoot != null)
+	                    message.dstRoot = object.dstRoot | 0;
+	                if (object.dstId != null)
+	                    message.dstId = object.dstId | 0;
+	                if (object.pid != null)
+	                    message.pid = object.pid | 0;
+	                if (object.comm != null)
+	                    message.comm = String(object.comm);
+	                if (object.cname != null)
+	                    message.cname = String(object.cname);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CgroupTransferTasksFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CgroupTransferTasksFtraceEvent} message CgroupTransferTasksFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CgroupTransferTasksFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.dstRoot = 0;
+	                    object.dstId = 0;
+	                    object.pid = 0;
+	                    object.comm = "";
+	                    object.cname = "";
+	                }
+	                if (message.dstRoot != null && message.hasOwnProperty("dstRoot"))
+	                    object.dstRoot = message.dstRoot;
+	                if (message.dstId != null && message.hasOwnProperty("dstId"))
+	                    object.dstId = message.dstId;
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    object.pid = message.pid;
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    object.comm = message.comm;
+	                if (message.cname != null && message.hasOwnProperty("cname"))
+	                    object.cname = message.cname;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CgroupTransferTasksFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CgroupTransferTasksFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CgroupTransferTasksFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CgroupTransferTasksFtraceEvent;
+	        })();
+
+	        protos.ClockSetRateFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a ClockSetRateFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IClockSetRateFtraceEvent
+	             * @property {string|null} [name] ClockSetRateFtraceEvent name
+	             * @property {number|Long|null} [state] ClockSetRateFtraceEvent state
+	             * @property {number|Long|null} [cpuId] ClockSetRateFtraceEvent cpuId
+	             */
+
+	            /**
+	             * Constructs a new ClockSetRateFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a ClockSetRateFtraceEvent.
+	             * @implements IClockSetRateFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IClockSetRateFtraceEvent=} [properties] Properties to set
+	             */
+	            function ClockSetRateFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * ClockSetRateFtraceEvent name.
+	             * @member {string} name
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @instance
+	             */
+	            ClockSetRateFtraceEvent.prototype.name = "";
+
+	            /**
+	             * ClockSetRateFtraceEvent state.
+	             * @member {number|Long} state
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @instance
+	             */
+	            ClockSetRateFtraceEvent.prototype.state = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * ClockSetRateFtraceEvent cpuId.
+	             * @member {number|Long} cpuId
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @instance
+	             */
+	            ClockSetRateFtraceEvent.prototype.cpuId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Creates a new ClockSetRateFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IClockSetRateFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.ClockSetRateFtraceEvent} ClockSetRateFtraceEvent instance
+	             */
+	            ClockSetRateFtraceEvent.create = function create(properties) {
+	                return new ClockSetRateFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified ClockSetRateFtraceEvent message. Does not implicitly {@link perfetto.protos.ClockSetRateFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IClockSetRateFtraceEvent} message ClockSetRateFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            ClockSetRateFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+	                if (message.state != null && message.hasOwnProperty("state"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.state);
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.cpuId);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified ClockSetRateFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.ClockSetRateFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IClockSetRateFtraceEvent} message ClockSetRateFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            ClockSetRateFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a ClockSetRateFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.ClockSetRateFtraceEvent} ClockSetRateFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            ClockSetRateFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.ClockSetRateFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.name = reader.string();
+	                        break;
+	                    case 2:
+	                        message.state = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.cpuId = reader.uint64();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a ClockSetRateFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.ClockSetRateFtraceEvent} ClockSetRateFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            ClockSetRateFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a ClockSetRateFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            ClockSetRateFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    if (!$util.isString(message.name))
+	                        return "name: string expected";
+	                if (message.state != null && message.hasOwnProperty("state"))
+	                    if (!$util.isInteger(message.state) && !(message.state && $util.isInteger(message.state.low) && $util.isInteger(message.state.high)))
+	                        return "state: integer|Long expected";
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (!$util.isInteger(message.cpuId) && !(message.cpuId && $util.isInteger(message.cpuId.low) && $util.isInteger(message.cpuId.high)))
+	                        return "cpuId: integer|Long expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a ClockSetRateFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.ClockSetRateFtraceEvent} ClockSetRateFtraceEvent
+	             */
+	            ClockSetRateFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.ClockSetRateFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.ClockSetRateFtraceEvent();
+	                if (object.name != null)
+	                    message.name = String(object.name);
+	                if (object.state != null)
+	                    if ($util.Long)
+	                        (message.state = $util.Long.fromValue(object.state)).unsigned = true;
+	                    else if (typeof object.state === "string")
+	                        message.state = parseInt(object.state, 10);
+	                    else if (typeof object.state === "number")
+	                        message.state = object.state;
+	                    else if (typeof object.state === "object")
+	                        message.state = new $util.LongBits(object.state.low >>> 0, object.state.high >>> 0).toNumber(true);
+	                if (object.cpuId != null)
+	                    if ($util.Long)
+	                        (message.cpuId = $util.Long.fromValue(object.cpuId)).unsigned = true;
+	                    else if (typeof object.cpuId === "string")
+	                        message.cpuId = parseInt(object.cpuId, 10);
+	                    else if (typeof object.cpuId === "number")
+	                        message.cpuId = object.cpuId;
+	                    else if (typeof object.cpuId === "object")
+	                        message.cpuId = new $util.LongBits(object.cpuId.low >>> 0, object.cpuId.high >>> 0).toNumber(true);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a ClockSetRateFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ClockSetRateFtraceEvent} message ClockSetRateFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            ClockSetRateFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.name = "";
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.state = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.state = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.cpuId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.cpuId = options.longs === String ? "0" : 0;
+	                }
+	                if (message.name != null && message.hasOwnProperty("name"))
+	                    object.name = message.name;
+	                if (message.state != null && message.hasOwnProperty("state"))
+	                    if (typeof message.state === "number")
+	                        object.state = options.longs === String ? String(message.state) : message.state;
+	                    else
+	                        object.state = options.longs === String ? $util.Long.prototype.toString.call(message.state) : options.longs === Number ? new $util.LongBits(message.state.low >>> 0, message.state.high >>> 0).toNumber(true) : message.state;
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (typeof message.cpuId === "number")
+	                        object.cpuId = options.longs === String ? String(message.cpuId) : message.cpuId;
+	                    else
+	                        object.cpuId = options.longs === String ? $util.Long.prototype.toString.call(message.cpuId) : options.longs === Number ? new $util.LongBits(message.cpuId.low >>> 0, message.cpuId.high >>> 0).toNumber(true) : message.cpuId;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this ClockSetRateFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.ClockSetRateFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            ClockSetRateFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return ClockSetRateFtraceEvent;
+	        })();
+
+	        protos.CpufreqInteractiveAlreadyFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CpufreqInteractiveAlreadyFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICpufreqInteractiveAlreadyFtraceEvent
+	             * @property {number|Long|null} [cpuId] CpufreqInteractiveAlreadyFtraceEvent cpuId
+	             * @property {number|Long|null} [load] CpufreqInteractiveAlreadyFtraceEvent load
+	             * @property {number|Long|null} [curtarg] CpufreqInteractiveAlreadyFtraceEvent curtarg
+	             * @property {number|Long|null} [curactual] CpufreqInteractiveAlreadyFtraceEvent curactual
+	             * @property {number|Long|null} [newtarg] CpufreqInteractiveAlreadyFtraceEvent newtarg
+	             */
+
+	            /**
+	             * Constructs a new CpufreqInteractiveAlreadyFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CpufreqInteractiveAlreadyFtraceEvent.
+	             * @implements ICpufreqInteractiveAlreadyFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICpufreqInteractiveAlreadyFtraceEvent=} [properties] Properties to set
+	             */
+	            function CpufreqInteractiveAlreadyFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CpufreqInteractiveAlreadyFtraceEvent cpuId.
+	             * @member {number|Long} cpuId
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.prototype.cpuId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveAlreadyFtraceEvent load.
+	             * @member {number|Long} load
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.prototype.load = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveAlreadyFtraceEvent curtarg.
+	             * @member {number|Long} curtarg
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.prototype.curtarg = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveAlreadyFtraceEvent curactual.
+	             * @member {number|Long} curactual
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.prototype.curactual = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveAlreadyFtraceEvent newtarg.
+	             * @member {number|Long} newtarg
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.prototype.newtarg = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Creates a new CpufreqInteractiveAlreadyFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveAlreadyFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent} CpufreqInteractiveAlreadyFtraceEvent instance
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.create = function create(properties) {
+	                return new CpufreqInteractiveAlreadyFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveAlreadyFtraceEvent message. Does not implicitly {@link perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveAlreadyFtraceEvent} message CpufreqInteractiveAlreadyFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.cpuId);
+	                if (message.load != null && message.hasOwnProperty("load"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.load);
+	                if (message.curtarg != null && message.hasOwnProperty("curtarg"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.curtarg);
+	                if (message.curactual != null && message.hasOwnProperty("curactual"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.curactual);
+	                if (message.newtarg != null && message.hasOwnProperty("newtarg"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.newtarg);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveAlreadyFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveAlreadyFtraceEvent} message CpufreqInteractiveAlreadyFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveAlreadyFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent} CpufreqInteractiveAlreadyFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.cpuId = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.load = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.curtarg = reader.uint64();
+	                        break;
+	                    case 4:
+	                        message.curactual = reader.uint64();
+	                        break;
+	                    case 5:
+	                        message.newtarg = reader.uint64();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveAlreadyFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent} CpufreqInteractiveAlreadyFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CpufreqInteractiveAlreadyFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (!$util.isInteger(message.cpuId) && !(message.cpuId && $util.isInteger(message.cpuId.low) && $util.isInteger(message.cpuId.high)))
+	                        return "cpuId: integer|Long expected";
+	                if (message.load != null && message.hasOwnProperty("load"))
+	                    if (!$util.isInteger(message.load) && !(message.load && $util.isInteger(message.load.low) && $util.isInteger(message.load.high)))
+	                        return "load: integer|Long expected";
+	                if (message.curtarg != null && message.hasOwnProperty("curtarg"))
+	                    if (!$util.isInteger(message.curtarg) && !(message.curtarg && $util.isInteger(message.curtarg.low) && $util.isInteger(message.curtarg.high)))
+	                        return "curtarg: integer|Long expected";
+	                if (message.curactual != null && message.hasOwnProperty("curactual"))
+	                    if (!$util.isInteger(message.curactual) && !(message.curactual && $util.isInteger(message.curactual.low) && $util.isInteger(message.curactual.high)))
+	                        return "curactual: integer|Long expected";
+	                if (message.newtarg != null && message.hasOwnProperty("newtarg"))
+	                    if (!$util.isInteger(message.newtarg) && !(message.newtarg && $util.isInteger(message.newtarg.low) && $util.isInteger(message.newtarg.high)))
+	                        return "newtarg: integer|Long expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CpufreqInteractiveAlreadyFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent} CpufreqInteractiveAlreadyFtraceEvent
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent();
+	                if (object.cpuId != null)
+	                    if ($util.Long)
+	                        (message.cpuId = $util.Long.fromValue(object.cpuId)).unsigned = true;
+	                    else if (typeof object.cpuId === "string")
+	                        message.cpuId = parseInt(object.cpuId, 10);
+	                    else if (typeof object.cpuId === "number")
+	                        message.cpuId = object.cpuId;
+	                    else if (typeof object.cpuId === "object")
+	                        message.cpuId = new $util.LongBits(object.cpuId.low >>> 0, object.cpuId.high >>> 0).toNumber(true);
+	                if (object.load != null)
+	                    if ($util.Long)
+	                        (message.load = $util.Long.fromValue(object.load)).unsigned = true;
+	                    else if (typeof object.load === "string")
+	                        message.load = parseInt(object.load, 10);
+	                    else if (typeof object.load === "number")
+	                        message.load = object.load;
+	                    else if (typeof object.load === "object")
+	                        message.load = new $util.LongBits(object.load.low >>> 0, object.load.high >>> 0).toNumber(true);
+	                if (object.curtarg != null)
+	                    if ($util.Long)
+	                        (message.curtarg = $util.Long.fromValue(object.curtarg)).unsigned = true;
+	                    else if (typeof object.curtarg === "string")
+	                        message.curtarg = parseInt(object.curtarg, 10);
+	                    else if (typeof object.curtarg === "number")
+	                        message.curtarg = object.curtarg;
+	                    else if (typeof object.curtarg === "object")
+	                        message.curtarg = new $util.LongBits(object.curtarg.low >>> 0, object.curtarg.high >>> 0).toNumber(true);
+	                if (object.curactual != null)
+	                    if ($util.Long)
+	                        (message.curactual = $util.Long.fromValue(object.curactual)).unsigned = true;
+	                    else if (typeof object.curactual === "string")
+	                        message.curactual = parseInt(object.curactual, 10);
+	                    else if (typeof object.curactual === "number")
+	                        message.curactual = object.curactual;
+	                    else if (typeof object.curactual === "object")
+	                        message.curactual = new $util.LongBits(object.curactual.low >>> 0, object.curactual.high >>> 0).toNumber(true);
+	                if (object.newtarg != null)
+	                    if ($util.Long)
+	                        (message.newtarg = $util.Long.fromValue(object.newtarg)).unsigned = true;
+	                    else if (typeof object.newtarg === "string")
+	                        message.newtarg = parseInt(object.newtarg, 10);
+	                    else if (typeof object.newtarg === "number")
+	                        message.newtarg = object.newtarg;
+	                    else if (typeof object.newtarg === "object")
+	                        message.newtarg = new $util.LongBits(object.newtarg.low >>> 0, object.newtarg.high >>> 0).toNumber(true);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CpufreqInteractiveAlreadyFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent} message CpufreqInteractiveAlreadyFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.cpuId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.cpuId = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.load = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.load = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.curtarg = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.curtarg = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.curactual = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.curactual = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.newtarg = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.newtarg = options.longs === String ? "0" : 0;
+	                }
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (typeof message.cpuId === "number")
+	                        object.cpuId = options.longs === String ? String(message.cpuId) : message.cpuId;
+	                    else
+	                        object.cpuId = options.longs === String ? $util.Long.prototype.toString.call(message.cpuId) : options.longs === Number ? new $util.LongBits(message.cpuId.low >>> 0, message.cpuId.high >>> 0).toNumber(true) : message.cpuId;
+	                if (message.load != null && message.hasOwnProperty("load"))
+	                    if (typeof message.load === "number")
+	                        object.load = options.longs === String ? String(message.load) : message.load;
+	                    else
+	                        object.load = options.longs === String ? $util.Long.prototype.toString.call(message.load) : options.longs === Number ? new $util.LongBits(message.load.low >>> 0, message.load.high >>> 0).toNumber(true) : message.load;
+	                if (message.curtarg != null && message.hasOwnProperty("curtarg"))
+	                    if (typeof message.curtarg === "number")
+	                        object.curtarg = options.longs === String ? String(message.curtarg) : message.curtarg;
+	                    else
+	                        object.curtarg = options.longs === String ? $util.Long.prototype.toString.call(message.curtarg) : options.longs === Number ? new $util.LongBits(message.curtarg.low >>> 0, message.curtarg.high >>> 0).toNumber(true) : message.curtarg;
+	                if (message.curactual != null && message.hasOwnProperty("curactual"))
+	                    if (typeof message.curactual === "number")
+	                        object.curactual = options.longs === String ? String(message.curactual) : message.curactual;
+	                    else
+	                        object.curactual = options.longs === String ? $util.Long.prototype.toString.call(message.curactual) : options.longs === Number ? new $util.LongBits(message.curactual.low >>> 0, message.curactual.high >>> 0).toNumber(true) : message.curactual;
+	                if (message.newtarg != null && message.hasOwnProperty("newtarg"))
+	                    if (typeof message.newtarg === "number")
+	                        object.newtarg = options.longs === String ? String(message.newtarg) : message.newtarg;
+	                    else
+	                        object.newtarg = options.longs === String ? $util.Long.prototype.toString.call(message.newtarg) : options.longs === Number ? new $util.LongBits(message.newtarg.low >>> 0, message.newtarg.high >>> 0).toNumber(true) : message.newtarg;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CpufreqInteractiveAlreadyFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CpufreqInteractiveAlreadyFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CpufreqInteractiveAlreadyFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CpufreqInteractiveAlreadyFtraceEvent;
+	        })();
+
+	        protos.CpufreqInteractiveBoostFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CpufreqInteractiveBoostFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICpufreqInteractiveBoostFtraceEvent
+	             * @property {string|null} [s] CpufreqInteractiveBoostFtraceEvent s
+	             */
+
+	            /**
+	             * Constructs a new CpufreqInteractiveBoostFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CpufreqInteractiveBoostFtraceEvent.
+	             * @implements ICpufreqInteractiveBoostFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICpufreqInteractiveBoostFtraceEvent=} [properties] Properties to set
+	             */
+	            function CpufreqInteractiveBoostFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CpufreqInteractiveBoostFtraceEvent s.
+	             * @member {string} s
+	             * @memberof perfetto.protos.CpufreqInteractiveBoostFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveBoostFtraceEvent.prototype.s = "";
+
+	            /**
+	             * Creates a new CpufreqInteractiveBoostFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CpufreqInteractiveBoostFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveBoostFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CpufreqInteractiveBoostFtraceEvent} CpufreqInteractiveBoostFtraceEvent instance
+	             */
+	            CpufreqInteractiveBoostFtraceEvent.create = function create(properties) {
+	                return new CpufreqInteractiveBoostFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveBoostFtraceEvent message. Does not implicitly {@link perfetto.protos.CpufreqInteractiveBoostFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CpufreqInteractiveBoostFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveBoostFtraceEvent} message CpufreqInteractiveBoostFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveBoostFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.s != null && message.hasOwnProperty("s"))
+	                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.s);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveBoostFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CpufreqInteractiveBoostFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveBoostFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveBoostFtraceEvent} message CpufreqInteractiveBoostFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveBoostFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveBoostFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CpufreqInteractiveBoostFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CpufreqInteractiveBoostFtraceEvent} CpufreqInteractiveBoostFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveBoostFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CpufreqInteractiveBoostFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.s = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveBoostFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveBoostFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CpufreqInteractiveBoostFtraceEvent} CpufreqInteractiveBoostFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveBoostFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CpufreqInteractiveBoostFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CpufreqInteractiveBoostFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CpufreqInteractiveBoostFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.s != null && message.hasOwnProperty("s"))
+	                    if (!$util.isString(message.s))
+	                        return "s: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CpufreqInteractiveBoostFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CpufreqInteractiveBoostFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CpufreqInteractiveBoostFtraceEvent} CpufreqInteractiveBoostFtraceEvent
+	             */
+	            CpufreqInteractiveBoostFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CpufreqInteractiveBoostFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CpufreqInteractiveBoostFtraceEvent();
+	                if (object.s != null)
+	                    message.s = String(object.s);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CpufreqInteractiveBoostFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CpufreqInteractiveBoostFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CpufreqInteractiveBoostFtraceEvent} message CpufreqInteractiveBoostFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CpufreqInteractiveBoostFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults)
+	                    object.s = "";
+	                if (message.s != null && message.hasOwnProperty("s"))
+	                    object.s = message.s;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CpufreqInteractiveBoostFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CpufreqInteractiveBoostFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CpufreqInteractiveBoostFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CpufreqInteractiveBoostFtraceEvent;
+	        })();
+
+	        protos.CpufreqInteractiveNotyetFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CpufreqInteractiveNotyetFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICpufreqInteractiveNotyetFtraceEvent
+	             * @property {number|Long|null} [cpuId] CpufreqInteractiveNotyetFtraceEvent cpuId
+	             * @property {number|Long|null} [load] CpufreqInteractiveNotyetFtraceEvent load
+	             * @property {number|Long|null} [curtarg] CpufreqInteractiveNotyetFtraceEvent curtarg
+	             * @property {number|Long|null} [curactual] CpufreqInteractiveNotyetFtraceEvent curactual
+	             * @property {number|Long|null} [newtarg] CpufreqInteractiveNotyetFtraceEvent newtarg
+	             */
+
+	            /**
+	             * Constructs a new CpufreqInteractiveNotyetFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CpufreqInteractiveNotyetFtraceEvent.
+	             * @implements ICpufreqInteractiveNotyetFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICpufreqInteractiveNotyetFtraceEvent=} [properties] Properties to set
+	             */
+	            function CpufreqInteractiveNotyetFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CpufreqInteractiveNotyetFtraceEvent cpuId.
+	             * @member {number|Long} cpuId
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.prototype.cpuId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveNotyetFtraceEvent load.
+	             * @member {number|Long} load
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.prototype.load = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveNotyetFtraceEvent curtarg.
+	             * @member {number|Long} curtarg
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.prototype.curtarg = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveNotyetFtraceEvent curactual.
+	             * @member {number|Long} curactual
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.prototype.curactual = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveNotyetFtraceEvent newtarg.
+	             * @member {number|Long} newtarg
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.prototype.newtarg = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Creates a new CpufreqInteractiveNotyetFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveNotyetFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CpufreqInteractiveNotyetFtraceEvent} CpufreqInteractiveNotyetFtraceEvent instance
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.create = function create(properties) {
+	                return new CpufreqInteractiveNotyetFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveNotyetFtraceEvent message. Does not implicitly {@link perfetto.protos.CpufreqInteractiveNotyetFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveNotyetFtraceEvent} message CpufreqInteractiveNotyetFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.cpuId);
+	                if (message.load != null && message.hasOwnProperty("load"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.load);
+	                if (message.curtarg != null && message.hasOwnProperty("curtarg"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.curtarg);
+	                if (message.curactual != null && message.hasOwnProperty("curactual"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.curactual);
+	                if (message.newtarg != null && message.hasOwnProperty("newtarg"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.newtarg);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveNotyetFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CpufreqInteractiveNotyetFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveNotyetFtraceEvent} message CpufreqInteractiveNotyetFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveNotyetFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CpufreqInteractiveNotyetFtraceEvent} CpufreqInteractiveNotyetFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CpufreqInteractiveNotyetFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.cpuId = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.load = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.curtarg = reader.uint64();
+	                        break;
+	                    case 4:
+	                        message.curactual = reader.uint64();
+	                        break;
+	                    case 5:
+	                        message.newtarg = reader.uint64();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveNotyetFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CpufreqInteractiveNotyetFtraceEvent} CpufreqInteractiveNotyetFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CpufreqInteractiveNotyetFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (!$util.isInteger(message.cpuId) && !(message.cpuId && $util.isInteger(message.cpuId.low) && $util.isInteger(message.cpuId.high)))
+	                        return "cpuId: integer|Long expected";
+	                if (message.load != null && message.hasOwnProperty("load"))
+	                    if (!$util.isInteger(message.load) && !(message.load && $util.isInteger(message.load.low) && $util.isInteger(message.load.high)))
+	                        return "load: integer|Long expected";
+	                if (message.curtarg != null && message.hasOwnProperty("curtarg"))
+	                    if (!$util.isInteger(message.curtarg) && !(message.curtarg && $util.isInteger(message.curtarg.low) && $util.isInteger(message.curtarg.high)))
+	                        return "curtarg: integer|Long expected";
+	                if (message.curactual != null && message.hasOwnProperty("curactual"))
+	                    if (!$util.isInteger(message.curactual) && !(message.curactual && $util.isInteger(message.curactual.low) && $util.isInteger(message.curactual.high)))
+	                        return "curactual: integer|Long expected";
+	                if (message.newtarg != null && message.hasOwnProperty("newtarg"))
+	                    if (!$util.isInteger(message.newtarg) && !(message.newtarg && $util.isInteger(message.newtarg.low) && $util.isInteger(message.newtarg.high)))
+	                        return "newtarg: integer|Long expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CpufreqInteractiveNotyetFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CpufreqInteractiveNotyetFtraceEvent} CpufreqInteractiveNotyetFtraceEvent
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CpufreqInteractiveNotyetFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CpufreqInteractiveNotyetFtraceEvent();
+	                if (object.cpuId != null)
+	                    if ($util.Long)
+	                        (message.cpuId = $util.Long.fromValue(object.cpuId)).unsigned = true;
+	                    else if (typeof object.cpuId === "string")
+	                        message.cpuId = parseInt(object.cpuId, 10);
+	                    else if (typeof object.cpuId === "number")
+	                        message.cpuId = object.cpuId;
+	                    else if (typeof object.cpuId === "object")
+	                        message.cpuId = new $util.LongBits(object.cpuId.low >>> 0, object.cpuId.high >>> 0).toNumber(true);
+	                if (object.load != null)
+	                    if ($util.Long)
+	                        (message.load = $util.Long.fromValue(object.load)).unsigned = true;
+	                    else if (typeof object.load === "string")
+	                        message.load = parseInt(object.load, 10);
+	                    else if (typeof object.load === "number")
+	                        message.load = object.load;
+	                    else if (typeof object.load === "object")
+	                        message.load = new $util.LongBits(object.load.low >>> 0, object.load.high >>> 0).toNumber(true);
+	                if (object.curtarg != null)
+	                    if ($util.Long)
+	                        (message.curtarg = $util.Long.fromValue(object.curtarg)).unsigned = true;
+	                    else if (typeof object.curtarg === "string")
+	                        message.curtarg = parseInt(object.curtarg, 10);
+	                    else if (typeof object.curtarg === "number")
+	                        message.curtarg = object.curtarg;
+	                    else if (typeof object.curtarg === "object")
+	                        message.curtarg = new $util.LongBits(object.curtarg.low >>> 0, object.curtarg.high >>> 0).toNumber(true);
+	                if (object.curactual != null)
+	                    if ($util.Long)
+	                        (message.curactual = $util.Long.fromValue(object.curactual)).unsigned = true;
+	                    else if (typeof object.curactual === "string")
+	                        message.curactual = parseInt(object.curactual, 10);
+	                    else if (typeof object.curactual === "number")
+	                        message.curactual = object.curactual;
+	                    else if (typeof object.curactual === "object")
+	                        message.curactual = new $util.LongBits(object.curactual.low >>> 0, object.curactual.high >>> 0).toNumber(true);
+	                if (object.newtarg != null)
+	                    if ($util.Long)
+	                        (message.newtarg = $util.Long.fromValue(object.newtarg)).unsigned = true;
+	                    else if (typeof object.newtarg === "string")
+	                        message.newtarg = parseInt(object.newtarg, 10);
+	                    else if (typeof object.newtarg === "number")
+	                        message.newtarg = object.newtarg;
+	                    else if (typeof object.newtarg === "object")
+	                        message.newtarg = new $util.LongBits(object.newtarg.low >>> 0, object.newtarg.high >>> 0).toNumber(true);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CpufreqInteractiveNotyetFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CpufreqInteractiveNotyetFtraceEvent} message CpufreqInteractiveNotyetFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.cpuId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.cpuId = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.load = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.load = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.curtarg = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.curtarg = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.curactual = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.curactual = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.newtarg = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.newtarg = options.longs === String ? "0" : 0;
+	                }
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (typeof message.cpuId === "number")
+	                        object.cpuId = options.longs === String ? String(message.cpuId) : message.cpuId;
+	                    else
+	                        object.cpuId = options.longs === String ? $util.Long.prototype.toString.call(message.cpuId) : options.longs === Number ? new $util.LongBits(message.cpuId.low >>> 0, message.cpuId.high >>> 0).toNumber(true) : message.cpuId;
+	                if (message.load != null && message.hasOwnProperty("load"))
+	                    if (typeof message.load === "number")
+	                        object.load = options.longs === String ? String(message.load) : message.load;
+	                    else
+	                        object.load = options.longs === String ? $util.Long.prototype.toString.call(message.load) : options.longs === Number ? new $util.LongBits(message.load.low >>> 0, message.load.high >>> 0).toNumber(true) : message.load;
+	                if (message.curtarg != null && message.hasOwnProperty("curtarg"))
+	                    if (typeof message.curtarg === "number")
+	                        object.curtarg = options.longs === String ? String(message.curtarg) : message.curtarg;
+	                    else
+	                        object.curtarg = options.longs === String ? $util.Long.prototype.toString.call(message.curtarg) : options.longs === Number ? new $util.LongBits(message.curtarg.low >>> 0, message.curtarg.high >>> 0).toNumber(true) : message.curtarg;
+	                if (message.curactual != null && message.hasOwnProperty("curactual"))
+	                    if (typeof message.curactual === "number")
+	                        object.curactual = options.longs === String ? String(message.curactual) : message.curactual;
+	                    else
+	                        object.curactual = options.longs === String ? $util.Long.prototype.toString.call(message.curactual) : options.longs === Number ? new $util.LongBits(message.curactual.low >>> 0, message.curactual.high >>> 0).toNumber(true) : message.curactual;
+	                if (message.newtarg != null && message.hasOwnProperty("newtarg"))
+	                    if (typeof message.newtarg === "number")
+	                        object.newtarg = options.longs === String ? String(message.newtarg) : message.newtarg;
+	                    else
+	                        object.newtarg = options.longs === String ? $util.Long.prototype.toString.call(message.newtarg) : options.longs === Number ? new $util.LongBits(message.newtarg.low >>> 0, message.newtarg.high >>> 0).toNumber(true) : message.newtarg;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CpufreqInteractiveNotyetFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CpufreqInteractiveNotyetFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CpufreqInteractiveNotyetFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CpufreqInteractiveNotyetFtraceEvent;
+	        })();
+
+	        protos.CpufreqInteractiveSetspeedFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CpufreqInteractiveSetspeedFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICpufreqInteractiveSetspeedFtraceEvent
+	             * @property {number|null} [cpuId] CpufreqInteractiveSetspeedFtraceEvent cpuId
+	             * @property {number|Long|null} [targfreq] CpufreqInteractiveSetspeedFtraceEvent targfreq
+	             * @property {number|Long|null} [actualfreq] CpufreqInteractiveSetspeedFtraceEvent actualfreq
+	             */
+
+	            /**
+	             * Constructs a new CpufreqInteractiveSetspeedFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CpufreqInteractiveSetspeedFtraceEvent.
+	             * @implements ICpufreqInteractiveSetspeedFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICpufreqInteractiveSetspeedFtraceEvent=} [properties] Properties to set
+	             */
+	            function CpufreqInteractiveSetspeedFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CpufreqInteractiveSetspeedFtraceEvent cpuId.
+	             * @member {number} cpuId
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.prototype.cpuId = 0;
+
+	            /**
+	             * CpufreqInteractiveSetspeedFtraceEvent targfreq.
+	             * @member {number|Long} targfreq
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.prototype.targfreq = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveSetspeedFtraceEvent actualfreq.
+	             * @member {number|Long} actualfreq
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.prototype.actualfreq = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Creates a new CpufreqInteractiveSetspeedFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveSetspeedFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent} CpufreqInteractiveSetspeedFtraceEvent instance
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.create = function create(properties) {
+	                return new CpufreqInteractiveSetspeedFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveSetspeedFtraceEvent message. Does not implicitly {@link perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveSetspeedFtraceEvent} message CpufreqInteractiveSetspeedFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.cpuId);
+	                if (message.targfreq != null && message.hasOwnProperty("targfreq"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.targfreq);
+	                if (message.actualfreq != null && message.hasOwnProperty("actualfreq"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.actualfreq);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveSetspeedFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveSetspeedFtraceEvent} message CpufreqInteractiveSetspeedFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveSetspeedFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent} CpufreqInteractiveSetspeedFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.cpuId = reader.uint32();
+	                        break;
+	                    case 2:
+	                        message.targfreq = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.actualfreq = reader.uint64();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveSetspeedFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent} CpufreqInteractiveSetspeedFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CpufreqInteractiveSetspeedFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (!$util.isInteger(message.cpuId))
+	                        return "cpuId: integer expected";
+	                if (message.targfreq != null && message.hasOwnProperty("targfreq"))
+	                    if (!$util.isInteger(message.targfreq) && !(message.targfreq && $util.isInteger(message.targfreq.low) && $util.isInteger(message.targfreq.high)))
+	                        return "targfreq: integer|Long expected";
+	                if (message.actualfreq != null && message.hasOwnProperty("actualfreq"))
+	                    if (!$util.isInteger(message.actualfreq) && !(message.actualfreq && $util.isInteger(message.actualfreq.low) && $util.isInteger(message.actualfreq.high)))
+	                        return "actualfreq: integer|Long expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CpufreqInteractiveSetspeedFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent} CpufreqInteractiveSetspeedFtraceEvent
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent();
+	                if (object.cpuId != null)
+	                    message.cpuId = object.cpuId >>> 0;
+	                if (object.targfreq != null)
+	                    if ($util.Long)
+	                        (message.targfreq = $util.Long.fromValue(object.targfreq)).unsigned = true;
+	                    else if (typeof object.targfreq === "string")
+	                        message.targfreq = parseInt(object.targfreq, 10);
+	                    else if (typeof object.targfreq === "number")
+	                        message.targfreq = object.targfreq;
+	                    else if (typeof object.targfreq === "object")
+	                        message.targfreq = new $util.LongBits(object.targfreq.low >>> 0, object.targfreq.high >>> 0).toNumber(true);
+	                if (object.actualfreq != null)
+	                    if ($util.Long)
+	                        (message.actualfreq = $util.Long.fromValue(object.actualfreq)).unsigned = true;
+	                    else if (typeof object.actualfreq === "string")
+	                        message.actualfreq = parseInt(object.actualfreq, 10);
+	                    else if (typeof object.actualfreq === "number")
+	                        message.actualfreq = object.actualfreq;
+	                    else if (typeof object.actualfreq === "object")
+	                        message.actualfreq = new $util.LongBits(object.actualfreq.low >>> 0, object.actualfreq.high >>> 0).toNumber(true);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CpufreqInteractiveSetspeedFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent} message CpufreqInteractiveSetspeedFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.cpuId = 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.targfreq = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.targfreq = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.actualfreq = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.actualfreq = options.longs === String ? "0" : 0;
+	                }
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    object.cpuId = message.cpuId;
+	                if (message.targfreq != null && message.hasOwnProperty("targfreq"))
+	                    if (typeof message.targfreq === "number")
+	                        object.targfreq = options.longs === String ? String(message.targfreq) : message.targfreq;
+	                    else
+	                        object.targfreq = options.longs === String ? $util.Long.prototype.toString.call(message.targfreq) : options.longs === Number ? new $util.LongBits(message.targfreq.low >>> 0, message.targfreq.high >>> 0).toNumber(true) : message.targfreq;
+	                if (message.actualfreq != null && message.hasOwnProperty("actualfreq"))
+	                    if (typeof message.actualfreq === "number")
+	                        object.actualfreq = options.longs === String ? String(message.actualfreq) : message.actualfreq;
+	                    else
+	                        object.actualfreq = options.longs === String ? $util.Long.prototype.toString.call(message.actualfreq) : options.longs === Number ? new $util.LongBits(message.actualfreq.low >>> 0, message.actualfreq.high >>> 0).toNumber(true) : message.actualfreq;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CpufreqInteractiveSetspeedFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CpufreqInteractiveSetspeedFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CpufreqInteractiveSetspeedFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CpufreqInteractiveSetspeedFtraceEvent;
+	        })();
+
+	        protos.CpufreqInteractiveTargetFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CpufreqInteractiveTargetFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICpufreqInteractiveTargetFtraceEvent
+	             * @property {number|Long|null} [cpuId] CpufreqInteractiveTargetFtraceEvent cpuId
+	             * @property {number|Long|null} [load] CpufreqInteractiveTargetFtraceEvent load
+	             * @property {number|Long|null} [curtarg] CpufreqInteractiveTargetFtraceEvent curtarg
+	             * @property {number|Long|null} [curactual] CpufreqInteractiveTargetFtraceEvent curactual
+	             * @property {number|Long|null} [newtarg] CpufreqInteractiveTargetFtraceEvent newtarg
+	             */
+
+	            /**
+	             * Constructs a new CpufreqInteractiveTargetFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CpufreqInteractiveTargetFtraceEvent.
+	             * @implements ICpufreqInteractiveTargetFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICpufreqInteractiveTargetFtraceEvent=} [properties] Properties to set
+	             */
+	            function CpufreqInteractiveTargetFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CpufreqInteractiveTargetFtraceEvent cpuId.
+	             * @member {number|Long} cpuId
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.prototype.cpuId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveTargetFtraceEvent load.
+	             * @member {number|Long} load
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.prototype.load = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveTargetFtraceEvent curtarg.
+	             * @member {number|Long} curtarg
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.prototype.curtarg = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveTargetFtraceEvent curactual.
+	             * @member {number|Long} curactual
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.prototype.curactual = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * CpufreqInteractiveTargetFtraceEvent newtarg.
+	             * @member {number|Long} newtarg
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.prototype.newtarg = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Creates a new CpufreqInteractiveTargetFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveTargetFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CpufreqInteractiveTargetFtraceEvent} CpufreqInteractiveTargetFtraceEvent instance
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.create = function create(properties) {
+	                return new CpufreqInteractiveTargetFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveTargetFtraceEvent message. Does not implicitly {@link perfetto.protos.CpufreqInteractiveTargetFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveTargetFtraceEvent} message CpufreqInteractiveTargetFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.cpuId);
+	                if (message.load != null && message.hasOwnProperty("load"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.load);
+	                if (message.curtarg != null && message.hasOwnProperty("curtarg"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.curtarg);
+	                if (message.curactual != null && message.hasOwnProperty("curactual"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.curactual);
+	                if (message.newtarg != null && message.hasOwnProperty("newtarg"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.newtarg);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveTargetFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CpufreqInteractiveTargetFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveTargetFtraceEvent} message CpufreqInteractiveTargetFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveTargetFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CpufreqInteractiveTargetFtraceEvent} CpufreqInteractiveTargetFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CpufreqInteractiveTargetFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.cpuId = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.load = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.curtarg = reader.uint64();
+	                        break;
+	                    case 4:
+	                        message.curactual = reader.uint64();
+	                        break;
+	                    case 5:
+	                        message.newtarg = reader.uint64();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveTargetFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CpufreqInteractiveTargetFtraceEvent} CpufreqInteractiveTargetFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CpufreqInteractiveTargetFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (!$util.isInteger(message.cpuId) && !(message.cpuId && $util.isInteger(message.cpuId.low) && $util.isInteger(message.cpuId.high)))
+	                        return "cpuId: integer|Long expected";
+	                if (message.load != null && message.hasOwnProperty("load"))
+	                    if (!$util.isInteger(message.load) && !(message.load && $util.isInteger(message.load.low) && $util.isInteger(message.load.high)))
+	                        return "load: integer|Long expected";
+	                if (message.curtarg != null && message.hasOwnProperty("curtarg"))
+	                    if (!$util.isInteger(message.curtarg) && !(message.curtarg && $util.isInteger(message.curtarg.low) && $util.isInteger(message.curtarg.high)))
+	                        return "curtarg: integer|Long expected";
+	                if (message.curactual != null && message.hasOwnProperty("curactual"))
+	                    if (!$util.isInteger(message.curactual) && !(message.curactual && $util.isInteger(message.curactual.low) && $util.isInteger(message.curactual.high)))
+	                        return "curactual: integer|Long expected";
+	                if (message.newtarg != null && message.hasOwnProperty("newtarg"))
+	                    if (!$util.isInteger(message.newtarg) && !(message.newtarg && $util.isInteger(message.newtarg.low) && $util.isInteger(message.newtarg.high)))
+	                        return "newtarg: integer|Long expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CpufreqInteractiveTargetFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CpufreqInteractiveTargetFtraceEvent} CpufreqInteractiveTargetFtraceEvent
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CpufreqInteractiveTargetFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CpufreqInteractiveTargetFtraceEvent();
+	                if (object.cpuId != null)
+	                    if ($util.Long)
+	                        (message.cpuId = $util.Long.fromValue(object.cpuId)).unsigned = true;
+	                    else if (typeof object.cpuId === "string")
+	                        message.cpuId = parseInt(object.cpuId, 10);
+	                    else if (typeof object.cpuId === "number")
+	                        message.cpuId = object.cpuId;
+	                    else if (typeof object.cpuId === "object")
+	                        message.cpuId = new $util.LongBits(object.cpuId.low >>> 0, object.cpuId.high >>> 0).toNumber(true);
+	                if (object.load != null)
+	                    if ($util.Long)
+	                        (message.load = $util.Long.fromValue(object.load)).unsigned = true;
+	                    else if (typeof object.load === "string")
+	                        message.load = parseInt(object.load, 10);
+	                    else if (typeof object.load === "number")
+	                        message.load = object.load;
+	                    else if (typeof object.load === "object")
+	                        message.load = new $util.LongBits(object.load.low >>> 0, object.load.high >>> 0).toNumber(true);
+	                if (object.curtarg != null)
+	                    if ($util.Long)
+	                        (message.curtarg = $util.Long.fromValue(object.curtarg)).unsigned = true;
+	                    else if (typeof object.curtarg === "string")
+	                        message.curtarg = parseInt(object.curtarg, 10);
+	                    else if (typeof object.curtarg === "number")
+	                        message.curtarg = object.curtarg;
+	                    else if (typeof object.curtarg === "object")
+	                        message.curtarg = new $util.LongBits(object.curtarg.low >>> 0, object.curtarg.high >>> 0).toNumber(true);
+	                if (object.curactual != null)
+	                    if ($util.Long)
+	                        (message.curactual = $util.Long.fromValue(object.curactual)).unsigned = true;
+	                    else if (typeof object.curactual === "string")
+	                        message.curactual = parseInt(object.curactual, 10);
+	                    else if (typeof object.curactual === "number")
+	                        message.curactual = object.curactual;
+	                    else if (typeof object.curactual === "object")
+	                        message.curactual = new $util.LongBits(object.curactual.low >>> 0, object.curactual.high >>> 0).toNumber(true);
+	                if (object.newtarg != null)
+	                    if ($util.Long)
+	                        (message.newtarg = $util.Long.fromValue(object.newtarg)).unsigned = true;
+	                    else if (typeof object.newtarg === "string")
+	                        message.newtarg = parseInt(object.newtarg, 10);
+	                    else if (typeof object.newtarg === "number")
+	                        message.newtarg = object.newtarg;
+	                    else if (typeof object.newtarg === "object")
+	                        message.newtarg = new $util.LongBits(object.newtarg.low >>> 0, object.newtarg.high >>> 0).toNumber(true);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CpufreqInteractiveTargetFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CpufreqInteractiveTargetFtraceEvent} message CpufreqInteractiveTargetFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.cpuId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.cpuId = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.load = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.load = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.curtarg = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.curtarg = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.curactual = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.curactual = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.newtarg = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.newtarg = options.longs === String ? "0" : 0;
+	                }
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (typeof message.cpuId === "number")
+	                        object.cpuId = options.longs === String ? String(message.cpuId) : message.cpuId;
+	                    else
+	                        object.cpuId = options.longs === String ? $util.Long.prototype.toString.call(message.cpuId) : options.longs === Number ? new $util.LongBits(message.cpuId.low >>> 0, message.cpuId.high >>> 0).toNumber(true) : message.cpuId;
+	                if (message.load != null && message.hasOwnProperty("load"))
+	                    if (typeof message.load === "number")
+	                        object.load = options.longs === String ? String(message.load) : message.load;
+	                    else
+	                        object.load = options.longs === String ? $util.Long.prototype.toString.call(message.load) : options.longs === Number ? new $util.LongBits(message.load.low >>> 0, message.load.high >>> 0).toNumber(true) : message.load;
+	                if (message.curtarg != null && message.hasOwnProperty("curtarg"))
+	                    if (typeof message.curtarg === "number")
+	                        object.curtarg = options.longs === String ? String(message.curtarg) : message.curtarg;
+	                    else
+	                        object.curtarg = options.longs === String ? $util.Long.prototype.toString.call(message.curtarg) : options.longs === Number ? new $util.LongBits(message.curtarg.low >>> 0, message.curtarg.high >>> 0).toNumber(true) : message.curtarg;
+	                if (message.curactual != null && message.hasOwnProperty("curactual"))
+	                    if (typeof message.curactual === "number")
+	                        object.curactual = options.longs === String ? String(message.curactual) : message.curactual;
+	                    else
+	                        object.curactual = options.longs === String ? $util.Long.prototype.toString.call(message.curactual) : options.longs === Number ? new $util.LongBits(message.curactual.low >>> 0, message.curactual.high >>> 0).toNumber(true) : message.curactual;
+	                if (message.newtarg != null && message.hasOwnProperty("newtarg"))
+	                    if (typeof message.newtarg === "number")
+	                        object.newtarg = options.longs === String ? String(message.newtarg) : message.newtarg;
+	                    else
+	                        object.newtarg = options.longs === String ? $util.Long.prototype.toString.call(message.newtarg) : options.longs === Number ? new $util.LongBits(message.newtarg.low >>> 0, message.newtarg.high >>> 0).toNumber(true) : message.newtarg;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CpufreqInteractiveTargetFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CpufreqInteractiveTargetFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CpufreqInteractiveTargetFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CpufreqInteractiveTargetFtraceEvent;
+	        })();
+
+	        protos.CpufreqInteractiveUnboostFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CpufreqInteractiveUnboostFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICpufreqInteractiveUnboostFtraceEvent
+	             * @property {string|null} [s] CpufreqInteractiveUnboostFtraceEvent s
+	             */
+
+	            /**
+	             * Constructs a new CpufreqInteractiveUnboostFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CpufreqInteractiveUnboostFtraceEvent.
+	             * @implements ICpufreqInteractiveUnboostFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICpufreqInteractiveUnboostFtraceEvent=} [properties] Properties to set
+	             */
+	            function CpufreqInteractiveUnboostFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CpufreqInteractiveUnboostFtraceEvent s.
+	             * @member {string} s
+	             * @memberof perfetto.protos.CpufreqInteractiveUnboostFtraceEvent
+	             * @instance
+	             */
+	            CpufreqInteractiveUnboostFtraceEvent.prototype.s = "";
+
+	            /**
+	             * Creates a new CpufreqInteractiveUnboostFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CpufreqInteractiveUnboostFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveUnboostFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CpufreqInteractiveUnboostFtraceEvent} CpufreqInteractiveUnboostFtraceEvent instance
+	             */
+	            CpufreqInteractiveUnboostFtraceEvent.create = function create(properties) {
+	                return new CpufreqInteractiveUnboostFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveUnboostFtraceEvent message. Does not implicitly {@link perfetto.protos.CpufreqInteractiveUnboostFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CpufreqInteractiveUnboostFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveUnboostFtraceEvent} message CpufreqInteractiveUnboostFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveUnboostFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.s != null && message.hasOwnProperty("s"))
+	                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.s);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CpufreqInteractiveUnboostFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CpufreqInteractiveUnboostFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveUnboostFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpufreqInteractiveUnboostFtraceEvent} message CpufreqInteractiveUnboostFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpufreqInteractiveUnboostFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveUnboostFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CpufreqInteractiveUnboostFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CpufreqInteractiveUnboostFtraceEvent} CpufreqInteractiveUnboostFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveUnboostFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CpufreqInteractiveUnboostFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.s = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CpufreqInteractiveUnboostFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CpufreqInteractiveUnboostFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CpufreqInteractiveUnboostFtraceEvent} CpufreqInteractiveUnboostFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpufreqInteractiveUnboostFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CpufreqInteractiveUnboostFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CpufreqInteractiveUnboostFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CpufreqInteractiveUnboostFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.s != null && message.hasOwnProperty("s"))
+	                    if (!$util.isString(message.s))
+	                        return "s: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CpufreqInteractiveUnboostFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CpufreqInteractiveUnboostFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CpufreqInteractiveUnboostFtraceEvent} CpufreqInteractiveUnboostFtraceEvent
+	             */
+	            CpufreqInteractiveUnboostFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CpufreqInteractiveUnboostFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CpufreqInteractiveUnboostFtraceEvent();
+	                if (object.s != null)
+	                    message.s = String(object.s);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CpufreqInteractiveUnboostFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CpufreqInteractiveUnboostFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CpufreqInteractiveUnboostFtraceEvent} message CpufreqInteractiveUnboostFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CpufreqInteractiveUnboostFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults)
+	                    object.s = "";
+	                if (message.s != null && message.hasOwnProperty("s"))
+	                    object.s = message.s;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CpufreqInteractiveUnboostFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CpufreqInteractiveUnboostFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CpufreqInteractiveUnboostFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CpufreqInteractiveUnboostFtraceEvent;
+	        })();
+
+	        protos.CpuFrequencyLimitsFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CpuFrequencyLimitsFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICpuFrequencyLimitsFtraceEvent
+	             * @property {number|null} [minFreq] CpuFrequencyLimitsFtraceEvent minFreq
+	             * @property {number|null} [maxFreq] CpuFrequencyLimitsFtraceEvent maxFreq
+	             * @property {number|null} [cpuId] CpuFrequencyLimitsFtraceEvent cpuId
+	             */
+
+	            /**
+	             * Constructs a new CpuFrequencyLimitsFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CpuFrequencyLimitsFtraceEvent.
+	             * @implements ICpuFrequencyLimitsFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICpuFrequencyLimitsFtraceEvent=} [properties] Properties to set
+	             */
+	            function CpuFrequencyLimitsFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CpuFrequencyLimitsFtraceEvent minFreq.
+	             * @member {number} minFreq
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @instance
+	             */
+	            CpuFrequencyLimitsFtraceEvent.prototype.minFreq = 0;
+
+	            /**
+	             * CpuFrequencyLimitsFtraceEvent maxFreq.
+	             * @member {number} maxFreq
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @instance
+	             */
+	            CpuFrequencyLimitsFtraceEvent.prototype.maxFreq = 0;
+
+	            /**
+	             * CpuFrequencyLimitsFtraceEvent cpuId.
+	             * @member {number} cpuId
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @instance
+	             */
+	            CpuFrequencyLimitsFtraceEvent.prototype.cpuId = 0;
+
+	            /**
+	             * Creates a new CpuFrequencyLimitsFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpuFrequencyLimitsFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CpuFrequencyLimitsFtraceEvent} CpuFrequencyLimitsFtraceEvent instance
+	             */
+	            CpuFrequencyLimitsFtraceEvent.create = function create(properties) {
+	                return new CpuFrequencyLimitsFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CpuFrequencyLimitsFtraceEvent message. Does not implicitly {@link perfetto.protos.CpuFrequencyLimitsFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpuFrequencyLimitsFtraceEvent} message CpuFrequencyLimitsFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpuFrequencyLimitsFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.minFreq != null && message.hasOwnProperty("minFreq"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.minFreq);
+	                if (message.maxFreq != null && message.hasOwnProperty("maxFreq"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.maxFreq);
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.cpuId);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CpuFrequencyLimitsFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CpuFrequencyLimitsFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpuFrequencyLimitsFtraceEvent} message CpuFrequencyLimitsFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpuFrequencyLimitsFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CpuFrequencyLimitsFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CpuFrequencyLimitsFtraceEvent} CpuFrequencyLimitsFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpuFrequencyLimitsFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CpuFrequencyLimitsFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.minFreq = reader.uint32();
+	                        break;
+	                    case 2:
+	                        message.maxFreq = reader.uint32();
+	                        break;
+	                    case 3:
+	                        message.cpuId = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CpuFrequencyLimitsFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CpuFrequencyLimitsFtraceEvent} CpuFrequencyLimitsFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpuFrequencyLimitsFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CpuFrequencyLimitsFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CpuFrequencyLimitsFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.minFreq != null && message.hasOwnProperty("minFreq"))
+	                    if (!$util.isInteger(message.minFreq))
+	                        return "minFreq: integer expected";
+	                if (message.maxFreq != null && message.hasOwnProperty("maxFreq"))
+	                    if (!$util.isInteger(message.maxFreq))
+	                        return "maxFreq: integer expected";
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (!$util.isInteger(message.cpuId))
+	                        return "cpuId: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CpuFrequencyLimitsFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CpuFrequencyLimitsFtraceEvent} CpuFrequencyLimitsFtraceEvent
+	             */
+	            CpuFrequencyLimitsFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CpuFrequencyLimitsFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CpuFrequencyLimitsFtraceEvent();
+	                if (object.minFreq != null)
+	                    message.minFreq = object.minFreq >>> 0;
+	                if (object.maxFreq != null)
+	                    message.maxFreq = object.maxFreq >>> 0;
+	                if (object.cpuId != null)
+	                    message.cpuId = object.cpuId >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CpuFrequencyLimitsFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CpuFrequencyLimitsFtraceEvent} message CpuFrequencyLimitsFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CpuFrequencyLimitsFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.minFreq = 0;
+	                    object.maxFreq = 0;
+	                    object.cpuId = 0;
+	                }
+	                if (message.minFreq != null && message.hasOwnProperty("minFreq"))
+	                    object.minFreq = message.minFreq;
+	                if (message.maxFreq != null && message.hasOwnProperty("maxFreq"))
+	                    object.maxFreq = message.maxFreq;
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    object.cpuId = message.cpuId;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CpuFrequencyLimitsFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CpuFrequencyLimitsFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CpuFrequencyLimitsFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CpuFrequencyLimitsFtraceEvent;
+	        })();
+
+	        protos.CpuFrequencyFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CpuFrequencyFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICpuFrequencyFtraceEvent
+	             * @property {number|null} [state] CpuFrequencyFtraceEvent state
+	             * @property {number|null} [cpuId] CpuFrequencyFtraceEvent cpuId
+	             */
+
+	            /**
+	             * Constructs a new CpuFrequencyFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CpuFrequencyFtraceEvent.
+	             * @implements ICpuFrequencyFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICpuFrequencyFtraceEvent=} [properties] Properties to set
+	             */
+	            function CpuFrequencyFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CpuFrequencyFtraceEvent state.
+	             * @member {number} state
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @instance
+	             */
+	            CpuFrequencyFtraceEvent.prototype.state = 0;
+
+	            /**
+	             * CpuFrequencyFtraceEvent cpuId.
+	             * @member {number} cpuId
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @instance
+	             */
+	            CpuFrequencyFtraceEvent.prototype.cpuId = 0;
+
+	            /**
+	             * Creates a new CpuFrequencyFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpuFrequencyFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CpuFrequencyFtraceEvent} CpuFrequencyFtraceEvent instance
+	             */
+	            CpuFrequencyFtraceEvent.create = function create(properties) {
+	                return new CpuFrequencyFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CpuFrequencyFtraceEvent message. Does not implicitly {@link perfetto.protos.CpuFrequencyFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpuFrequencyFtraceEvent} message CpuFrequencyFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpuFrequencyFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.state != null && message.hasOwnProperty("state"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.state);
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.cpuId);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CpuFrequencyFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CpuFrequencyFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpuFrequencyFtraceEvent} message CpuFrequencyFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpuFrequencyFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CpuFrequencyFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CpuFrequencyFtraceEvent} CpuFrequencyFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpuFrequencyFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CpuFrequencyFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.state = reader.uint32();
+	                        break;
+	                    case 2:
+	                        message.cpuId = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CpuFrequencyFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CpuFrequencyFtraceEvent} CpuFrequencyFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpuFrequencyFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CpuFrequencyFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CpuFrequencyFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.state != null && message.hasOwnProperty("state"))
+	                    if (!$util.isInteger(message.state))
+	                        return "state: integer expected";
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (!$util.isInteger(message.cpuId))
+	                        return "cpuId: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CpuFrequencyFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CpuFrequencyFtraceEvent} CpuFrequencyFtraceEvent
+	             */
+	            CpuFrequencyFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CpuFrequencyFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CpuFrequencyFtraceEvent();
+	                if (object.state != null)
+	                    message.state = object.state >>> 0;
+	                if (object.cpuId != null)
+	                    message.cpuId = object.cpuId >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CpuFrequencyFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CpuFrequencyFtraceEvent} message CpuFrequencyFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CpuFrequencyFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.state = 0;
+	                    object.cpuId = 0;
+	                }
+	                if (message.state != null && message.hasOwnProperty("state"))
+	                    object.state = message.state;
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    object.cpuId = message.cpuId;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CpuFrequencyFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CpuFrequencyFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CpuFrequencyFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CpuFrequencyFtraceEvent;
+	        })();
+
+	        protos.CpuIdleFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a CpuIdleFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ICpuIdleFtraceEvent
+	             * @property {number|null} [state] CpuIdleFtraceEvent state
+	             * @property {number|null} [cpuId] CpuIdleFtraceEvent cpuId
+	             */
+
+	            /**
+	             * Constructs a new CpuIdleFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a CpuIdleFtraceEvent.
+	             * @implements ICpuIdleFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ICpuIdleFtraceEvent=} [properties] Properties to set
+	             */
+	            function CpuIdleFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * CpuIdleFtraceEvent state.
+	             * @member {number} state
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @instance
+	             */
+	            CpuIdleFtraceEvent.prototype.state = 0;
+
+	            /**
+	             * CpuIdleFtraceEvent cpuId.
+	             * @member {number} cpuId
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @instance
+	             */
+	            CpuIdleFtraceEvent.prototype.cpuId = 0;
+
+	            /**
+	             * Creates a new CpuIdleFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpuIdleFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.CpuIdleFtraceEvent} CpuIdleFtraceEvent instance
+	             */
+	            CpuIdleFtraceEvent.create = function create(properties) {
+	                return new CpuIdleFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified CpuIdleFtraceEvent message. Does not implicitly {@link perfetto.protos.CpuIdleFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpuIdleFtraceEvent} message CpuIdleFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpuIdleFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.state != null && message.hasOwnProperty("state"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.state);
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.cpuId);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified CpuIdleFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.CpuIdleFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ICpuIdleFtraceEvent} message CpuIdleFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            CpuIdleFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a CpuIdleFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.CpuIdleFtraceEvent} CpuIdleFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpuIdleFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.CpuIdleFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.state = reader.uint32();
+	                        break;
+	                    case 2:
+	                        message.cpuId = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a CpuIdleFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.CpuIdleFtraceEvent} CpuIdleFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            CpuIdleFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a CpuIdleFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            CpuIdleFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.state != null && message.hasOwnProperty("state"))
+	                    if (!$util.isInteger(message.state))
+	                        return "state: integer expected";
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    if (!$util.isInteger(message.cpuId))
+	                        return "cpuId: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a CpuIdleFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.CpuIdleFtraceEvent} CpuIdleFtraceEvent
+	             */
+	            CpuIdleFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.CpuIdleFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.CpuIdleFtraceEvent();
+	                if (object.state != null)
+	                    message.state = object.state >>> 0;
+	                if (object.cpuId != null)
+	                    message.cpuId = object.cpuId >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a CpuIdleFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.CpuIdleFtraceEvent} message CpuIdleFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            CpuIdleFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.state = 0;
+	                    object.cpuId = 0;
+	                }
+	                if (message.state != null && message.hasOwnProperty("state"))
+	                    object.state = message.state;
+	                if (message.cpuId != null && message.hasOwnProperty("cpuId"))
+	                    object.cpuId = message.cpuId;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this CpuIdleFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.CpuIdleFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            CpuIdleFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return CpuIdleFtraceEvent;
+	        })();
+
+	        protos.Ext4DaWriteBeginFtraceEvent = (function() {
+
+	            /**
+	             * Properties of an Ext4DaWriteBeginFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IExt4DaWriteBeginFtraceEvent
+	             * @property {number|Long|null} [dev] Ext4DaWriteBeginFtraceEvent dev
+	             * @property {number|Long|null} [ino] Ext4DaWriteBeginFtraceEvent ino
+	             * @property {number|Long|null} [pos] Ext4DaWriteBeginFtraceEvent pos
+	             * @property {number|null} [len] Ext4DaWriteBeginFtraceEvent len
+	             * @property {number|null} [flags] Ext4DaWriteBeginFtraceEvent flags
+	             */
+
+	            /**
+	             * Constructs a new Ext4DaWriteBeginFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents an Ext4DaWriteBeginFtraceEvent.
+	             * @implements IExt4DaWriteBeginFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IExt4DaWriteBeginFtraceEvent=} [properties] Properties to set
+	             */
+	            function Ext4DaWriteBeginFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * Ext4DaWriteBeginFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @instance
+	             */
+	            Ext4DaWriteBeginFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4DaWriteBeginFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @instance
+	             */
+	            Ext4DaWriteBeginFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4DaWriteBeginFtraceEvent pos.
+	             * @member {number|Long} pos
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @instance
+	             */
+	            Ext4DaWriteBeginFtraceEvent.prototype.pos = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+	            /**
+	             * Ext4DaWriteBeginFtraceEvent len.
+	             * @member {number} len
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @instance
+	             */
+	            Ext4DaWriteBeginFtraceEvent.prototype.len = 0;
+
+	            /**
+	             * Ext4DaWriteBeginFtraceEvent flags.
+	             * @member {number} flags
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @instance
+	             */
+	            Ext4DaWriteBeginFtraceEvent.prototype.flags = 0;
+
+	            /**
+	             * Creates a new Ext4DaWriteBeginFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4DaWriteBeginFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.Ext4DaWriteBeginFtraceEvent} Ext4DaWriteBeginFtraceEvent instance
+	             */
+	            Ext4DaWriteBeginFtraceEvent.create = function create(properties) {
+	                return new Ext4DaWriteBeginFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified Ext4DaWriteBeginFtraceEvent message. Does not implicitly {@link perfetto.protos.Ext4DaWriteBeginFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4DaWriteBeginFtraceEvent} message Ext4DaWriteBeginFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4DaWriteBeginFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int64(message.pos);
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.len);
+	                if (message.flags != null && message.hasOwnProperty("flags"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.flags);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified Ext4DaWriteBeginFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.Ext4DaWriteBeginFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4DaWriteBeginFtraceEvent} message Ext4DaWriteBeginFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4DaWriteBeginFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes an Ext4DaWriteBeginFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.Ext4DaWriteBeginFtraceEvent} Ext4DaWriteBeginFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4DaWriteBeginFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.Ext4DaWriteBeginFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.pos = reader.int64();
+	                        break;
+	                    case 4:
+	                        message.len = reader.uint32();
+	                        break;
+	                    case 5:
+	                        message.flags = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes an Ext4DaWriteBeginFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.Ext4DaWriteBeginFtraceEvent} Ext4DaWriteBeginFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4DaWriteBeginFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies an Ext4DaWriteBeginFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            Ext4DaWriteBeginFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    if (!$util.isInteger(message.pos) && !(message.pos && $util.isInteger(message.pos.low) && $util.isInteger(message.pos.high)))
+	                        return "pos: integer|Long expected";
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    if (!$util.isInteger(message.len))
+	                        return "len: integer expected";
+	                if (message.flags != null && message.hasOwnProperty("flags"))
+	                    if (!$util.isInteger(message.flags))
+	                        return "flags: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates an Ext4DaWriteBeginFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.Ext4DaWriteBeginFtraceEvent} Ext4DaWriteBeginFtraceEvent
+	             */
+	            Ext4DaWriteBeginFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.Ext4DaWriteBeginFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.Ext4DaWriteBeginFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.pos != null)
+	                    if ($util.Long)
+	                        (message.pos = $util.Long.fromValue(object.pos)).unsigned = false;
+	                    else if (typeof object.pos === "string")
+	                        message.pos = parseInt(object.pos, 10);
+	                    else if (typeof object.pos === "number")
+	                        message.pos = object.pos;
+	                    else if (typeof object.pos === "object")
+	                        message.pos = new $util.LongBits(object.pos.low >>> 0, object.pos.high >>> 0).toNumber();
+	                if (object.len != null)
+	                    message.len = object.len >>> 0;
+	                if (object.flags != null)
+	                    message.flags = object.flags >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from an Ext4DaWriteBeginFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.Ext4DaWriteBeginFtraceEvent} message Ext4DaWriteBeginFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            Ext4DaWriteBeginFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, false);
+	                        object.pos = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.pos = options.longs === String ? "0" : 0;
+	                    object.len = 0;
+	                    object.flags = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    if (typeof message.pos === "number")
+	                        object.pos = options.longs === String ? String(message.pos) : message.pos;
+	                    else
+	                        object.pos = options.longs === String ? $util.Long.prototype.toString.call(message.pos) : options.longs === Number ? new $util.LongBits(message.pos.low >>> 0, message.pos.high >>> 0).toNumber() : message.pos;
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    object.len = message.len;
+	                if (message.flags != null && message.hasOwnProperty("flags"))
+	                    object.flags = message.flags;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this Ext4DaWriteBeginFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.Ext4DaWriteBeginFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            Ext4DaWriteBeginFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return Ext4DaWriteBeginFtraceEvent;
+	        })();
+
+	        protos.Ext4DaWriteEndFtraceEvent = (function() {
+
+	            /**
+	             * Properties of an Ext4DaWriteEndFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IExt4DaWriteEndFtraceEvent
+	             * @property {number|Long|null} [dev] Ext4DaWriteEndFtraceEvent dev
+	             * @property {number|Long|null} [ino] Ext4DaWriteEndFtraceEvent ino
+	             * @property {number|Long|null} [pos] Ext4DaWriteEndFtraceEvent pos
+	             * @property {number|null} [len] Ext4DaWriteEndFtraceEvent len
+	             * @property {number|null} [copied] Ext4DaWriteEndFtraceEvent copied
+	             */
+
+	            /**
+	             * Constructs a new Ext4DaWriteEndFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents an Ext4DaWriteEndFtraceEvent.
+	             * @implements IExt4DaWriteEndFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IExt4DaWriteEndFtraceEvent=} [properties] Properties to set
+	             */
+	            function Ext4DaWriteEndFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * Ext4DaWriteEndFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @instance
+	             */
+	            Ext4DaWriteEndFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4DaWriteEndFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @instance
+	             */
+	            Ext4DaWriteEndFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4DaWriteEndFtraceEvent pos.
+	             * @member {number|Long} pos
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @instance
+	             */
+	            Ext4DaWriteEndFtraceEvent.prototype.pos = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+	            /**
+	             * Ext4DaWriteEndFtraceEvent len.
+	             * @member {number} len
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @instance
+	             */
+	            Ext4DaWriteEndFtraceEvent.prototype.len = 0;
+
+	            /**
+	             * Ext4DaWriteEndFtraceEvent copied.
+	             * @member {number} copied
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @instance
+	             */
+	            Ext4DaWriteEndFtraceEvent.prototype.copied = 0;
+
+	            /**
+	             * Creates a new Ext4DaWriteEndFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4DaWriteEndFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.Ext4DaWriteEndFtraceEvent} Ext4DaWriteEndFtraceEvent instance
+	             */
+	            Ext4DaWriteEndFtraceEvent.create = function create(properties) {
+	                return new Ext4DaWriteEndFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified Ext4DaWriteEndFtraceEvent message. Does not implicitly {@link perfetto.protos.Ext4DaWriteEndFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4DaWriteEndFtraceEvent} message Ext4DaWriteEndFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4DaWriteEndFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int64(message.pos);
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.len);
+	                if (message.copied != null && message.hasOwnProperty("copied"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.copied);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified Ext4DaWriteEndFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.Ext4DaWriteEndFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4DaWriteEndFtraceEvent} message Ext4DaWriteEndFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4DaWriteEndFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes an Ext4DaWriteEndFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.Ext4DaWriteEndFtraceEvent} Ext4DaWriteEndFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4DaWriteEndFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.Ext4DaWriteEndFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.pos = reader.int64();
+	                        break;
+	                    case 4:
+	                        message.len = reader.uint32();
+	                        break;
+	                    case 5:
+	                        message.copied = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes an Ext4DaWriteEndFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.Ext4DaWriteEndFtraceEvent} Ext4DaWriteEndFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4DaWriteEndFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies an Ext4DaWriteEndFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            Ext4DaWriteEndFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    if (!$util.isInteger(message.pos) && !(message.pos && $util.isInteger(message.pos.low) && $util.isInteger(message.pos.high)))
+	                        return "pos: integer|Long expected";
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    if (!$util.isInteger(message.len))
+	                        return "len: integer expected";
+	                if (message.copied != null && message.hasOwnProperty("copied"))
+	                    if (!$util.isInteger(message.copied))
+	                        return "copied: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates an Ext4DaWriteEndFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.Ext4DaWriteEndFtraceEvent} Ext4DaWriteEndFtraceEvent
+	             */
+	            Ext4DaWriteEndFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.Ext4DaWriteEndFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.Ext4DaWriteEndFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.pos != null)
+	                    if ($util.Long)
+	                        (message.pos = $util.Long.fromValue(object.pos)).unsigned = false;
+	                    else if (typeof object.pos === "string")
+	                        message.pos = parseInt(object.pos, 10);
+	                    else if (typeof object.pos === "number")
+	                        message.pos = object.pos;
+	                    else if (typeof object.pos === "object")
+	                        message.pos = new $util.LongBits(object.pos.low >>> 0, object.pos.high >>> 0).toNumber();
+	                if (object.len != null)
+	                    message.len = object.len >>> 0;
+	                if (object.copied != null)
+	                    message.copied = object.copied >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from an Ext4DaWriteEndFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.Ext4DaWriteEndFtraceEvent} message Ext4DaWriteEndFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            Ext4DaWriteEndFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, false);
+	                        object.pos = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.pos = options.longs === String ? "0" : 0;
+	                    object.len = 0;
+	                    object.copied = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    if (typeof message.pos === "number")
+	                        object.pos = options.longs === String ? String(message.pos) : message.pos;
+	                    else
+	                        object.pos = options.longs === String ? $util.Long.prototype.toString.call(message.pos) : options.longs === Number ? new $util.LongBits(message.pos.low >>> 0, message.pos.high >>> 0).toNumber() : message.pos;
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    object.len = message.len;
+	                if (message.copied != null && message.hasOwnProperty("copied"))
+	                    object.copied = message.copied;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this Ext4DaWriteEndFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.Ext4DaWriteEndFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            Ext4DaWriteEndFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return Ext4DaWriteEndFtraceEvent;
+	        })();
+
+	        protos.Ext4EsLookupExtentEnterFtraceEvent = (function() {
+
+	            /**
+	             * Properties of an Ext4EsLookupExtentEnterFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IExt4EsLookupExtentEnterFtraceEvent
+	             * @property {number|Long|null} [dev] Ext4EsLookupExtentEnterFtraceEvent dev
+	             * @property {number|Long|null} [ino] Ext4EsLookupExtentEnterFtraceEvent ino
+	             * @property {number|null} [lblk] Ext4EsLookupExtentEnterFtraceEvent lblk
+	             */
+
+	            /**
+	             * Constructs a new Ext4EsLookupExtentEnterFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents an Ext4EsLookupExtentEnterFtraceEvent.
+	             * @implements IExt4EsLookupExtentEnterFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IExt4EsLookupExtentEnterFtraceEvent=} [properties] Properties to set
+	             */
+	            function Ext4EsLookupExtentEnterFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * Ext4EsLookupExtentEnterFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @instance
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4EsLookupExtentEnterFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @instance
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4EsLookupExtentEnterFtraceEvent lblk.
+	             * @member {number} lblk
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @instance
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.prototype.lblk = 0;
+
+	            /**
+	             * Creates a new Ext4EsLookupExtentEnterFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4EsLookupExtentEnterFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent} Ext4EsLookupExtentEnterFtraceEvent instance
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.create = function create(properties) {
+	                return new Ext4EsLookupExtentEnterFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified Ext4EsLookupExtentEnterFtraceEvent message. Does not implicitly {@link perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4EsLookupExtentEnterFtraceEvent} message Ext4EsLookupExtentEnterFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.lblk != null && message.hasOwnProperty("lblk"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.lblk);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified Ext4EsLookupExtentEnterFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4EsLookupExtentEnterFtraceEvent} message Ext4EsLookupExtentEnterFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes an Ext4EsLookupExtentEnterFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent} Ext4EsLookupExtentEnterFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.lblk = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes an Ext4EsLookupExtentEnterFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent} Ext4EsLookupExtentEnterFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies an Ext4EsLookupExtentEnterFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.lblk != null && message.hasOwnProperty("lblk"))
+	                    if (!$util.isInteger(message.lblk))
+	                        return "lblk: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates an Ext4EsLookupExtentEnterFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent} Ext4EsLookupExtentEnterFtraceEvent
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.lblk != null)
+	                    message.lblk = object.lblk >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from an Ext4EsLookupExtentEnterFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent} message Ext4EsLookupExtentEnterFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    object.lblk = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.lblk != null && message.hasOwnProperty("lblk"))
+	                    object.lblk = message.lblk;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this Ext4EsLookupExtentEnterFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.Ext4EsLookupExtentEnterFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            Ext4EsLookupExtentEnterFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return Ext4EsLookupExtentEnterFtraceEvent;
+	        })();
+
+	        protos.Ext4EsLookupExtentExitFtraceEvent = (function() {
+
+	            /**
+	             * Properties of an Ext4EsLookupExtentExitFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IExt4EsLookupExtentExitFtraceEvent
+	             * @property {number|Long|null} [dev] Ext4EsLookupExtentExitFtraceEvent dev
+	             * @property {number|Long|null} [ino] Ext4EsLookupExtentExitFtraceEvent ino
+	             * @property {number|null} [lblk] Ext4EsLookupExtentExitFtraceEvent lblk
+	             * @property {number|null} [len] Ext4EsLookupExtentExitFtraceEvent len
+	             * @property {number|Long|null} [pblk] Ext4EsLookupExtentExitFtraceEvent pblk
+	             * @property {number|Long|null} [status] Ext4EsLookupExtentExitFtraceEvent status
+	             * @property {number|null} [found] Ext4EsLookupExtentExitFtraceEvent found
+	             */
+
+	            /**
+	             * Constructs a new Ext4EsLookupExtentExitFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents an Ext4EsLookupExtentExitFtraceEvent.
+	             * @implements IExt4EsLookupExtentExitFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IExt4EsLookupExtentExitFtraceEvent=} [properties] Properties to set
+	             */
+	            function Ext4EsLookupExtentExitFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * Ext4EsLookupExtentExitFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @instance
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4EsLookupExtentExitFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @instance
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4EsLookupExtentExitFtraceEvent lblk.
+	             * @member {number} lblk
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @instance
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.prototype.lblk = 0;
+
+	            /**
+	             * Ext4EsLookupExtentExitFtraceEvent len.
+	             * @member {number} len
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @instance
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.prototype.len = 0;
+
+	            /**
+	             * Ext4EsLookupExtentExitFtraceEvent pblk.
+	             * @member {number|Long} pblk
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @instance
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.prototype.pblk = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4EsLookupExtentExitFtraceEvent status.
+	             * @member {number|Long} status
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @instance
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.prototype.status = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4EsLookupExtentExitFtraceEvent found.
+	             * @member {number} found
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @instance
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.prototype.found = 0;
+
+	            /**
+	             * Creates a new Ext4EsLookupExtentExitFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4EsLookupExtentExitFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.Ext4EsLookupExtentExitFtraceEvent} Ext4EsLookupExtentExitFtraceEvent instance
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.create = function create(properties) {
+	                return new Ext4EsLookupExtentExitFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified Ext4EsLookupExtentExitFtraceEvent message. Does not implicitly {@link perfetto.protos.Ext4EsLookupExtentExitFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4EsLookupExtentExitFtraceEvent} message Ext4EsLookupExtentExitFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.lblk != null && message.hasOwnProperty("lblk"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.lblk);
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.len);
+	                if (message.pblk != null && message.hasOwnProperty("pblk"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.pblk);
+	                if (message.status != null && message.hasOwnProperty("status"))
+	                    writer.uint32(/* id 6, wireType 0 =*/48).uint64(message.status);
+	                if (message.found != null && message.hasOwnProperty("found"))
+	                    writer.uint32(/* id 7, wireType 0 =*/56).int32(message.found);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified Ext4EsLookupExtentExitFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.Ext4EsLookupExtentExitFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4EsLookupExtentExitFtraceEvent} message Ext4EsLookupExtentExitFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes an Ext4EsLookupExtentExitFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.Ext4EsLookupExtentExitFtraceEvent} Ext4EsLookupExtentExitFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.Ext4EsLookupExtentExitFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.lblk = reader.uint32();
+	                        break;
+	                    case 4:
+	                        message.len = reader.uint32();
+	                        break;
+	                    case 5:
+	                        message.pblk = reader.uint64();
+	                        break;
+	                    case 6:
+	                        message.status = reader.uint64();
+	                        break;
+	                    case 7:
+	                        message.found = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes an Ext4EsLookupExtentExitFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.Ext4EsLookupExtentExitFtraceEvent} Ext4EsLookupExtentExitFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies an Ext4EsLookupExtentExitFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.lblk != null && message.hasOwnProperty("lblk"))
+	                    if (!$util.isInteger(message.lblk))
+	                        return "lblk: integer expected";
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    if (!$util.isInteger(message.len))
+	                        return "len: integer expected";
+	                if (message.pblk != null && message.hasOwnProperty("pblk"))
+	                    if (!$util.isInteger(message.pblk) && !(message.pblk && $util.isInteger(message.pblk.low) && $util.isInteger(message.pblk.high)))
+	                        return "pblk: integer|Long expected";
+	                if (message.status != null && message.hasOwnProperty("status"))
+	                    if (!$util.isInteger(message.status) && !(message.status && $util.isInteger(message.status.low) && $util.isInteger(message.status.high)))
+	                        return "status: integer|Long expected";
+	                if (message.found != null && message.hasOwnProperty("found"))
+	                    if (!$util.isInteger(message.found))
+	                        return "found: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates an Ext4EsLookupExtentExitFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.Ext4EsLookupExtentExitFtraceEvent} Ext4EsLookupExtentExitFtraceEvent
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.Ext4EsLookupExtentExitFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.Ext4EsLookupExtentExitFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.lblk != null)
+	                    message.lblk = object.lblk >>> 0;
+	                if (object.len != null)
+	                    message.len = object.len >>> 0;
+	                if (object.pblk != null)
+	                    if ($util.Long)
+	                        (message.pblk = $util.Long.fromValue(object.pblk)).unsigned = true;
+	                    else if (typeof object.pblk === "string")
+	                        message.pblk = parseInt(object.pblk, 10);
+	                    else if (typeof object.pblk === "number")
+	                        message.pblk = object.pblk;
+	                    else if (typeof object.pblk === "object")
+	                        message.pblk = new $util.LongBits(object.pblk.low >>> 0, object.pblk.high >>> 0).toNumber(true);
+	                if (object.status != null)
+	                    if ($util.Long)
+	                        (message.status = $util.Long.fromValue(object.status)).unsigned = true;
+	                    else if (typeof object.status === "string")
+	                        message.status = parseInt(object.status, 10);
+	                    else if (typeof object.status === "number")
+	                        message.status = object.status;
+	                    else if (typeof object.status === "object")
+	                        message.status = new $util.LongBits(object.status.low >>> 0, object.status.high >>> 0).toNumber(true);
+	                if (object.found != null)
+	                    message.found = object.found | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from an Ext4EsLookupExtentExitFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.Ext4EsLookupExtentExitFtraceEvent} message Ext4EsLookupExtentExitFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    object.lblk = 0;
+	                    object.len = 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.pblk = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.pblk = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.status = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.status = options.longs === String ? "0" : 0;
+	                    object.found = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.lblk != null && message.hasOwnProperty("lblk"))
+	                    object.lblk = message.lblk;
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    object.len = message.len;
+	                if (message.pblk != null && message.hasOwnProperty("pblk"))
+	                    if (typeof message.pblk === "number")
+	                        object.pblk = options.longs === String ? String(message.pblk) : message.pblk;
+	                    else
+	                        object.pblk = options.longs === String ? $util.Long.prototype.toString.call(message.pblk) : options.longs === Number ? new $util.LongBits(message.pblk.low >>> 0, message.pblk.high >>> 0).toNumber(true) : message.pblk;
+	                if (message.status != null && message.hasOwnProperty("status"))
+	                    if (typeof message.status === "number")
+	                        object.status = options.longs === String ? String(message.status) : message.status;
+	                    else
+	                        object.status = options.longs === String ? $util.Long.prototype.toString.call(message.status) : options.longs === Number ? new $util.LongBits(message.status.low >>> 0, message.status.high >>> 0).toNumber(true) : message.status;
+	                if (message.found != null && message.hasOwnProperty("found"))
+	                    object.found = message.found;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this Ext4EsLookupExtentExitFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.Ext4EsLookupExtentExitFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            Ext4EsLookupExtentExitFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return Ext4EsLookupExtentExitFtraceEvent;
+	        })();
+
+	        protos.Ext4LoadInodeFtraceEvent = (function() {
+
+	            /**
+	             * Properties of an Ext4LoadInodeFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IExt4LoadInodeFtraceEvent
+	             * @property {number|Long|null} [dev] Ext4LoadInodeFtraceEvent dev
+	             * @property {number|Long|null} [ino] Ext4LoadInodeFtraceEvent ino
+	             */
+
+	            /**
+	             * Constructs a new Ext4LoadInodeFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents an Ext4LoadInodeFtraceEvent.
+	             * @implements IExt4LoadInodeFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IExt4LoadInodeFtraceEvent=} [properties] Properties to set
+	             */
+	            function Ext4LoadInodeFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * Ext4LoadInodeFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @instance
+	             */
+	            Ext4LoadInodeFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4LoadInodeFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @instance
+	             */
+	            Ext4LoadInodeFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Creates a new Ext4LoadInodeFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4LoadInodeFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.Ext4LoadInodeFtraceEvent} Ext4LoadInodeFtraceEvent instance
+	             */
+	            Ext4LoadInodeFtraceEvent.create = function create(properties) {
+	                return new Ext4LoadInodeFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified Ext4LoadInodeFtraceEvent message. Does not implicitly {@link perfetto.protos.Ext4LoadInodeFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4LoadInodeFtraceEvent} message Ext4LoadInodeFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4LoadInodeFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified Ext4LoadInodeFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.Ext4LoadInodeFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4LoadInodeFtraceEvent} message Ext4LoadInodeFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4LoadInodeFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes an Ext4LoadInodeFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.Ext4LoadInodeFtraceEvent} Ext4LoadInodeFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4LoadInodeFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.Ext4LoadInodeFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes an Ext4LoadInodeFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.Ext4LoadInodeFtraceEvent} Ext4LoadInodeFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4LoadInodeFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies an Ext4LoadInodeFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            Ext4LoadInodeFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates an Ext4LoadInodeFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.Ext4LoadInodeFtraceEvent} Ext4LoadInodeFtraceEvent
+	             */
+	            Ext4LoadInodeFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.Ext4LoadInodeFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.Ext4LoadInodeFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from an Ext4LoadInodeFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.Ext4LoadInodeFtraceEvent} message Ext4LoadInodeFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            Ext4LoadInodeFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this Ext4LoadInodeFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.Ext4LoadInodeFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            Ext4LoadInodeFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return Ext4LoadInodeFtraceEvent;
+	        })();
+
+	        protos.Ext4SyncFileEnterFtraceEvent = (function() {
+
+	            /**
+	             * Properties of an Ext4SyncFileEnterFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IExt4SyncFileEnterFtraceEvent
+	             * @property {number|Long|null} [dev] Ext4SyncFileEnterFtraceEvent dev
+	             * @property {number|Long|null} [ino] Ext4SyncFileEnterFtraceEvent ino
+	             * @property {number|Long|null} [parent] Ext4SyncFileEnterFtraceEvent parent
+	             * @property {number|null} [datasync] Ext4SyncFileEnterFtraceEvent datasync
+	             */
+
+	            /**
+	             * Constructs a new Ext4SyncFileEnterFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents an Ext4SyncFileEnterFtraceEvent.
+	             * @implements IExt4SyncFileEnterFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IExt4SyncFileEnterFtraceEvent=} [properties] Properties to set
+	             */
+	            function Ext4SyncFileEnterFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * Ext4SyncFileEnterFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            Ext4SyncFileEnterFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4SyncFileEnterFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            Ext4SyncFileEnterFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4SyncFileEnterFtraceEvent parent.
+	             * @member {number|Long} parent
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            Ext4SyncFileEnterFtraceEvent.prototype.parent = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4SyncFileEnterFtraceEvent datasync.
+	             * @member {number} datasync
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            Ext4SyncFileEnterFtraceEvent.prototype.datasync = 0;
+
+	            /**
+	             * Creates a new Ext4SyncFileEnterFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4SyncFileEnterFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.Ext4SyncFileEnterFtraceEvent} Ext4SyncFileEnterFtraceEvent instance
+	             */
+	            Ext4SyncFileEnterFtraceEvent.create = function create(properties) {
+	                return new Ext4SyncFileEnterFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified Ext4SyncFileEnterFtraceEvent message. Does not implicitly {@link perfetto.protos.Ext4SyncFileEnterFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4SyncFileEnterFtraceEvent} message Ext4SyncFileEnterFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4SyncFileEnterFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.parent != null && message.hasOwnProperty("parent"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.parent);
+	                if (message.datasync != null && message.hasOwnProperty("datasync"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).int32(message.datasync);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified Ext4SyncFileEnterFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.Ext4SyncFileEnterFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4SyncFileEnterFtraceEvent} message Ext4SyncFileEnterFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4SyncFileEnterFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes an Ext4SyncFileEnterFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.Ext4SyncFileEnterFtraceEvent} Ext4SyncFileEnterFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4SyncFileEnterFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.Ext4SyncFileEnterFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.parent = reader.uint64();
+	                        break;
+	                    case 4:
+	                        message.datasync = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes an Ext4SyncFileEnterFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.Ext4SyncFileEnterFtraceEvent} Ext4SyncFileEnterFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4SyncFileEnterFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies an Ext4SyncFileEnterFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            Ext4SyncFileEnterFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.parent != null && message.hasOwnProperty("parent"))
+	                    if (!$util.isInteger(message.parent) && !(message.parent && $util.isInteger(message.parent.low) && $util.isInteger(message.parent.high)))
+	                        return "parent: integer|Long expected";
+	                if (message.datasync != null && message.hasOwnProperty("datasync"))
+	                    if (!$util.isInteger(message.datasync))
+	                        return "datasync: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates an Ext4SyncFileEnterFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.Ext4SyncFileEnterFtraceEvent} Ext4SyncFileEnterFtraceEvent
+	             */
+	            Ext4SyncFileEnterFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.Ext4SyncFileEnterFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.Ext4SyncFileEnterFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.parent != null)
+	                    if ($util.Long)
+	                        (message.parent = $util.Long.fromValue(object.parent)).unsigned = true;
+	                    else if (typeof object.parent === "string")
+	                        message.parent = parseInt(object.parent, 10);
+	                    else if (typeof object.parent === "number")
+	                        message.parent = object.parent;
+	                    else if (typeof object.parent === "object")
+	                        message.parent = new $util.LongBits(object.parent.low >>> 0, object.parent.high >>> 0).toNumber(true);
+	                if (object.datasync != null)
+	                    message.datasync = object.datasync | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from an Ext4SyncFileEnterFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.Ext4SyncFileEnterFtraceEvent} message Ext4SyncFileEnterFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            Ext4SyncFileEnterFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.parent = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.parent = options.longs === String ? "0" : 0;
+	                    object.datasync = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.parent != null && message.hasOwnProperty("parent"))
+	                    if (typeof message.parent === "number")
+	                        object.parent = options.longs === String ? String(message.parent) : message.parent;
+	                    else
+	                        object.parent = options.longs === String ? $util.Long.prototype.toString.call(message.parent) : options.longs === Number ? new $util.LongBits(message.parent.low >>> 0, message.parent.high >>> 0).toNumber(true) : message.parent;
+	                if (message.datasync != null && message.hasOwnProperty("datasync"))
+	                    object.datasync = message.datasync;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this Ext4SyncFileEnterFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.Ext4SyncFileEnterFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            Ext4SyncFileEnterFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return Ext4SyncFileEnterFtraceEvent;
+	        })();
+
+	        protos.Ext4SyncFileExitFtraceEvent = (function() {
+
+	            /**
+	             * Properties of an Ext4SyncFileExitFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IExt4SyncFileExitFtraceEvent
+	             * @property {number|Long|null} [dev] Ext4SyncFileExitFtraceEvent dev
+	             * @property {number|Long|null} [ino] Ext4SyncFileExitFtraceEvent ino
+	             * @property {number|null} [ret] Ext4SyncFileExitFtraceEvent ret
+	             */
+
+	            /**
+	             * Constructs a new Ext4SyncFileExitFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents an Ext4SyncFileExitFtraceEvent.
+	             * @implements IExt4SyncFileExitFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IExt4SyncFileExitFtraceEvent=} [properties] Properties to set
+	             */
+	            function Ext4SyncFileExitFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * Ext4SyncFileExitFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @instance
+	             */
+	            Ext4SyncFileExitFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4SyncFileExitFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @instance
+	             */
+	            Ext4SyncFileExitFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Ext4SyncFileExitFtraceEvent ret.
+	             * @member {number} ret
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @instance
+	             */
+	            Ext4SyncFileExitFtraceEvent.prototype.ret = 0;
+
+	            /**
+	             * Creates a new Ext4SyncFileExitFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4SyncFileExitFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.Ext4SyncFileExitFtraceEvent} Ext4SyncFileExitFtraceEvent instance
+	             */
+	            Ext4SyncFileExitFtraceEvent.create = function create(properties) {
+	                return new Ext4SyncFileExitFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified Ext4SyncFileExitFtraceEvent message. Does not implicitly {@link perfetto.protos.Ext4SyncFileExitFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4SyncFileExitFtraceEvent} message Ext4SyncFileExitFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4SyncFileExitFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.ret != null && message.hasOwnProperty("ret"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.ret);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified Ext4SyncFileExitFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.Ext4SyncFileExitFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IExt4SyncFileExitFtraceEvent} message Ext4SyncFileExitFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            Ext4SyncFileExitFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes an Ext4SyncFileExitFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.Ext4SyncFileExitFtraceEvent} Ext4SyncFileExitFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4SyncFileExitFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.Ext4SyncFileExitFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.ret = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes an Ext4SyncFileExitFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.Ext4SyncFileExitFtraceEvent} Ext4SyncFileExitFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            Ext4SyncFileExitFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies an Ext4SyncFileExitFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            Ext4SyncFileExitFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.ret != null && message.hasOwnProperty("ret"))
+	                    if (!$util.isInteger(message.ret))
+	                        return "ret: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates an Ext4SyncFileExitFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.Ext4SyncFileExitFtraceEvent} Ext4SyncFileExitFtraceEvent
+	             */
+	            Ext4SyncFileExitFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.Ext4SyncFileExitFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.Ext4SyncFileExitFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.ret != null)
+	                    message.ret = object.ret | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from an Ext4SyncFileExitFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.Ext4SyncFileExitFtraceEvent} message Ext4SyncFileExitFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            Ext4SyncFileExitFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    object.ret = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.ret != null && message.hasOwnProperty("ret"))
+	                    object.ret = message.ret;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this Ext4SyncFileExitFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.Ext4SyncFileExitFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            Ext4SyncFileExitFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return Ext4SyncFileExitFtraceEvent;
+	        })();
+
+	        protos.F2fsGetDataBlockFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a F2fsGetDataBlockFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IF2fsGetDataBlockFtraceEvent
+	             * @property {number|Long|null} [dev] F2fsGetDataBlockFtraceEvent dev
+	             * @property {number|Long|null} [ino] F2fsGetDataBlockFtraceEvent ino
+	             * @property {number|Long|null} [iblock] F2fsGetDataBlockFtraceEvent iblock
+	             * @property {number|Long|null} [bhStart] F2fsGetDataBlockFtraceEvent bhStart
+	             * @property {number|Long|null} [bhSize] F2fsGetDataBlockFtraceEvent bhSize
+	             * @property {number|null} [ret] F2fsGetDataBlockFtraceEvent ret
+	             */
+
+	            /**
+	             * Constructs a new F2fsGetDataBlockFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a F2fsGetDataBlockFtraceEvent.
+	             * @implements IF2fsGetDataBlockFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IF2fsGetDataBlockFtraceEvent=} [properties] Properties to set
+	             */
+	            function F2fsGetDataBlockFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * F2fsGetDataBlockFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @instance
+	             */
+	            F2fsGetDataBlockFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsGetDataBlockFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @instance
+	             */
+	            F2fsGetDataBlockFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsGetDataBlockFtraceEvent iblock.
+	             * @member {number|Long} iblock
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @instance
+	             */
+	            F2fsGetDataBlockFtraceEvent.prototype.iblock = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsGetDataBlockFtraceEvent bhStart.
+	             * @member {number|Long} bhStart
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @instance
+	             */
+	            F2fsGetDataBlockFtraceEvent.prototype.bhStart = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsGetDataBlockFtraceEvent bhSize.
+	             * @member {number|Long} bhSize
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @instance
+	             */
+	            F2fsGetDataBlockFtraceEvent.prototype.bhSize = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsGetDataBlockFtraceEvent ret.
+	             * @member {number} ret
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @instance
+	             */
+	            F2fsGetDataBlockFtraceEvent.prototype.ret = 0;
+
+	            /**
+	             * Creates a new F2fsGetDataBlockFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsGetDataBlockFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.F2fsGetDataBlockFtraceEvent} F2fsGetDataBlockFtraceEvent instance
+	             */
+	            F2fsGetDataBlockFtraceEvent.create = function create(properties) {
+	                return new F2fsGetDataBlockFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified F2fsGetDataBlockFtraceEvent message. Does not implicitly {@link perfetto.protos.F2fsGetDataBlockFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsGetDataBlockFtraceEvent} message F2fsGetDataBlockFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsGetDataBlockFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.iblock != null && message.hasOwnProperty("iblock"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.iblock);
+	                if (message.bhStart != null && message.hasOwnProperty("bhStart"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.bhStart);
+	                if (message.bhSize != null && message.hasOwnProperty("bhSize"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).uint64(message.bhSize);
+	                if (message.ret != null && message.hasOwnProperty("ret"))
+	                    writer.uint32(/* id 6, wireType 0 =*/48).int32(message.ret);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified F2fsGetDataBlockFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.F2fsGetDataBlockFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsGetDataBlockFtraceEvent} message F2fsGetDataBlockFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsGetDataBlockFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a F2fsGetDataBlockFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.F2fsGetDataBlockFtraceEvent} F2fsGetDataBlockFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsGetDataBlockFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.F2fsGetDataBlockFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.iblock = reader.uint64();
+	                        break;
+	                    case 4:
+	                        message.bhStart = reader.uint64();
+	                        break;
+	                    case 5:
+	                        message.bhSize = reader.uint64();
+	                        break;
+	                    case 6:
+	                        message.ret = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a F2fsGetDataBlockFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.F2fsGetDataBlockFtraceEvent} F2fsGetDataBlockFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsGetDataBlockFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a F2fsGetDataBlockFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            F2fsGetDataBlockFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.iblock != null && message.hasOwnProperty("iblock"))
+	                    if (!$util.isInteger(message.iblock) && !(message.iblock && $util.isInteger(message.iblock.low) && $util.isInteger(message.iblock.high)))
+	                        return "iblock: integer|Long expected";
+	                if (message.bhStart != null && message.hasOwnProperty("bhStart"))
+	                    if (!$util.isInteger(message.bhStart) && !(message.bhStart && $util.isInteger(message.bhStart.low) && $util.isInteger(message.bhStart.high)))
+	                        return "bhStart: integer|Long expected";
+	                if (message.bhSize != null && message.hasOwnProperty("bhSize"))
+	                    if (!$util.isInteger(message.bhSize) && !(message.bhSize && $util.isInteger(message.bhSize.low) && $util.isInteger(message.bhSize.high)))
+	                        return "bhSize: integer|Long expected";
+	                if (message.ret != null && message.hasOwnProperty("ret"))
+	                    if (!$util.isInteger(message.ret))
+	                        return "ret: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a F2fsGetDataBlockFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.F2fsGetDataBlockFtraceEvent} F2fsGetDataBlockFtraceEvent
+	             */
+	            F2fsGetDataBlockFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.F2fsGetDataBlockFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.F2fsGetDataBlockFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.iblock != null)
+	                    if ($util.Long)
+	                        (message.iblock = $util.Long.fromValue(object.iblock)).unsigned = true;
+	                    else if (typeof object.iblock === "string")
+	                        message.iblock = parseInt(object.iblock, 10);
+	                    else if (typeof object.iblock === "number")
+	                        message.iblock = object.iblock;
+	                    else if (typeof object.iblock === "object")
+	                        message.iblock = new $util.LongBits(object.iblock.low >>> 0, object.iblock.high >>> 0).toNumber(true);
+	                if (object.bhStart != null)
+	                    if ($util.Long)
+	                        (message.bhStart = $util.Long.fromValue(object.bhStart)).unsigned = true;
+	                    else if (typeof object.bhStart === "string")
+	                        message.bhStart = parseInt(object.bhStart, 10);
+	                    else if (typeof object.bhStart === "number")
+	                        message.bhStart = object.bhStart;
+	                    else if (typeof object.bhStart === "object")
+	                        message.bhStart = new $util.LongBits(object.bhStart.low >>> 0, object.bhStart.high >>> 0).toNumber(true);
+	                if (object.bhSize != null)
+	                    if ($util.Long)
+	                        (message.bhSize = $util.Long.fromValue(object.bhSize)).unsigned = true;
+	                    else if (typeof object.bhSize === "string")
+	                        message.bhSize = parseInt(object.bhSize, 10);
+	                    else if (typeof object.bhSize === "number")
+	                        message.bhSize = object.bhSize;
+	                    else if (typeof object.bhSize === "object")
+	                        message.bhSize = new $util.LongBits(object.bhSize.low >>> 0, object.bhSize.high >>> 0).toNumber(true);
+	                if (object.ret != null)
+	                    message.ret = object.ret | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a F2fsGetDataBlockFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.F2fsGetDataBlockFtraceEvent} message F2fsGetDataBlockFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            F2fsGetDataBlockFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.iblock = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.iblock = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.bhStart = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.bhStart = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.bhSize = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.bhSize = options.longs === String ? "0" : 0;
+	                    object.ret = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.iblock != null && message.hasOwnProperty("iblock"))
+	                    if (typeof message.iblock === "number")
+	                        object.iblock = options.longs === String ? String(message.iblock) : message.iblock;
+	                    else
+	                        object.iblock = options.longs === String ? $util.Long.prototype.toString.call(message.iblock) : options.longs === Number ? new $util.LongBits(message.iblock.low >>> 0, message.iblock.high >>> 0).toNumber(true) : message.iblock;
+	                if (message.bhStart != null && message.hasOwnProperty("bhStart"))
+	                    if (typeof message.bhStart === "number")
+	                        object.bhStart = options.longs === String ? String(message.bhStart) : message.bhStart;
+	                    else
+	                        object.bhStart = options.longs === String ? $util.Long.prototype.toString.call(message.bhStart) : options.longs === Number ? new $util.LongBits(message.bhStart.low >>> 0, message.bhStart.high >>> 0).toNumber(true) : message.bhStart;
+	                if (message.bhSize != null && message.hasOwnProperty("bhSize"))
+	                    if (typeof message.bhSize === "number")
+	                        object.bhSize = options.longs === String ? String(message.bhSize) : message.bhSize;
+	                    else
+	                        object.bhSize = options.longs === String ? $util.Long.prototype.toString.call(message.bhSize) : options.longs === Number ? new $util.LongBits(message.bhSize.low >>> 0, message.bhSize.high >>> 0).toNumber(true) : message.bhSize;
+	                if (message.ret != null && message.hasOwnProperty("ret"))
+	                    object.ret = message.ret;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this F2fsGetDataBlockFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.F2fsGetDataBlockFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            F2fsGetDataBlockFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return F2fsGetDataBlockFtraceEvent;
+	        })();
+
+	        protos.F2fsIgetFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a F2fsIgetFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IF2fsIgetFtraceEvent
+	             * @property {number|Long|null} [dev] F2fsIgetFtraceEvent dev
+	             * @property {number|Long|null} [ino] F2fsIgetFtraceEvent ino
+	             * @property {number|Long|null} [pino] F2fsIgetFtraceEvent pino
+	             * @property {number|null} [mode] F2fsIgetFtraceEvent mode
+	             * @property {number|Long|null} [size] F2fsIgetFtraceEvent size
+	             * @property {number|null} [nlink] F2fsIgetFtraceEvent nlink
+	             * @property {number|Long|null} [blocks] F2fsIgetFtraceEvent blocks
+	             * @property {number|null} [advise] F2fsIgetFtraceEvent advise
+	             */
+
+	            /**
+	             * Constructs a new F2fsIgetFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a F2fsIgetFtraceEvent.
+	             * @implements IF2fsIgetFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IF2fsIgetFtraceEvent=} [properties] Properties to set
+	             */
+	            function F2fsIgetFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * F2fsIgetFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @instance
+	             */
+	            F2fsIgetFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsIgetFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @instance
+	             */
+	            F2fsIgetFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsIgetFtraceEvent pino.
+	             * @member {number|Long} pino
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @instance
+	             */
+	            F2fsIgetFtraceEvent.prototype.pino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsIgetFtraceEvent mode.
+	             * @member {number} mode
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @instance
+	             */
+	            F2fsIgetFtraceEvent.prototype.mode = 0;
+
+	            /**
+	             * F2fsIgetFtraceEvent size.
+	             * @member {number|Long} size
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @instance
+	             */
+	            F2fsIgetFtraceEvent.prototype.size = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+	            /**
+	             * F2fsIgetFtraceEvent nlink.
+	             * @member {number} nlink
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @instance
+	             */
+	            F2fsIgetFtraceEvent.prototype.nlink = 0;
+
+	            /**
+	             * F2fsIgetFtraceEvent blocks.
+	             * @member {number|Long} blocks
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @instance
+	             */
+	            F2fsIgetFtraceEvent.prototype.blocks = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsIgetFtraceEvent advise.
+	             * @member {number} advise
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @instance
+	             */
+	            F2fsIgetFtraceEvent.prototype.advise = 0;
+
+	            /**
+	             * Creates a new F2fsIgetFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsIgetFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.F2fsIgetFtraceEvent} F2fsIgetFtraceEvent instance
+	             */
+	            F2fsIgetFtraceEvent.create = function create(properties) {
+	                return new F2fsIgetFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified F2fsIgetFtraceEvent message. Does not implicitly {@link perfetto.protos.F2fsIgetFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsIgetFtraceEvent} message F2fsIgetFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsIgetFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.pino != null && message.hasOwnProperty("pino"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.pino);
+	                if (message.mode != null && message.hasOwnProperty("mode"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.mode);
+	                if (message.size != null && message.hasOwnProperty("size"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).int64(message.size);
+	                if (message.nlink != null && message.hasOwnProperty("nlink"))
+	                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.nlink);
+	                if (message.blocks != null && message.hasOwnProperty("blocks"))
+	                    writer.uint32(/* id 7, wireType 0 =*/56).uint64(message.blocks);
+	                if (message.advise != null && message.hasOwnProperty("advise"))
+	                    writer.uint32(/* id 8, wireType 0 =*/64).uint32(message.advise);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified F2fsIgetFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.F2fsIgetFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsIgetFtraceEvent} message F2fsIgetFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsIgetFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a F2fsIgetFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.F2fsIgetFtraceEvent} F2fsIgetFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsIgetFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.F2fsIgetFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.pino = reader.uint64();
+	                        break;
+	                    case 4:
+	                        message.mode = reader.uint32();
+	                        break;
+	                    case 5:
+	                        message.size = reader.int64();
+	                        break;
+	                    case 6:
+	                        message.nlink = reader.uint32();
+	                        break;
+	                    case 7:
+	                        message.blocks = reader.uint64();
+	                        break;
+	                    case 8:
+	                        message.advise = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a F2fsIgetFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.F2fsIgetFtraceEvent} F2fsIgetFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsIgetFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a F2fsIgetFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            F2fsIgetFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.pino != null && message.hasOwnProperty("pino"))
+	                    if (!$util.isInteger(message.pino) && !(message.pino && $util.isInteger(message.pino.low) && $util.isInteger(message.pino.high)))
+	                        return "pino: integer|Long expected";
+	                if (message.mode != null && message.hasOwnProperty("mode"))
+	                    if (!$util.isInteger(message.mode))
+	                        return "mode: integer expected";
+	                if (message.size != null && message.hasOwnProperty("size"))
+	                    if (!$util.isInteger(message.size) && !(message.size && $util.isInteger(message.size.low) && $util.isInteger(message.size.high)))
+	                        return "size: integer|Long expected";
+	                if (message.nlink != null && message.hasOwnProperty("nlink"))
+	                    if (!$util.isInteger(message.nlink))
+	                        return "nlink: integer expected";
+	                if (message.blocks != null && message.hasOwnProperty("blocks"))
+	                    if (!$util.isInteger(message.blocks) && !(message.blocks && $util.isInteger(message.blocks.low) && $util.isInteger(message.blocks.high)))
+	                        return "blocks: integer|Long expected";
+	                if (message.advise != null && message.hasOwnProperty("advise"))
+	                    if (!$util.isInteger(message.advise))
+	                        return "advise: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a F2fsIgetFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.F2fsIgetFtraceEvent} F2fsIgetFtraceEvent
+	             */
+	            F2fsIgetFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.F2fsIgetFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.F2fsIgetFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.pino != null)
+	                    if ($util.Long)
+	                        (message.pino = $util.Long.fromValue(object.pino)).unsigned = true;
+	                    else if (typeof object.pino === "string")
+	                        message.pino = parseInt(object.pino, 10);
+	                    else if (typeof object.pino === "number")
+	                        message.pino = object.pino;
+	                    else if (typeof object.pino === "object")
+	                        message.pino = new $util.LongBits(object.pino.low >>> 0, object.pino.high >>> 0).toNumber(true);
+	                if (object.mode != null)
+	                    message.mode = object.mode >>> 0;
+	                if (object.size != null)
+	                    if ($util.Long)
+	                        (message.size = $util.Long.fromValue(object.size)).unsigned = false;
+	                    else if (typeof object.size === "string")
+	                        message.size = parseInt(object.size, 10);
+	                    else if (typeof object.size === "number")
+	                        message.size = object.size;
+	                    else if (typeof object.size === "object")
+	                        message.size = new $util.LongBits(object.size.low >>> 0, object.size.high >>> 0).toNumber();
+	                if (object.nlink != null)
+	                    message.nlink = object.nlink >>> 0;
+	                if (object.blocks != null)
+	                    if ($util.Long)
+	                        (message.blocks = $util.Long.fromValue(object.blocks)).unsigned = true;
+	                    else if (typeof object.blocks === "string")
+	                        message.blocks = parseInt(object.blocks, 10);
+	                    else if (typeof object.blocks === "number")
+	                        message.blocks = object.blocks;
+	                    else if (typeof object.blocks === "object")
+	                        message.blocks = new $util.LongBits(object.blocks.low >>> 0, object.blocks.high >>> 0).toNumber(true);
+	                if (object.advise != null)
+	                    message.advise = object.advise >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a F2fsIgetFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.F2fsIgetFtraceEvent} message F2fsIgetFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            F2fsIgetFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.pino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.pino = options.longs === String ? "0" : 0;
+	                    object.mode = 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, false);
+	                        object.size = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.size = options.longs === String ? "0" : 0;
+	                    object.nlink = 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.blocks = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.blocks = options.longs === String ? "0" : 0;
+	                    object.advise = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.pino != null && message.hasOwnProperty("pino"))
+	                    if (typeof message.pino === "number")
+	                        object.pino = options.longs === String ? String(message.pino) : message.pino;
+	                    else
+	                        object.pino = options.longs === String ? $util.Long.prototype.toString.call(message.pino) : options.longs === Number ? new $util.LongBits(message.pino.low >>> 0, message.pino.high >>> 0).toNumber(true) : message.pino;
+	                if (message.mode != null && message.hasOwnProperty("mode"))
+	                    object.mode = message.mode;
+	                if (message.size != null && message.hasOwnProperty("size"))
+	                    if (typeof message.size === "number")
+	                        object.size = options.longs === String ? String(message.size) : message.size;
+	                    else
+	                        object.size = options.longs === String ? $util.Long.prototype.toString.call(message.size) : options.longs === Number ? new $util.LongBits(message.size.low >>> 0, message.size.high >>> 0).toNumber() : message.size;
+	                if (message.nlink != null && message.hasOwnProperty("nlink"))
+	                    object.nlink = message.nlink;
+	                if (message.blocks != null && message.hasOwnProperty("blocks"))
+	                    if (typeof message.blocks === "number")
+	                        object.blocks = options.longs === String ? String(message.blocks) : message.blocks;
+	                    else
+	                        object.blocks = options.longs === String ? $util.Long.prototype.toString.call(message.blocks) : options.longs === Number ? new $util.LongBits(message.blocks.low >>> 0, message.blocks.high >>> 0).toNumber(true) : message.blocks;
+	                if (message.advise != null && message.hasOwnProperty("advise"))
+	                    object.advise = message.advise;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this F2fsIgetFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.F2fsIgetFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            F2fsIgetFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return F2fsIgetFtraceEvent;
+	        })();
+
+	        protos.F2fsSyncFileEnterFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a F2fsSyncFileEnterFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IF2fsSyncFileEnterFtraceEvent
+	             * @property {number|Long|null} [dev] F2fsSyncFileEnterFtraceEvent dev
+	             * @property {number|Long|null} [ino] F2fsSyncFileEnterFtraceEvent ino
+	             * @property {number|Long|null} [pino] F2fsSyncFileEnterFtraceEvent pino
+	             * @property {number|null} [mode] F2fsSyncFileEnterFtraceEvent mode
+	             * @property {number|Long|null} [size] F2fsSyncFileEnterFtraceEvent size
+	             * @property {number|null} [nlink] F2fsSyncFileEnterFtraceEvent nlink
+	             * @property {number|Long|null} [blocks] F2fsSyncFileEnterFtraceEvent blocks
+	             * @property {number|null} [advise] F2fsSyncFileEnterFtraceEvent advise
+	             */
+
+	            /**
+	             * Constructs a new F2fsSyncFileEnterFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a F2fsSyncFileEnterFtraceEvent.
+	             * @implements IF2fsSyncFileEnterFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IF2fsSyncFileEnterFtraceEvent=} [properties] Properties to set
+	             */
+	            function F2fsSyncFileEnterFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * F2fsSyncFileEnterFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileEnterFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsSyncFileEnterFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileEnterFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsSyncFileEnterFtraceEvent pino.
+	             * @member {number|Long} pino
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileEnterFtraceEvent.prototype.pino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsSyncFileEnterFtraceEvent mode.
+	             * @member {number} mode
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileEnterFtraceEvent.prototype.mode = 0;
+
+	            /**
+	             * F2fsSyncFileEnterFtraceEvent size.
+	             * @member {number|Long} size
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileEnterFtraceEvent.prototype.size = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+	            /**
+	             * F2fsSyncFileEnterFtraceEvent nlink.
+	             * @member {number} nlink
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileEnterFtraceEvent.prototype.nlink = 0;
+
+	            /**
+	             * F2fsSyncFileEnterFtraceEvent blocks.
+	             * @member {number|Long} blocks
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileEnterFtraceEvent.prototype.blocks = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsSyncFileEnterFtraceEvent advise.
+	             * @member {number} advise
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileEnterFtraceEvent.prototype.advise = 0;
+
+	            /**
+	             * Creates a new F2fsSyncFileEnterFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsSyncFileEnterFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.F2fsSyncFileEnterFtraceEvent} F2fsSyncFileEnterFtraceEvent instance
+	             */
+	            F2fsSyncFileEnterFtraceEvent.create = function create(properties) {
+	                return new F2fsSyncFileEnterFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified F2fsSyncFileEnterFtraceEvent message. Does not implicitly {@link perfetto.protos.F2fsSyncFileEnterFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsSyncFileEnterFtraceEvent} message F2fsSyncFileEnterFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsSyncFileEnterFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.pino != null && message.hasOwnProperty("pino"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.pino);
+	                if (message.mode != null && message.hasOwnProperty("mode"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.mode);
+	                if (message.size != null && message.hasOwnProperty("size"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).int64(message.size);
+	                if (message.nlink != null && message.hasOwnProperty("nlink"))
+	                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.nlink);
+	                if (message.blocks != null && message.hasOwnProperty("blocks"))
+	                    writer.uint32(/* id 7, wireType 0 =*/56).uint64(message.blocks);
+	                if (message.advise != null && message.hasOwnProperty("advise"))
+	                    writer.uint32(/* id 8, wireType 0 =*/64).uint32(message.advise);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified F2fsSyncFileEnterFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.F2fsSyncFileEnterFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsSyncFileEnterFtraceEvent} message F2fsSyncFileEnterFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsSyncFileEnterFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a F2fsSyncFileEnterFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.F2fsSyncFileEnterFtraceEvent} F2fsSyncFileEnterFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsSyncFileEnterFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.F2fsSyncFileEnterFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.pino = reader.uint64();
+	                        break;
+	                    case 4:
+	                        message.mode = reader.uint32();
+	                        break;
+	                    case 5:
+	                        message.size = reader.int64();
+	                        break;
+	                    case 6:
+	                        message.nlink = reader.uint32();
+	                        break;
+	                    case 7:
+	                        message.blocks = reader.uint64();
+	                        break;
+	                    case 8:
+	                        message.advise = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a F2fsSyncFileEnterFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.F2fsSyncFileEnterFtraceEvent} F2fsSyncFileEnterFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsSyncFileEnterFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a F2fsSyncFileEnterFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            F2fsSyncFileEnterFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.pino != null && message.hasOwnProperty("pino"))
+	                    if (!$util.isInteger(message.pino) && !(message.pino && $util.isInteger(message.pino.low) && $util.isInteger(message.pino.high)))
+	                        return "pino: integer|Long expected";
+	                if (message.mode != null && message.hasOwnProperty("mode"))
+	                    if (!$util.isInteger(message.mode))
+	                        return "mode: integer expected";
+	                if (message.size != null && message.hasOwnProperty("size"))
+	                    if (!$util.isInteger(message.size) && !(message.size && $util.isInteger(message.size.low) && $util.isInteger(message.size.high)))
+	                        return "size: integer|Long expected";
+	                if (message.nlink != null && message.hasOwnProperty("nlink"))
+	                    if (!$util.isInteger(message.nlink))
+	                        return "nlink: integer expected";
+	                if (message.blocks != null && message.hasOwnProperty("blocks"))
+	                    if (!$util.isInteger(message.blocks) && !(message.blocks && $util.isInteger(message.blocks.low) && $util.isInteger(message.blocks.high)))
+	                        return "blocks: integer|Long expected";
+	                if (message.advise != null && message.hasOwnProperty("advise"))
+	                    if (!$util.isInteger(message.advise))
+	                        return "advise: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a F2fsSyncFileEnterFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.F2fsSyncFileEnterFtraceEvent} F2fsSyncFileEnterFtraceEvent
+	             */
+	            F2fsSyncFileEnterFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.F2fsSyncFileEnterFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.F2fsSyncFileEnterFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.pino != null)
+	                    if ($util.Long)
+	                        (message.pino = $util.Long.fromValue(object.pino)).unsigned = true;
+	                    else if (typeof object.pino === "string")
+	                        message.pino = parseInt(object.pino, 10);
+	                    else if (typeof object.pino === "number")
+	                        message.pino = object.pino;
+	                    else if (typeof object.pino === "object")
+	                        message.pino = new $util.LongBits(object.pino.low >>> 0, object.pino.high >>> 0).toNumber(true);
+	                if (object.mode != null)
+	                    message.mode = object.mode >>> 0;
+	                if (object.size != null)
+	                    if ($util.Long)
+	                        (message.size = $util.Long.fromValue(object.size)).unsigned = false;
+	                    else if (typeof object.size === "string")
+	                        message.size = parseInt(object.size, 10);
+	                    else if (typeof object.size === "number")
+	                        message.size = object.size;
+	                    else if (typeof object.size === "object")
+	                        message.size = new $util.LongBits(object.size.low >>> 0, object.size.high >>> 0).toNumber();
+	                if (object.nlink != null)
+	                    message.nlink = object.nlink >>> 0;
+	                if (object.blocks != null)
+	                    if ($util.Long)
+	                        (message.blocks = $util.Long.fromValue(object.blocks)).unsigned = true;
+	                    else if (typeof object.blocks === "string")
+	                        message.blocks = parseInt(object.blocks, 10);
+	                    else if (typeof object.blocks === "number")
+	                        message.blocks = object.blocks;
+	                    else if (typeof object.blocks === "object")
+	                        message.blocks = new $util.LongBits(object.blocks.low >>> 0, object.blocks.high >>> 0).toNumber(true);
+	                if (object.advise != null)
+	                    message.advise = object.advise >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a F2fsSyncFileEnterFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.F2fsSyncFileEnterFtraceEvent} message F2fsSyncFileEnterFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            F2fsSyncFileEnterFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.pino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.pino = options.longs === String ? "0" : 0;
+	                    object.mode = 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, false);
+	                        object.size = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.size = options.longs === String ? "0" : 0;
+	                    object.nlink = 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.blocks = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.blocks = options.longs === String ? "0" : 0;
+	                    object.advise = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.pino != null && message.hasOwnProperty("pino"))
+	                    if (typeof message.pino === "number")
+	                        object.pino = options.longs === String ? String(message.pino) : message.pino;
+	                    else
+	                        object.pino = options.longs === String ? $util.Long.prototype.toString.call(message.pino) : options.longs === Number ? new $util.LongBits(message.pino.low >>> 0, message.pino.high >>> 0).toNumber(true) : message.pino;
+	                if (message.mode != null && message.hasOwnProperty("mode"))
+	                    object.mode = message.mode;
+	                if (message.size != null && message.hasOwnProperty("size"))
+	                    if (typeof message.size === "number")
+	                        object.size = options.longs === String ? String(message.size) : message.size;
+	                    else
+	                        object.size = options.longs === String ? $util.Long.prototype.toString.call(message.size) : options.longs === Number ? new $util.LongBits(message.size.low >>> 0, message.size.high >>> 0).toNumber() : message.size;
+	                if (message.nlink != null && message.hasOwnProperty("nlink"))
+	                    object.nlink = message.nlink;
+	                if (message.blocks != null && message.hasOwnProperty("blocks"))
+	                    if (typeof message.blocks === "number")
+	                        object.blocks = options.longs === String ? String(message.blocks) : message.blocks;
+	                    else
+	                        object.blocks = options.longs === String ? $util.Long.prototype.toString.call(message.blocks) : options.longs === Number ? new $util.LongBits(message.blocks.low >>> 0, message.blocks.high >>> 0).toNumber(true) : message.blocks;
+	                if (message.advise != null && message.hasOwnProperty("advise"))
+	                    object.advise = message.advise;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this F2fsSyncFileEnterFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.F2fsSyncFileEnterFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            F2fsSyncFileEnterFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return F2fsSyncFileEnterFtraceEvent;
+	        })();
+
+	        protos.F2fsSyncFileExitFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a F2fsSyncFileExitFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IF2fsSyncFileExitFtraceEvent
+	             * @property {number|Long|null} [dev] F2fsSyncFileExitFtraceEvent dev
+	             * @property {number|Long|null} [ino] F2fsSyncFileExitFtraceEvent ino
+	             * @property {number|null} [needCp] F2fsSyncFileExitFtraceEvent needCp
+	             * @property {number|null} [datasync] F2fsSyncFileExitFtraceEvent datasync
+	             * @property {number|null} [ret] F2fsSyncFileExitFtraceEvent ret
+	             */
+
+	            /**
+	             * Constructs a new F2fsSyncFileExitFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a F2fsSyncFileExitFtraceEvent.
+	             * @implements IF2fsSyncFileExitFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IF2fsSyncFileExitFtraceEvent=} [properties] Properties to set
+	             */
+	            function F2fsSyncFileExitFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * F2fsSyncFileExitFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileExitFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsSyncFileExitFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileExitFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsSyncFileExitFtraceEvent needCp.
+	             * @member {number} needCp
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileExitFtraceEvent.prototype.needCp = 0;
+
+	            /**
+	             * F2fsSyncFileExitFtraceEvent datasync.
+	             * @member {number} datasync
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileExitFtraceEvent.prototype.datasync = 0;
+
+	            /**
+	             * F2fsSyncFileExitFtraceEvent ret.
+	             * @member {number} ret
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @instance
+	             */
+	            F2fsSyncFileExitFtraceEvent.prototype.ret = 0;
+
+	            /**
+	             * Creates a new F2fsSyncFileExitFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsSyncFileExitFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.F2fsSyncFileExitFtraceEvent} F2fsSyncFileExitFtraceEvent instance
+	             */
+	            F2fsSyncFileExitFtraceEvent.create = function create(properties) {
+	                return new F2fsSyncFileExitFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified F2fsSyncFileExitFtraceEvent message. Does not implicitly {@link perfetto.protos.F2fsSyncFileExitFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsSyncFileExitFtraceEvent} message F2fsSyncFileExitFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsSyncFileExitFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.needCp != null && message.hasOwnProperty("needCp"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.needCp);
+	                if (message.datasync != null && message.hasOwnProperty("datasync"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).int32(message.datasync);
+	                if (message.ret != null && message.hasOwnProperty("ret"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).int32(message.ret);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified F2fsSyncFileExitFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.F2fsSyncFileExitFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsSyncFileExitFtraceEvent} message F2fsSyncFileExitFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsSyncFileExitFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a F2fsSyncFileExitFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.F2fsSyncFileExitFtraceEvent} F2fsSyncFileExitFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsSyncFileExitFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.F2fsSyncFileExitFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.needCp = reader.uint32();
+	                        break;
+	                    case 4:
+	                        message.datasync = reader.int32();
+	                        break;
+	                    case 5:
+	                        message.ret = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a F2fsSyncFileExitFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.F2fsSyncFileExitFtraceEvent} F2fsSyncFileExitFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsSyncFileExitFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a F2fsSyncFileExitFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            F2fsSyncFileExitFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.needCp != null && message.hasOwnProperty("needCp"))
+	                    if (!$util.isInteger(message.needCp))
+	                        return "needCp: integer expected";
+	                if (message.datasync != null && message.hasOwnProperty("datasync"))
+	                    if (!$util.isInteger(message.datasync))
+	                        return "datasync: integer expected";
+	                if (message.ret != null && message.hasOwnProperty("ret"))
+	                    if (!$util.isInteger(message.ret))
+	                        return "ret: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a F2fsSyncFileExitFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.F2fsSyncFileExitFtraceEvent} F2fsSyncFileExitFtraceEvent
+	             */
+	            F2fsSyncFileExitFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.F2fsSyncFileExitFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.F2fsSyncFileExitFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.needCp != null)
+	                    message.needCp = object.needCp >>> 0;
+	                if (object.datasync != null)
+	                    message.datasync = object.datasync | 0;
+	                if (object.ret != null)
+	                    message.ret = object.ret | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a F2fsSyncFileExitFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.F2fsSyncFileExitFtraceEvent} message F2fsSyncFileExitFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            F2fsSyncFileExitFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    object.needCp = 0;
+	                    object.datasync = 0;
+	                    object.ret = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.needCp != null && message.hasOwnProperty("needCp"))
+	                    object.needCp = message.needCp;
+	                if (message.datasync != null && message.hasOwnProperty("datasync"))
+	                    object.datasync = message.datasync;
+	                if (message.ret != null && message.hasOwnProperty("ret"))
+	                    object.ret = message.ret;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this F2fsSyncFileExitFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.F2fsSyncFileExitFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            F2fsSyncFileExitFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return F2fsSyncFileExitFtraceEvent;
+	        })();
+
+	        protos.F2fsWriteBeginFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a F2fsWriteBeginFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IF2fsWriteBeginFtraceEvent
+	             * @property {number|Long|null} [dev] F2fsWriteBeginFtraceEvent dev
+	             * @property {number|Long|null} [ino] F2fsWriteBeginFtraceEvent ino
+	             * @property {number|Long|null} [pos] F2fsWriteBeginFtraceEvent pos
+	             * @property {number|null} [len] F2fsWriteBeginFtraceEvent len
+	             * @property {number|null} [flags] F2fsWriteBeginFtraceEvent flags
+	             */
+
+	            /**
+	             * Constructs a new F2fsWriteBeginFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a F2fsWriteBeginFtraceEvent.
+	             * @implements IF2fsWriteBeginFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IF2fsWriteBeginFtraceEvent=} [properties] Properties to set
+	             */
+	            function F2fsWriteBeginFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * F2fsWriteBeginFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @instance
+	             */
+	            F2fsWriteBeginFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsWriteBeginFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @instance
+	             */
+	            F2fsWriteBeginFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsWriteBeginFtraceEvent pos.
+	             * @member {number|Long} pos
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @instance
+	             */
+	            F2fsWriteBeginFtraceEvent.prototype.pos = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+	            /**
+	             * F2fsWriteBeginFtraceEvent len.
+	             * @member {number} len
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @instance
+	             */
+	            F2fsWriteBeginFtraceEvent.prototype.len = 0;
+
+	            /**
+	             * F2fsWriteBeginFtraceEvent flags.
+	             * @member {number} flags
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @instance
+	             */
+	            F2fsWriteBeginFtraceEvent.prototype.flags = 0;
+
+	            /**
+	             * Creates a new F2fsWriteBeginFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsWriteBeginFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.F2fsWriteBeginFtraceEvent} F2fsWriteBeginFtraceEvent instance
+	             */
+	            F2fsWriteBeginFtraceEvent.create = function create(properties) {
+	                return new F2fsWriteBeginFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified F2fsWriteBeginFtraceEvent message. Does not implicitly {@link perfetto.protos.F2fsWriteBeginFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsWriteBeginFtraceEvent} message F2fsWriteBeginFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsWriteBeginFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int64(message.pos);
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.len);
+	                if (message.flags != null && message.hasOwnProperty("flags"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.flags);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified F2fsWriteBeginFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.F2fsWriteBeginFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsWriteBeginFtraceEvent} message F2fsWriteBeginFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsWriteBeginFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a F2fsWriteBeginFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.F2fsWriteBeginFtraceEvent} F2fsWriteBeginFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsWriteBeginFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.F2fsWriteBeginFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.pos = reader.int64();
+	                        break;
+	                    case 4:
+	                        message.len = reader.uint32();
+	                        break;
+	                    case 5:
+	                        message.flags = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a F2fsWriteBeginFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.F2fsWriteBeginFtraceEvent} F2fsWriteBeginFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsWriteBeginFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a F2fsWriteBeginFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            F2fsWriteBeginFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    if (!$util.isInteger(message.pos) && !(message.pos && $util.isInteger(message.pos.low) && $util.isInteger(message.pos.high)))
+	                        return "pos: integer|Long expected";
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    if (!$util.isInteger(message.len))
+	                        return "len: integer expected";
+	                if (message.flags != null && message.hasOwnProperty("flags"))
+	                    if (!$util.isInteger(message.flags))
+	                        return "flags: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a F2fsWriteBeginFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.F2fsWriteBeginFtraceEvent} F2fsWriteBeginFtraceEvent
+	             */
+	            F2fsWriteBeginFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.F2fsWriteBeginFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.F2fsWriteBeginFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.pos != null)
+	                    if ($util.Long)
+	                        (message.pos = $util.Long.fromValue(object.pos)).unsigned = false;
+	                    else if (typeof object.pos === "string")
+	                        message.pos = parseInt(object.pos, 10);
+	                    else if (typeof object.pos === "number")
+	                        message.pos = object.pos;
+	                    else if (typeof object.pos === "object")
+	                        message.pos = new $util.LongBits(object.pos.low >>> 0, object.pos.high >>> 0).toNumber();
+	                if (object.len != null)
+	                    message.len = object.len >>> 0;
+	                if (object.flags != null)
+	                    message.flags = object.flags >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a F2fsWriteBeginFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.F2fsWriteBeginFtraceEvent} message F2fsWriteBeginFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            F2fsWriteBeginFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, false);
+	                        object.pos = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.pos = options.longs === String ? "0" : 0;
+	                    object.len = 0;
+	                    object.flags = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    if (typeof message.pos === "number")
+	                        object.pos = options.longs === String ? String(message.pos) : message.pos;
+	                    else
+	                        object.pos = options.longs === String ? $util.Long.prototype.toString.call(message.pos) : options.longs === Number ? new $util.LongBits(message.pos.low >>> 0, message.pos.high >>> 0).toNumber() : message.pos;
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    object.len = message.len;
+	                if (message.flags != null && message.hasOwnProperty("flags"))
+	                    object.flags = message.flags;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this F2fsWriteBeginFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.F2fsWriteBeginFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            F2fsWriteBeginFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return F2fsWriteBeginFtraceEvent;
+	        })();
+
+	        protos.F2fsWriteEndFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a F2fsWriteEndFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IF2fsWriteEndFtraceEvent
+	             * @property {number|Long|null} [dev] F2fsWriteEndFtraceEvent dev
+	             * @property {number|Long|null} [ino] F2fsWriteEndFtraceEvent ino
+	             * @property {number|Long|null} [pos] F2fsWriteEndFtraceEvent pos
+	             * @property {number|null} [len] F2fsWriteEndFtraceEvent len
+	             * @property {number|null} [copied] F2fsWriteEndFtraceEvent copied
+	             */
+
+	            /**
+	             * Constructs a new F2fsWriteEndFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a F2fsWriteEndFtraceEvent.
+	             * @implements IF2fsWriteEndFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IF2fsWriteEndFtraceEvent=} [properties] Properties to set
+	             */
+	            function F2fsWriteEndFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * F2fsWriteEndFtraceEvent dev.
+	             * @member {number|Long} dev
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @instance
+	             */
+	            F2fsWriteEndFtraceEvent.prototype.dev = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsWriteEndFtraceEvent ino.
+	             * @member {number|Long} ino
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @instance
+	             */
+	            F2fsWriteEndFtraceEvent.prototype.ino = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * F2fsWriteEndFtraceEvent pos.
+	             * @member {number|Long} pos
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @instance
+	             */
+	            F2fsWriteEndFtraceEvent.prototype.pos = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+	            /**
+	             * F2fsWriteEndFtraceEvent len.
+	             * @member {number} len
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @instance
+	             */
+	            F2fsWriteEndFtraceEvent.prototype.len = 0;
+
+	            /**
+	             * F2fsWriteEndFtraceEvent copied.
+	             * @member {number} copied
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @instance
+	             */
+	            F2fsWriteEndFtraceEvent.prototype.copied = 0;
+
+	            /**
+	             * Creates a new F2fsWriteEndFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsWriteEndFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.F2fsWriteEndFtraceEvent} F2fsWriteEndFtraceEvent instance
+	             */
+	            F2fsWriteEndFtraceEvent.create = function create(properties) {
+	                return new F2fsWriteEndFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified F2fsWriteEndFtraceEvent message. Does not implicitly {@link perfetto.protos.F2fsWriteEndFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsWriteEndFtraceEvent} message F2fsWriteEndFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsWriteEndFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.dev);
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.ino);
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int64(message.pos);
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.len);
+	                if (message.copied != null && message.hasOwnProperty("copied"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.copied);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified F2fsWriteEndFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.F2fsWriteEndFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IF2fsWriteEndFtraceEvent} message F2fsWriteEndFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            F2fsWriteEndFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a F2fsWriteEndFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.F2fsWriteEndFtraceEvent} F2fsWriteEndFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsWriteEndFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.F2fsWriteEndFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.dev = reader.uint64();
+	                        break;
+	                    case 2:
+	                        message.ino = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.pos = reader.int64();
+	                        break;
+	                    case 4:
+	                        message.len = reader.uint32();
+	                        break;
+	                    case 5:
+	                        message.copied = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a F2fsWriteEndFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.F2fsWriteEndFtraceEvent} F2fsWriteEndFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            F2fsWriteEndFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a F2fsWriteEndFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            F2fsWriteEndFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (!$util.isInteger(message.dev) && !(message.dev && $util.isInteger(message.dev.low) && $util.isInteger(message.dev.high)))
+	                        return "dev: integer|Long expected";
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (!$util.isInteger(message.ino) && !(message.ino && $util.isInteger(message.ino.low) && $util.isInteger(message.ino.high)))
+	                        return "ino: integer|Long expected";
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    if (!$util.isInteger(message.pos) && !(message.pos && $util.isInteger(message.pos.low) && $util.isInteger(message.pos.high)))
+	                        return "pos: integer|Long expected";
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    if (!$util.isInteger(message.len))
+	                        return "len: integer expected";
+	                if (message.copied != null && message.hasOwnProperty("copied"))
+	                    if (!$util.isInteger(message.copied))
+	                        return "copied: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a F2fsWriteEndFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.F2fsWriteEndFtraceEvent} F2fsWriteEndFtraceEvent
+	             */
+	            F2fsWriteEndFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.F2fsWriteEndFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.F2fsWriteEndFtraceEvent();
+	                if (object.dev != null)
+	                    if ($util.Long)
+	                        (message.dev = $util.Long.fromValue(object.dev)).unsigned = true;
+	                    else if (typeof object.dev === "string")
+	                        message.dev = parseInt(object.dev, 10);
+	                    else if (typeof object.dev === "number")
+	                        message.dev = object.dev;
+	                    else if (typeof object.dev === "object")
+	                        message.dev = new $util.LongBits(object.dev.low >>> 0, object.dev.high >>> 0).toNumber(true);
+	                if (object.ino != null)
+	                    if ($util.Long)
+	                        (message.ino = $util.Long.fromValue(object.ino)).unsigned = true;
+	                    else if (typeof object.ino === "string")
+	                        message.ino = parseInt(object.ino, 10);
+	                    else if (typeof object.ino === "number")
+	                        message.ino = object.ino;
+	                    else if (typeof object.ino === "object")
+	                        message.ino = new $util.LongBits(object.ino.low >>> 0, object.ino.high >>> 0).toNumber(true);
+	                if (object.pos != null)
+	                    if ($util.Long)
+	                        (message.pos = $util.Long.fromValue(object.pos)).unsigned = false;
+	                    else if (typeof object.pos === "string")
+	                        message.pos = parseInt(object.pos, 10);
+	                    else if (typeof object.pos === "number")
+	                        message.pos = object.pos;
+	                    else if (typeof object.pos === "object")
+	                        message.pos = new $util.LongBits(object.pos.low >>> 0, object.pos.high >>> 0).toNumber();
+	                if (object.len != null)
+	                    message.len = object.len >>> 0;
+	                if (object.copied != null)
+	                    message.copied = object.copied >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a F2fsWriteEndFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.F2fsWriteEndFtraceEvent} message F2fsWriteEndFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            F2fsWriteEndFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.dev = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.dev = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.ino = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.ino = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, false);
+	                        object.pos = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.pos = options.longs === String ? "0" : 0;
+	                    object.len = 0;
+	                    object.copied = 0;
+	                }
+	                if (message.dev != null && message.hasOwnProperty("dev"))
+	                    if (typeof message.dev === "number")
+	                        object.dev = options.longs === String ? String(message.dev) : message.dev;
+	                    else
+	                        object.dev = options.longs === String ? $util.Long.prototype.toString.call(message.dev) : options.longs === Number ? new $util.LongBits(message.dev.low >>> 0, message.dev.high >>> 0).toNumber(true) : message.dev;
+	                if (message.ino != null && message.hasOwnProperty("ino"))
+	                    if (typeof message.ino === "number")
+	                        object.ino = options.longs === String ? String(message.ino) : message.ino;
+	                    else
+	                        object.ino = options.longs === String ? $util.Long.prototype.toString.call(message.ino) : options.longs === Number ? new $util.LongBits(message.ino.low >>> 0, message.ino.high >>> 0).toNumber(true) : message.ino;
+	                if (message.pos != null && message.hasOwnProperty("pos"))
+	                    if (typeof message.pos === "number")
+	                        object.pos = options.longs === String ? String(message.pos) : message.pos;
+	                    else
+	                        object.pos = options.longs === String ? $util.Long.prototype.toString.call(message.pos) : options.longs === Number ? new $util.LongBits(message.pos.low >>> 0, message.pos.high >>> 0).toNumber() : message.pos;
+	                if (message.len != null && message.hasOwnProperty("len"))
+	                    object.len = message.len;
+	                if (message.copied != null && message.hasOwnProperty("copied"))
+	                    object.copied = message.copied;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this F2fsWriteEndFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.F2fsWriteEndFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            F2fsWriteEndFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return F2fsWriteEndFtraceEvent;
+	        })();
+
+	        protos.LowmemoryKillFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a LowmemoryKillFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ILowmemoryKillFtraceEvent
+	             * @property {string|null} [comm] LowmemoryKillFtraceEvent comm
+	             * @property {number|null} [pid] LowmemoryKillFtraceEvent pid
+	             * @property {number|Long|null} [pagecacheSize] LowmemoryKillFtraceEvent pagecacheSize
+	             * @property {number|Long|null} [pagecacheLimit] LowmemoryKillFtraceEvent pagecacheLimit
+	             * @property {number|Long|null} [free] LowmemoryKillFtraceEvent free
+	             */
+
+	            /**
+	             * Constructs a new LowmemoryKillFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a LowmemoryKillFtraceEvent.
+	             * @implements ILowmemoryKillFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ILowmemoryKillFtraceEvent=} [properties] Properties to set
+	             */
+	            function LowmemoryKillFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * LowmemoryKillFtraceEvent comm.
+	             * @member {string} comm
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @instance
+	             */
+	            LowmemoryKillFtraceEvent.prototype.comm = "";
+
+	            /**
+	             * LowmemoryKillFtraceEvent pid.
+	             * @member {number} pid
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @instance
+	             */
+	            LowmemoryKillFtraceEvent.prototype.pid = 0;
+
+	            /**
+	             * LowmemoryKillFtraceEvent pagecacheSize.
+	             * @member {number|Long} pagecacheSize
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @instance
+	             */
+	            LowmemoryKillFtraceEvent.prototype.pagecacheSize = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+	            /**
+	             * LowmemoryKillFtraceEvent pagecacheLimit.
+	             * @member {number|Long} pagecacheLimit
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @instance
+	             */
+	            LowmemoryKillFtraceEvent.prototype.pagecacheLimit = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+	            /**
+	             * LowmemoryKillFtraceEvent free.
+	             * @member {number|Long} free
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @instance
+	             */
+	            LowmemoryKillFtraceEvent.prototype.free = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+	            /**
+	             * Creates a new LowmemoryKillFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ILowmemoryKillFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.LowmemoryKillFtraceEvent} LowmemoryKillFtraceEvent instance
+	             */
+	            LowmemoryKillFtraceEvent.create = function create(properties) {
+	                return new LowmemoryKillFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified LowmemoryKillFtraceEvent message. Does not implicitly {@link perfetto.protos.LowmemoryKillFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ILowmemoryKillFtraceEvent} message LowmemoryKillFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            LowmemoryKillFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.comm);
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.pid);
+	                if (message.pagecacheSize != null && message.hasOwnProperty("pagecacheSize"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int64(message.pagecacheSize);
+	                if (message.pagecacheLimit != null && message.hasOwnProperty("pagecacheLimit"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).int64(message.pagecacheLimit);
+	                if (message.free != null && message.hasOwnProperty("free"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).int64(message.free);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified LowmemoryKillFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.LowmemoryKillFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ILowmemoryKillFtraceEvent} message LowmemoryKillFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            LowmemoryKillFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a LowmemoryKillFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.LowmemoryKillFtraceEvent} LowmemoryKillFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            LowmemoryKillFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.LowmemoryKillFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.comm = reader.string();
+	                        break;
+	                    case 2:
+	                        message.pid = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.pagecacheSize = reader.int64();
+	                        break;
+	                    case 4:
+	                        message.pagecacheLimit = reader.int64();
+	                        break;
+	                    case 5:
+	                        message.free = reader.int64();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a LowmemoryKillFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.LowmemoryKillFtraceEvent} LowmemoryKillFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            LowmemoryKillFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a LowmemoryKillFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            LowmemoryKillFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    if (!$util.isString(message.comm))
+	                        return "comm: string expected";
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    if (!$util.isInteger(message.pid))
+	                        return "pid: integer expected";
+	                if (message.pagecacheSize != null && message.hasOwnProperty("pagecacheSize"))
+	                    if (!$util.isInteger(message.pagecacheSize) && !(message.pagecacheSize && $util.isInteger(message.pagecacheSize.low) && $util.isInteger(message.pagecacheSize.high)))
+	                        return "pagecacheSize: integer|Long expected";
+	                if (message.pagecacheLimit != null && message.hasOwnProperty("pagecacheLimit"))
+	                    if (!$util.isInteger(message.pagecacheLimit) && !(message.pagecacheLimit && $util.isInteger(message.pagecacheLimit.low) && $util.isInteger(message.pagecacheLimit.high)))
+	                        return "pagecacheLimit: integer|Long expected";
+	                if (message.free != null && message.hasOwnProperty("free"))
+	                    if (!$util.isInteger(message.free) && !(message.free && $util.isInteger(message.free.low) && $util.isInteger(message.free.high)))
+	                        return "free: integer|Long expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a LowmemoryKillFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.LowmemoryKillFtraceEvent} LowmemoryKillFtraceEvent
+	             */
+	            LowmemoryKillFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.LowmemoryKillFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.LowmemoryKillFtraceEvent();
+	                if (object.comm != null)
+	                    message.comm = String(object.comm);
+	                if (object.pid != null)
+	                    message.pid = object.pid | 0;
+	                if (object.pagecacheSize != null)
+	                    if ($util.Long)
+	                        (message.pagecacheSize = $util.Long.fromValue(object.pagecacheSize)).unsigned = false;
+	                    else if (typeof object.pagecacheSize === "string")
+	                        message.pagecacheSize = parseInt(object.pagecacheSize, 10);
+	                    else if (typeof object.pagecacheSize === "number")
+	                        message.pagecacheSize = object.pagecacheSize;
+	                    else if (typeof object.pagecacheSize === "object")
+	                        message.pagecacheSize = new $util.LongBits(object.pagecacheSize.low >>> 0, object.pagecacheSize.high >>> 0).toNumber();
+	                if (object.pagecacheLimit != null)
+	                    if ($util.Long)
+	                        (message.pagecacheLimit = $util.Long.fromValue(object.pagecacheLimit)).unsigned = false;
+	                    else if (typeof object.pagecacheLimit === "string")
+	                        message.pagecacheLimit = parseInt(object.pagecacheLimit, 10);
+	                    else if (typeof object.pagecacheLimit === "number")
+	                        message.pagecacheLimit = object.pagecacheLimit;
+	                    else if (typeof object.pagecacheLimit === "object")
+	                        message.pagecacheLimit = new $util.LongBits(object.pagecacheLimit.low >>> 0, object.pagecacheLimit.high >>> 0).toNumber();
+	                if (object.free != null)
+	                    if ($util.Long)
+	                        (message.free = $util.Long.fromValue(object.free)).unsigned = false;
+	                    else if (typeof object.free === "string")
+	                        message.free = parseInt(object.free, 10);
+	                    else if (typeof object.free === "number")
+	                        message.free = object.free;
+	                    else if (typeof object.free === "object")
+	                        message.free = new $util.LongBits(object.free.low >>> 0, object.free.high >>> 0).toNumber();
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a LowmemoryKillFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.LowmemoryKillFtraceEvent} message LowmemoryKillFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            LowmemoryKillFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.comm = "";
+	                    object.pid = 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, false);
+	                        object.pagecacheSize = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.pagecacheSize = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, false);
+	                        object.pagecacheLimit = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.pagecacheLimit = options.longs === String ? "0" : 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, false);
+	                        object.free = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.free = options.longs === String ? "0" : 0;
+	                }
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    object.comm = message.comm;
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    object.pid = message.pid;
+	                if (message.pagecacheSize != null && message.hasOwnProperty("pagecacheSize"))
+	                    if (typeof message.pagecacheSize === "number")
+	                        object.pagecacheSize = options.longs === String ? String(message.pagecacheSize) : message.pagecacheSize;
+	                    else
+	                        object.pagecacheSize = options.longs === String ? $util.Long.prototype.toString.call(message.pagecacheSize) : options.longs === Number ? new $util.LongBits(message.pagecacheSize.low >>> 0, message.pagecacheSize.high >>> 0).toNumber() : message.pagecacheSize;
+	                if (message.pagecacheLimit != null && message.hasOwnProperty("pagecacheLimit"))
+	                    if (typeof message.pagecacheLimit === "number")
+	                        object.pagecacheLimit = options.longs === String ? String(message.pagecacheLimit) : message.pagecacheLimit;
+	                    else
+	                        object.pagecacheLimit = options.longs === String ? $util.Long.prototype.toString.call(message.pagecacheLimit) : options.longs === Number ? new $util.LongBits(message.pagecacheLimit.low >>> 0, message.pagecacheLimit.high >>> 0).toNumber() : message.pagecacheLimit;
+	                if (message.free != null && message.hasOwnProperty("free"))
+	                    if (typeof message.free === "number")
+	                        object.free = options.longs === String ? String(message.free) : message.free;
+	                    else
+	                        object.free = options.longs === String ? $util.Long.prototype.toString.call(message.free) : options.longs === Number ? new $util.LongBits(message.free.low >>> 0, message.free.high >>> 0).toNumber() : message.free;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this LowmemoryKillFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.LowmemoryKillFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            LowmemoryKillFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return LowmemoryKillFtraceEvent;
+	        })();
+
+	        protos.MmVmscanDirectReclaimBeginFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a MmVmscanDirectReclaimBeginFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IMmVmscanDirectReclaimBeginFtraceEvent
+	             * @property {number|null} [order] MmVmscanDirectReclaimBeginFtraceEvent order
+	             * @property {number|null} [mayWritepage] MmVmscanDirectReclaimBeginFtraceEvent mayWritepage
+	             * @property {number|null} [gfpFlags] MmVmscanDirectReclaimBeginFtraceEvent gfpFlags
+	             */
+
+	            /**
+	             * Constructs a new MmVmscanDirectReclaimBeginFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a MmVmscanDirectReclaimBeginFtraceEvent.
+	             * @implements IMmVmscanDirectReclaimBeginFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IMmVmscanDirectReclaimBeginFtraceEvent=} [properties] Properties to set
+	             */
+	            function MmVmscanDirectReclaimBeginFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * MmVmscanDirectReclaimBeginFtraceEvent order.
+	             * @member {number} order
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @instance
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.prototype.order = 0;
+
+	            /**
+	             * MmVmscanDirectReclaimBeginFtraceEvent mayWritepage.
+	             * @member {number} mayWritepage
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @instance
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.prototype.mayWritepage = 0;
+
+	            /**
+	             * MmVmscanDirectReclaimBeginFtraceEvent gfpFlags.
+	             * @member {number} gfpFlags
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @instance
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.prototype.gfpFlags = 0;
+
+	            /**
+	             * Creates a new MmVmscanDirectReclaimBeginFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanDirectReclaimBeginFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent} MmVmscanDirectReclaimBeginFtraceEvent instance
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.create = function create(properties) {
+	                return new MmVmscanDirectReclaimBeginFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified MmVmscanDirectReclaimBeginFtraceEvent message. Does not implicitly {@link perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanDirectReclaimBeginFtraceEvent} message MmVmscanDirectReclaimBeginFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.order != null && message.hasOwnProperty("order"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.order);
+	                if (message.mayWritepage != null && message.hasOwnProperty("mayWritepage"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.mayWritepage);
+	                if (message.gfpFlags != null && message.hasOwnProperty("gfpFlags"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.gfpFlags);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified MmVmscanDirectReclaimBeginFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanDirectReclaimBeginFtraceEvent} message MmVmscanDirectReclaimBeginFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a MmVmscanDirectReclaimBeginFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent} MmVmscanDirectReclaimBeginFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.order = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.mayWritepage = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.gfpFlags = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a MmVmscanDirectReclaimBeginFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent} MmVmscanDirectReclaimBeginFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a MmVmscanDirectReclaimBeginFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.order != null && message.hasOwnProperty("order"))
+	                    if (!$util.isInteger(message.order))
+	                        return "order: integer expected";
+	                if (message.mayWritepage != null && message.hasOwnProperty("mayWritepage"))
+	                    if (!$util.isInteger(message.mayWritepage))
+	                        return "mayWritepage: integer expected";
+	                if (message.gfpFlags != null && message.hasOwnProperty("gfpFlags"))
+	                    if (!$util.isInteger(message.gfpFlags))
+	                        return "gfpFlags: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a MmVmscanDirectReclaimBeginFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent} MmVmscanDirectReclaimBeginFtraceEvent
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent();
+	                if (object.order != null)
+	                    message.order = object.order | 0;
+	                if (object.mayWritepage != null)
+	                    message.mayWritepage = object.mayWritepage | 0;
+	                if (object.gfpFlags != null)
+	                    message.gfpFlags = object.gfpFlags >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a MmVmscanDirectReclaimBeginFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent} message MmVmscanDirectReclaimBeginFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.order = 0;
+	                    object.mayWritepage = 0;
+	                    object.gfpFlags = 0;
+	                }
+	                if (message.order != null && message.hasOwnProperty("order"))
+	                    object.order = message.order;
+	                if (message.mayWritepage != null && message.hasOwnProperty("mayWritepage"))
+	                    object.mayWritepage = message.mayWritepage;
+	                if (message.gfpFlags != null && message.hasOwnProperty("gfpFlags"))
+	                    object.gfpFlags = message.gfpFlags;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this MmVmscanDirectReclaimBeginFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimBeginFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            MmVmscanDirectReclaimBeginFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return MmVmscanDirectReclaimBeginFtraceEvent;
+	        })();
+
+	        protos.MmVmscanDirectReclaimEndFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a MmVmscanDirectReclaimEndFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IMmVmscanDirectReclaimEndFtraceEvent
+	             * @property {number|Long|null} [nrReclaimed] MmVmscanDirectReclaimEndFtraceEvent nrReclaimed
+	             */
+
+	            /**
+	             * Constructs a new MmVmscanDirectReclaimEndFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a MmVmscanDirectReclaimEndFtraceEvent.
+	             * @implements IMmVmscanDirectReclaimEndFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IMmVmscanDirectReclaimEndFtraceEvent=} [properties] Properties to set
+	             */
+	            function MmVmscanDirectReclaimEndFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * MmVmscanDirectReclaimEndFtraceEvent nrReclaimed.
+	             * @member {number|Long} nrReclaimed
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent
+	             * @instance
+	             */
+	            MmVmscanDirectReclaimEndFtraceEvent.prototype.nrReclaimed = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * Creates a new MmVmscanDirectReclaimEndFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanDirectReclaimEndFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent} MmVmscanDirectReclaimEndFtraceEvent instance
+	             */
+	            MmVmscanDirectReclaimEndFtraceEvent.create = function create(properties) {
+	                return new MmVmscanDirectReclaimEndFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified MmVmscanDirectReclaimEndFtraceEvent message. Does not implicitly {@link perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanDirectReclaimEndFtraceEvent} message MmVmscanDirectReclaimEndFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            MmVmscanDirectReclaimEndFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.nrReclaimed != null && message.hasOwnProperty("nrReclaimed"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.nrReclaimed);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified MmVmscanDirectReclaimEndFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanDirectReclaimEndFtraceEvent} message MmVmscanDirectReclaimEndFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            MmVmscanDirectReclaimEndFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a MmVmscanDirectReclaimEndFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent} MmVmscanDirectReclaimEndFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            MmVmscanDirectReclaimEndFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.nrReclaimed = reader.uint64();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a MmVmscanDirectReclaimEndFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent} MmVmscanDirectReclaimEndFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            MmVmscanDirectReclaimEndFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a MmVmscanDirectReclaimEndFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            MmVmscanDirectReclaimEndFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.nrReclaimed != null && message.hasOwnProperty("nrReclaimed"))
+	                    if (!$util.isInteger(message.nrReclaimed) && !(message.nrReclaimed && $util.isInteger(message.nrReclaimed.low) && $util.isInteger(message.nrReclaimed.high)))
+	                        return "nrReclaimed: integer|Long expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a MmVmscanDirectReclaimEndFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent} MmVmscanDirectReclaimEndFtraceEvent
+	             */
+	            MmVmscanDirectReclaimEndFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent();
+	                if (object.nrReclaimed != null)
+	                    if ($util.Long)
+	                        (message.nrReclaimed = $util.Long.fromValue(object.nrReclaimed)).unsigned = true;
+	                    else if (typeof object.nrReclaimed === "string")
+	                        message.nrReclaimed = parseInt(object.nrReclaimed, 10);
+	                    else if (typeof object.nrReclaimed === "number")
+	                        message.nrReclaimed = object.nrReclaimed;
+	                    else if (typeof object.nrReclaimed === "object")
+	                        message.nrReclaimed = new $util.LongBits(object.nrReclaimed.low >>> 0, object.nrReclaimed.high >>> 0).toNumber(true);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a MmVmscanDirectReclaimEndFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent} message MmVmscanDirectReclaimEndFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            MmVmscanDirectReclaimEndFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults)
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.nrReclaimed = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.nrReclaimed = options.longs === String ? "0" : 0;
+	                if (message.nrReclaimed != null && message.hasOwnProperty("nrReclaimed"))
+	                    if (typeof message.nrReclaimed === "number")
+	                        object.nrReclaimed = options.longs === String ? String(message.nrReclaimed) : message.nrReclaimed;
+	                    else
+	                        object.nrReclaimed = options.longs === String ? $util.Long.prototype.toString.call(message.nrReclaimed) : options.longs === Number ? new $util.LongBits(message.nrReclaimed.low >>> 0, message.nrReclaimed.high >>> 0).toNumber(true) : message.nrReclaimed;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this MmVmscanDirectReclaimEndFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.MmVmscanDirectReclaimEndFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            MmVmscanDirectReclaimEndFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return MmVmscanDirectReclaimEndFtraceEvent;
+	        })();
+
+	        protos.MmVmscanKswapdSleepFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a MmVmscanKswapdSleepFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IMmVmscanKswapdSleepFtraceEvent
+	             * @property {number|null} [nid] MmVmscanKswapdSleepFtraceEvent nid
+	             */
+
+	            /**
+	             * Constructs a new MmVmscanKswapdSleepFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a MmVmscanKswapdSleepFtraceEvent.
+	             * @implements IMmVmscanKswapdSleepFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IMmVmscanKswapdSleepFtraceEvent=} [properties] Properties to set
+	             */
+	            function MmVmscanKswapdSleepFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * MmVmscanKswapdSleepFtraceEvent nid.
+	             * @member {number} nid
+	             * @memberof perfetto.protos.MmVmscanKswapdSleepFtraceEvent
+	             * @instance
+	             */
+	            MmVmscanKswapdSleepFtraceEvent.prototype.nid = 0;
+
+	            /**
+	             * Creates a new MmVmscanKswapdSleepFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.MmVmscanKswapdSleepFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanKswapdSleepFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.MmVmscanKswapdSleepFtraceEvent} MmVmscanKswapdSleepFtraceEvent instance
+	             */
+	            MmVmscanKswapdSleepFtraceEvent.create = function create(properties) {
+	                return new MmVmscanKswapdSleepFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified MmVmscanKswapdSleepFtraceEvent message. Does not implicitly {@link perfetto.protos.MmVmscanKswapdSleepFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.MmVmscanKswapdSleepFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanKswapdSleepFtraceEvent} message MmVmscanKswapdSleepFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            MmVmscanKswapdSleepFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.nid != null && message.hasOwnProperty("nid"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.nid);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified MmVmscanKswapdSleepFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.MmVmscanKswapdSleepFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.MmVmscanKswapdSleepFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanKswapdSleepFtraceEvent} message MmVmscanKswapdSleepFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            MmVmscanKswapdSleepFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a MmVmscanKswapdSleepFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.MmVmscanKswapdSleepFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.MmVmscanKswapdSleepFtraceEvent} MmVmscanKswapdSleepFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            MmVmscanKswapdSleepFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.MmVmscanKswapdSleepFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.nid = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a MmVmscanKswapdSleepFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.MmVmscanKswapdSleepFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.MmVmscanKswapdSleepFtraceEvent} MmVmscanKswapdSleepFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            MmVmscanKswapdSleepFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a MmVmscanKswapdSleepFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.MmVmscanKswapdSleepFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            MmVmscanKswapdSleepFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.nid != null && message.hasOwnProperty("nid"))
+	                    if (!$util.isInteger(message.nid))
+	                        return "nid: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a MmVmscanKswapdSleepFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.MmVmscanKswapdSleepFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.MmVmscanKswapdSleepFtraceEvent} MmVmscanKswapdSleepFtraceEvent
+	             */
+	            MmVmscanKswapdSleepFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.MmVmscanKswapdSleepFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.MmVmscanKswapdSleepFtraceEvent();
+	                if (object.nid != null)
+	                    message.nid = object.nid | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a MmVmscanKswapdSleepFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.MmVmscanKswapdSleepFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.MmVmscanKswapdSleepFtraceEvent} message MmVmscanKswapdSleepFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            MmVmscanKswapdSleepFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults)
+	                    object.nid = 0;
+	                if (message.nid != null && message.hasOwnProperty("nid"))
+	                    object.nid = message.nid;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this MmVmscanKswapdSleepFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.MmVmscanKswapdSleepFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            MmVmscanKswapdSleepFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return MmVmscanKswapdSleepFtraceEvent;
+	        })();
+
+	        protos.MmVmscanKswapdWakeFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a MmVmscanKswapdWakeFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface IMmVmscanKswapdWakeFtraceEvent
+	             * @property {number|null} [nid] MmVmscanKswapdWakeFtraceEvent nid
+	             * @property {number|null} [order] MmVmscanKswapdWakeFtraceEvent order
+	             */
+
+	            /**
+	             * Constructs a new MmVmscanKswapdWakeFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a MmVmscanKswapdWakeFtraceEvent.
+	             * @implements IMmVmscanKswapdWakeFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.IMmVmscanKswapdWakeFtraceEvent=} [properties] Properties to set
+	             */
+	            function MmVmscanKswapdWakeFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * MmVmscanKswapdWakeFtraceEvent nid.
+	             * @member {number} nid
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @instance
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.prototype.nid = 0;
+
+	            /**
+	             * MmVmscanKswapdWakeFtraceEvent order.
+	             * @member {number} order
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @instance
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.prototype.order = 0;
+
+	            /**
+	             * Creates a new MmVmscanKswapdWakeFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanKswapdWakeFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.MmVmscanKswapdWakeFtraceEvent} MmVmscanKswapdWakeFtraceEvent instance
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.create = function create(properties) {
+	                return new MmVmscanKswapdWakeFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified MmVmscanKswapdWakeFtraceEvent message. Does not implicitly {@link perfetto.protos.MmVmscanKswapdWakeFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanKswapdWakeFtraceEvent} message MmVmscanKswapdWakeFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.nid != null && message.hasOwnProperty("nid"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.nid);
+	                if (message.order != null && message.hasOwnProperty("order"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.order);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified MmVmscanKswapdWakeFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.MmVmscanKswapdWakeFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.IMmVmscanKswapdWakeFtraceEvent} message MmVmscanKswapdWakeFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a MmVmscanKswapdWakeFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.MmVmscanKswapdWakeFtraceEvent} MmVmscanKswapdWakeFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.MmVmscanKswapdWakeFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.nid = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.order = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a MmVmscanKswapdWakeFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.MmVmscanKswapdWakeFtraceEvent} MmVmscanKswapdWakeFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a MmVmscanKswapdWakeFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.nid != null && message.hasOwnProperty("nid"))
+	                    if (!$util.isInteger(message.nid))
+	                        return "nid: integer expected";
+	                if (message.order != null && message.hasOwnProperty("order"))
+	                    if (!$util.isInteger(message.order))
+	                        return "order: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a MmVmscanKswapdWakeFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.MmVmscanKswapdWakeFtraceEvent} MmVmscanKswapdWakeFtraceEvent
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.MmVmscanKswapdWakeFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.MmVmscanKswapdWakeFtraceEvent();
+	                if (object.nid != null)
+	                    message.nid = object.nid | 0;
+	                if (object.order != null)
+	                    message.order = object.order | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a MmVmscanKswapdWakeFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.MmVmscanKswapdWakeFtraceEvent} message MmVmscanKswapdWakeFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.nid = 0;
+	                    object.order = 0;
+	                }
+	                if (message.nid != null && message.hasOwnProperty("nid"))
+	                    object.nid = message.nid;
+	                if (message.order != null && message.hasOwnProperty("order"))
+	                    object.order = message.order;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this MmVmscanKswapdWakeFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.MmVmscanKswapdWakeFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            MmVmscanKswapdWakeFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return MmVmscanKswapdWakeFtraceEvent;
+	        })();
+
+	        protos.SchedBlockedReasonFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a SchedBlockedReasonFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ISchedBlockedReasonFtraceEvent
+	             * @property {number|null} [pid] SchedBlockedReasonFtraceEvent pid
+	             * @property {number|Long|null} [caller] SchedBlockedReasonFtraceEvent caller
+	             * @property {number|null} [ioWait] SchedBlockedReasonFtraceEvent ioWait
+	             */
+
+	            /**
+	             * Constructs a new SchedBlockedReasonFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a SchedBlockedReasonFtraceEvent.
+	             * @implements ISchedBlockedReasonFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ISchedBlockedReasonFtraceEvent=} [properties] Properties to set
+	             */
+	            function SchedBlockedReasonFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * SchedBlockedReasonFtraceEvent pid.
+	             * @member {number} pid
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @instance
+	             */
+	            SchedBlockedReasonFtraceEvent.prototype.pid = 0;
+
+	            /**
+	             * SchedBlockedReasonFtraceEvent caller.
+	             * @member {number|Long} caller
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @instance
+	             */
+	            SchedBlockedReasonFtraceEvent.prototype.caller = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * SchedBlockedReasonFtraceEvent ioWait.
+	             * @member {number} ioWait
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @instance
+	             */
+	            SchedBlockedReasonFtraceEvent.prototype.ioWait = 0;
+
+	            /**
+	             * Creates a new SchedBlockedReasonFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedBlockedReasonFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.SchedBlockedReasonFtraceEvent} SchedBlockedReasonFtraceEvent instance
+	             */
+	            SchedBlockedReasonFtraceEvent.create = function create(properties) {
+	                return new SchedBlockedReasonFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified SchedBlockedReasonFtraceEvent message. Does not implicitly {@link perfetto.protos.SchedBlockedReasonFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedBlockedReasonFtraceEvent} message SchedBlockedReasonFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            SchedBlockedReasonFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.pid);
+	                if (message.caller != null && message.hasOwnProperty("caller"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.caller);
+	                if (message.ioWait != null && message.hasOwnProperty("ioWait"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.ioWait);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified SchedBlockedReasonFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.SchedBlockedReasonFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedBlockedReasonFtraceEvent} message SchedBlockedReasonFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            SchedBlockedReasonFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a SchedBlockedReasonFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.SchedBlockedReasonFtraceEvent} SchedBlockedReasonFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            SchedBlockedReasonFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.SchedBlockedReasonFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.pid = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.caller = reader.uint64();
+	                        break;
+	                    case 3:
+	                        message.ioWait = reader.uint32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a SchedBlockedReasonFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.SchedBlockedReasonFtraceEvent} SchedBlockedReasonFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            SchedBlockedReasonFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a SchedBlockedReasonFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            SchedBlockedReasonFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    if (!$util.isInteger(message.pid))
+	                        return "pid: integer expected";
+	                if (message.caller != null && message.hasOwnProperty("caller"))
+	                    if (!$util.isInteger(message.caller) && !(message.caller && $util.isInteger(message.caller.low) && $util.isInteger(message.caller.high)))
+	                        return "caller: integer|Long expected";
+	                if (message.ioWait != null && message.hasOwnProperty("ioWait"))
+	                    if (!$util.isInteger(message.ioWait))
+	                        return "ioWait: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a SchedBlockedReasonFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.SchedBlockedReasonFtraceEvent} SchedBlockedReasonFtraceEvent
+	             */
+	            SchedBlockedReasonFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.SchedBlockedReasonFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.SchedBlockedReasonFtraceEvent();
+	                if (object.pid != null)
+	                    message.pid = object.pid | 0;
+	                if (object.caller != null)
+	                    if ($util.Long)
+	                        (message.caller = $util.Long.fromValue(object.caller)).unsigned = true;
+	                    else if (typeof object.caller === "string")
+	                        message.caller = parseInt(object.caller, 10);
+	                    else if (typeof object.caller === "number")
+	                        message.caller = object.caller;
+	                    else if (typeof object.caller === "object")
+	                        message.caller = new $util.LongBits(object.caller.low >>> 0, object.caller.high >>> 0).toNumber(true);
+	                if (object.ioWait != null)
+	                    message.ioWait = object.ioWait >>> 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a SchedBlockedReasonFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.SchedBlockedReasonFtraceEvent} message SchedBlockedReasonFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            SchedBlockedReasonFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.pid = 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.caller = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.caller = options.longs === String ? "0" : 0;
+	                    object.ioWait = 0;
+	                }
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    object.pid = message.pid;
+	                if (message.caller != null && message.hasOwnProperty("caller"))
+	                    if (typeof message.caller === "number")
+	                        object.caller = options.longs === String ? String(message.caller) : message.caller;
+	                    else
+	                        object.caller = options.longs === String ? $util.Long.prototype.toString.call(message.caller) : options.longs === Number ? new $util.LongBits(message.caller.low >>> 0, message.caller.high >>> 0).toNumber(true) : message.caller;
+	                if (message.ioWait != null && message.hasOwnProperty("ioWait"))
+	                    object.ioWait = message.ioWait;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this SchedBlockedReasonFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.SchedBlockedReasonFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            SchedBlockedReasonFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return SchedBlockedReasonFtraceEvent;
+	        })();
+
+	        protos.SchedCpuHotplugFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a SchedCpuHotplugFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ISchedCpuHotplugFtraceEvent
+	             * @property {number|null} [affectedCpu] SchedCpuHotplugFtraceEvent affectedCpu
+	             * @property {number|null} [error] SchedCpuHotplugFtraceEvent error
+	             * @property {number|null} [status] SchedCpuHotplugFtraceEvent status
+	             */
+
+	            /**
+	             * Constructs a new SchedCpuHotplugFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a SchedCpuHotplugFtraceEvent.
+	             * @implements ISchedCpuHotplugFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ISchedCpuHotplugFtraceEvent=} [properties] Properties to set
+	             */
+	            function SchedCpuHotplugFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * SchedCpuHotplugFtraceEvent affectedCpu.
+	             * @member {number} affectedCpu
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @instance
+	             */
+	            SchedCpuHotplugFtraceEvent.prototype.affectedCpu = 0;
+
+	            /**
+	             * SchedCpuHotplugFtraceEvent error.
+	             * @member {number} error
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @instance
+	             */
+	            SchedCpuHotplugFtraceEvent.prototype.error = 0;
+
+	            /**
+	             * SchedCpuHotplugFtraceEvent status.
+	             * @member {number} status
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @instance
+	             */
+	            SchedCpuHotplugFtraceEvent.prototype.status = 0;
+
+	            /**
+	             * Creates a new SchedCpuHotplugFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedCpuHotplugFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.SchedCpuHotplugFtraceEvent} SchedCpuHotplugFtraceEvent instance
+	             */
+	            SchedCpuHotplugFtraceEvent.create = function create(properties) {
+	                return new SchedCpuHotplugFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified SchedCpuHotplugFtraceEvent message. Does not implicitly {@link perfetto.protos.SchedCpuHotplugFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedCpuHotplugFtraceEvent} message SchedCpuHotplugFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            SchedCpuHotplugFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.affectedCpu != null && message.hasOwnProperty("affectedCpu"))
+	                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.affectedCpu);
+	                if (message.error != null && message.hasOwnProperty("error"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.error);
+	                if (message.status != null && message.hasOwnProperty("status"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.status);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified SchedCpuHotplugFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.SchedCpuHotplugFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedCpuHotplugFtraceEvent} message SchedCpuHotplugFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            SchedCpuHotplugFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a SchedCpuHotplugFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.SchedCpuHotplugFtraceEvent} SchedCpuHotplugFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            SchedCpuHotplugFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.SchedCpuHotplugFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.affectedCpu = reader.int32();
+	                        break;
+	                    case 2:
+	                        message.error = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.status = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a SchedCpuHotplugFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.SchedCpuHotplugFtraceEvent} SchedCpuHotplugFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            SchedCpuHotplugFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a SchedCpuHotplugFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            SchedCpuHotplugFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.affectedCpu != null && message.hasOwnProperty("affectedCpu"))
+	                    if (!$util.isInteger(message.affectedCpu))
+	                        return "affectedCpu: integer expected";
+	                if (message.error != null && message.hasOwnProperty("error"))
+	                    if (!$util.isInteger(message.error))
+	                        return "error: integer expected";
+	                if (message.status != null && message.hasOwnProperty("status"))
+	                    if (!$util.isInteger(message.status))
+	                        return "status: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a SchedCpuHotplugFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.SchedCpuHotplugFtraceEvent} SchedCpuHotplugFtraceEvent
+	             */
+	            SchedCpuHotplugFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.SchedCpuHotplugFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.SchedCpuHotplugFtraceEvent();
+	                if (object.affectedCpu != null)
+	                    message.affectedCpu = object.affectedCpu | 0;
+	                if (object.error != null)
+	                    message.error = object.error | 0;
+	                if (object.status != null)
+	                    message.status = object.status | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a SchedCpuHotplugFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.SchedCpuHotplugFtraceEvent} message SchedCpuHotplugFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            SchedCpuHotplugFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.affectedCpu = 0;
+	                    object.error = 0;
+	                    object.status = 0;
+	                }
+	                if (message.affectedCpu != null && message.hasOwnProperty("affectedCpu"))
+	                    object.affectedCpu = message.affectedCpu;
+	                if (message.error != null && message.hasOwnProperty("error"))
+	                    object.error = message.error;
+	                if (message.status != null && message.hasOwnProperty("status"))
+	                    object.status = message.status;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this SchedCpuHotplugFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.SchedCpuHotplugFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            SchedCpuHotplugFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return SchedCpuHotplugFtraceEvent;
+	        })();
+
+	        protos.SchedSwitchFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a SchedSwitchFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ISchedSwitchFtraceEvent
+	             * @property {string|null} [prevComm] SchedSwitchFtraceEvent prevComm
+	             * @property {number|null} [prevPid] SchedSwitchFtraceEvent prevPid
+	             * @property {number|null} [prevPrio] SchedSwitchFtraceEvent prevPrio
+	             * @property {number|Long|null} [prevState] SchedSwitchFtraceEvent prevState
+	             * @property {string|null} [nextComm] SchedSwitchFtraceEvent nextComm
+	             * @property {number|null} [nextPid] SchedSwitchFtraceEvent nextPid
+	             * @property {number|null} [nextPrio] SchedSwitchFtraceEvent nextPrio
+	             */
+
+	            /**
+	             * Constructs a new SchedSwitchFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a SchedSwitchFtraceEvent.
+	             * @implements ISchedSwitchFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ISchedSwitchFtraceEvent=} [properties] Properties to set
+	             */
+	            function SchedSwitchFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * SchedSwitchFtraceEvent prevComm.
+	             * @member {string} prevComm
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @instance
+	             */
+	            SchedSwitchFtraceEvent.prototype.prevComm = "";
+
+	            /**
+	             * SchedSwitchFtraceEvent prevPid.
+	             * @member {number} prevPid
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @instance
+	             */
+	            SchedSwitchFtraceEvent.prototype.prevPid = 0;
+
+	            /**
+	             * SchedSwitchFtraceEvent prevPrio.
+	             * @member {number} prevPrio
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @instance
+	             */
+	            SchedSwitchFtraceEvent.prototype.prevPrio = 0;
+
+	            /**
+	             * SchedSwitchFtraceEvent prevState.
+	             * @member {number|Long} prevState
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @instance
+	             */
+	            SchedSwitchFtraceEvent.prototype.prevState = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+	            /**
+	             * SchedSwitchFtraceEvent nextComm.
+	             * @member {string} nextComm
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @instance
+	             */
+	            SchedSwitchFtraceEvent.prototype.nextComm = "";
+
+	            /**
+	             * SchedSwitchFtraceEvent nextPid.
+	             * @member {number} nextPid
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @instance
+	             */
+	            SchedSwitchFtraceEvent.prototype.nextPid = 0;
+
+	            /**
+	             * SchedSwitchFtraceEvent nextPrio.
+	             * @member {number} nextPrio
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @instance
+	             */
+	            SchedSwitchFtraceEvent.prototype.nextPrio = 0;
+
+	            /**
+	             * Creates a new SchedSwitchFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedSwitchFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.SchedSwitchFtraceEvent} SchedSwitchFtraceEvent instance
+	             */
+	            SchedSwitchFtraceEvent.create = function create(properties) {
+	                return new SchedSwitchFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified SchedSwitchFtraceEvent message. Does not implicitly {@link perfetto.protos.SchedSwitchFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedSwitchFtraceEvent} message SchedSwitchFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            SchedSwitchFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.prevComm != null && message.hasOwnProperty("prevComm"))
+	                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.prevComm);
+	                if (message.prevPid != null && message.hasOwnProperty("prevPid"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.prevPid);
+	                if (message.prevPrio != null && message.hasOwnProperty("prevPrio"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.prevPrio);
+	                if (message.prevState != null && message.hasOwnProperty("prevState"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).int64(message.prevState);
+	                if (message.nextComm != null && message.hasOwnProperty("nextComm"))
+	                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.nextComm);
+	                if (message.nextPid != null && message.hasOwnProperty("nextPid"))
+	                    writer.uint32(/* id 6, wireType 0 =*/48).int32(message.nextPid);
+	                if (message.nextPrio != null && message.hasOwnProperty("nextPrio"))
+	                    writer.uint32(/* id 7, wireType 0 =*/56).int32(message.nextPrio);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified SchedSwitchFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.SchedSwitchFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedSwitchFtraceEvent} message SchedSwitchFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            SchedSwitchFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a SchedSwitchFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.SchedSwitchFtraceEvent} SchedSwitchFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            SchedSwitchFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.SchedSwitchFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.prevComm = reader.string();
+	                        break;
+	                    case 2:
+	                        message.prevPid = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.prevPrio = reader.int32();
+	                        break;
+	                    case 4:
+	                        message.prevState = reader.int64();
+	                        break;
+	                    case 5:
+	                        message.nextComm = reader.string();
+	                        break;
+	                    case 6:
+	                        message.nextPid = reader.int32();
+	                        break;
+	                    case 7:
+	                        message.nextPrio = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a SchedSwitchFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.SchedSwitchFtraceEvent} SchedSwitchFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            SchedSwitchFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a SchedSwitchFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            SchedSwitchFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.prevComm != null && message.hasOwnProperty("prevComm"))
+	                    if (!$util.isString(message.prevComm))
+	                        return "prevComm: string expected";
+	                if (message.prevPid != null && message.hasOwnProperty("prevPid"))
+	                    if (!$util.isInteger(message.prevPid))
+	                        return "prevPid: integer expected";
+	                if (message.prevPrio != null && message.hasOwnProperty("prevPrio"))
+	                    if (!$util.isInteger(message.prevPrio))
+	                        return "prevPrio: integer expected";
+	                if (message.prevState != null && message.hasOwnProperty("prevState"))
+	                    if (!$util.isInteger(message.prevState) && !(message.prevState && $util.isInteger(message.prevState.low) && $util.isInteger(message.prevState.high)))
+	                        return "prevState: integer|Long expected";
+	                if (message.nextComm != null && message.hasOwnProperty("nextComm"))
+	                    if (!$util.isString(message.nextComm))
+	                        return "nextComm: string expected";
+	                if (message.nextPid != null && message.hasOwnProperty("nextPid"))
+	                    if (!$util.isInteger(message.nextPid))
+	                        return "nextPid: integer expected";
+	                if (message.nextPrio != null && message.hasOwnProperty("nextPrio"))
+	                    if (!$util.isInteger(message.nextPrio))
+	                        return "nextPrio: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a SchedSwitchFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.SchedSwitchFtraceEvent} SchedSwitchFtraceEvent
+	             */
+	            SchedSwitchFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.SchedSwitchFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.SchedSwitchFtraceEvent();
+	                if (object.prevComm != null)
+	                    message.prevComm = String(object.prevComm);
+	                if (object.prevPid != null)
+	                    message.prevPid = object.prevPid | 0;
+	                if (object.prevPrio != null)
+	                    message.prevPrio = object.prevPrio | 0;
+	                if (object.prevState != null)
+	                    if ($util.Long)
+	                        (message.prevState = $util.Long.fromValue(object.prevState)).unsigned = false;
+	                    else if (typeof object.prevState === "string")
+	                        message.prevState = parseInt(object.prevState, 10);
+	                    else if (typeof object.prevState === "number")
+	                        message.prevState = object.prevState;
+	                    else if (typeof object.prevState === "object")
+	                        message.prevState = new $util.LongBits(object.prevState.low >>> 0, object.prevState.high >>> 0).toNumber();
+	                if (object.nextComm != null)
+	                    message.nextComm = String(object.nextComm);
+	                if (object.nextPid != null)
+	                    message.nextPid = object.nextPid | 0;
+	                if (object.nextPrio != null)
+	                    message.nextPrio = object.nextPrio | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a SchedSwitchFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.SchedSwitchFtraceEvent} message SchedSwitchFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            SchedSwitchFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.prevComm = "";
+	                    object.prevPid = 0;
+	                    object.prevPrio = 0;
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, false);
+	                        object.prevState = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.prevState = options.longs === String ? "0" : 0;
+	                    object.nextComm = "";
+	                    object.nextPid = 0;
+	                    object.nextPrio = 0;
+	                }
+	                if (message.prevComm != null && message.hasOwnProperty("prevComm"))
+	                    object.prevComm = message.prevComm;
+	                if (message.prevPid != null && message.hasOwnProperty("prevPid"))
+	                    object.prevPid = message.prevPid;
+	                if (message.prevPrio != null && message.hasOwnProperty("prevPrio"))
+	                    object.prevPrio = message.prevPrio;
+	                if (message.prevState != null && message.hasOwnProperty("prevState"))
+	                    if (typeof message.prevState === "number")
+	                        object.prevState = options.longs === String ? String(message.prevState) : message.prevState;
+	                    else
+	                        object.prevState = options.longs === String ? $util.Long.prototype.toString.call(message.prevState) : options.longs === Number ? new $util.LongBits(message.prevState.low >>> 0, message.prevState.high >>> 0).toNumber() : message.prevState;
+	                if (message.nextComm != null && message.hasOwnProperty("nextComm"))
+	                    object.nextComm = message.nextComm;
+	                if (message.nextPid != null && message.hasOwnProperty("nextPid"))
+	                    object.nextPid = message.nextPid;
+	                if (message.nextPrio != null && message.hasOwnProperty("nextPrio"))
+	                    object.nextPrio = message.nextPrio;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this SchedSwitchFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.SchedSwitchFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            SchedSwitchFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return SchedSwitchFtraceEvent;
+	        })();
+
+	        protos.SchedWakeupFtraceEvent = (function() {
+
+	            /**
+	             * Properties of a SchedWakeupFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @interface ISchedWakeupFtraceEvent
+	             * @property {string|null} [comm] SchedWakeupFtraceEvent comm
+	             * @property {number|null} [pid] SchedWakeupFtraceEvent pid
+	             * @property {number|null} [prio] SchedWakeupFtraceEvent prio
+	             * @property {number|null} [success] SchedWakeupFtraceEvent success
+	             * @property {number|null} [targetCpu] SchedWakeupFtraceEvent targetCpu
+	             */
+
+	            /**
+	             * Constructs a new SchedWakeupFtraceEvent.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a SchedWakeupFtraceEvent.
+	             * @implements ISchedWakeupFtraceEvent
+	             * @constructor
+	             * @param {perfetto.protos.ISchedWakeupFtraceEvent=} [properties] Properties to set
+	             */
+	            function SchedWakeupFtraceEvent(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * SchedWakeupFtraceEvent comm.
+	             * @member {string} comm
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @instance
+	             */
+	            SchedWakeupFtraceEvent.prototype.comm = "";
+
+	            /**
+	             * SchedWakeupFtraceEvent pid.
+	             * @member {number} pid
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @instance
+	             */
+	            SchedWakeupFtraceEvent.prototype.pid = 0;
+
+	            /**
+	             * SchedWakeupFtraceEvent prio.
+	             * @member {number} prio
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @instance
+	             */
+	            SchedWakeupFtraceEvent.prototype.prio = 0;
+
+	            /**
+	             * SchedWakeupFtraceEvent success.
+	             * @member {number} success
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @instance
+	             */
+	            SchedWakeupFtraceEvent.prototype.success = 0;
+
+	            /**
+	             * SchedWakeupFtraceEvent targetCpu.
+	             * @member {number} targetCpu
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @instance
+	             */
+	            SchedWakeupFtraceEvent.prototype.targetCpu = 0;
+
+	            /**
+	             * Creates a new SchedWakeupFtraceEvent instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedWakeupFtraceEvent=} [properties] Properties to set
+	             * @returns {perfetto.protos.SchedWakeupFtraceEvent} SchedWakeupFtraceEvent instance
+	             */
+	            SchedWakeupFtraceEvent.create = function create(properties) {
+	                return new SchedWakeupFtraceEvent(properties);
+	            };
+
+	            /**
+	             * Encodes the specified SchedWakeupFtraceEvent message. Does not implicitly {@link perfetto.protos.SchedWakeupFtraceEvent.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedWakeupFtraceEvent} message SchedWakeupFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            SchedWakeupFtraceEvent.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.comm);
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.pid);
+	                if (message.prio != null && message.hasOwnProperty("prio"))
+	                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.prio);
+	                if (message.success != null && message.hasOwnProperty("success"))
+	                    writer.uint32(/* id 4, wireType 0 =*/32).int32(message.success);
+	                if (message.targetCpu != null && message.hasOwnProperty("targetCpu"))
+	                    writer.uint32(/* id 5, wireType 0 =*/40).int32(message.targetCpu);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified SchedWakeupFtraceEvent message, length delimited. Does not implicitly {@link perfetto.protos.SchedWakeupFtraceEvent.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.ISchedWakeupFtraceEvent} message SchedWakeupFtraceEvent message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            SchedWakeupFtraceEvent.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a SchedWakeupFtraceEvent message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.SchedWakeupFtraceEvent} SchedWakeupFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            SchedWakeupFtraceEvent.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.SchedWakeupFtraceEvent();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.comm = reader.string();
+	                        break;
+	                    case 2:
+	                        message.pid = reader.int32();
+	                        break;
+	                    case 3:
+	                        message.prio = reader.int32();
+	                        break;
+	                    case 4:
+	                        message.success = reader.int32();
+	                        break;
+	                    case 5:
+	                        message.targetCpu = reader.int32();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a SchedWakeupFtraceEvent message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.SchedWakeupFtraceEvent} SchedWakeupFtraceEvent
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            SchedWakeupFtraceEvent.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a SchedWakeupFtraceEvent message.
+	             * @function verify
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            SchedWakeupFtraceEvent.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    if (!$util.isString(message.comm))
+	                        return "comm: string expected";
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    if (!$util.isInteger(message.pid))
+	                        return "pid: integer expected";
+	                if (message.prio != null && message.hasOwnProperty("prio"))
+	                    if (!$util.isInteger(message.prio))
+	                        return "prio: integer expected";
+	                if (message.success != null && message.hasOwnProperty("success"))
+	                    if (!$util.isInteger(message.success))
+	                        return "success: integer expected";
+	                if (message.targetCpu != null && message.hasOwnProperty("targetCpu"))
+	                    if (!$util.isInteger(message.targetCpu))
+	                        return "targetCpu: integer expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a SchedWakeupFtraceEvent message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.SchedWakeupFtraceEvent} SchedWakeupFtraceEvent
+	             */
+	            SchedWakeupFtraceEvent.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.SchedWakeupFtraceEvent)
+	                    return object;
+	                var message = new $root.perfetto.protos.SchedWakeupFtraceEvent();
+	                if (object.comm != null)
+	                    message.comm = String(object.comm);
+	                if (object.pid != null)
+	                    message.pid = object.pid | 0;
+	                if (object.prio != null)
+	                    message.prio = object.prio | 0;
+	                if (object.success != null)
+	                    message.success = object.success | 0;
+	                if (object.targetCpu != null)
+	                    message.targetCpu = object.targetCpu | 0;
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a SchedWakeupFtraceEvent message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @static
+	             * @param {perfetto.protos.SchedWakeupFtraceEvent} message SchedWakeupFtraceEvent
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            SchedWakeupFtraceEvent.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults) {
+	                    object.comm = "";
+	                    object.pid = 0;
+	                    object.prio = 0;
+	                    object.success = 0;
+	                    object.targetCpu = 0;
+	                }
+	                if (message.comm != null && message.hasOwnProperty("comm"))
+	                    object.comm = message.comm;
+	                if (message.pid != null && message.hasOwnProperty("pid"))
+	                    object.pid = message.pid;
+	                if (message.prio != null && message.hasOwnProperty("prio"))
+	                    object.prio = message.prio;
+	                if (message.success != null && message.hasOwnProperty("success"))
+	                    object.success = message.success;
+	                if (message.targetCpu != null && message.hasOwnProperty("targetCpu"))
+	                    object.targetCpu = message.targetCpu;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this SchedWakeupFtraceEvent to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.SchedWakeupFtraceEvent
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            SchedWakeupFtraceEvent.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return SchedWakeupFtraceEvent;
+	        })();
+
 	        return protos;
 	    })();
 
@@ -6577,11 +23518,14 @@ var perfetto = (function () {
 
 	const TraceConfig = protos.perfetto.protos.TraceConfig;
 	exports.TraceConfig = TraceConfig;
+	const Trace = protos.perfetto.protos.Trace;
+	exports.Trace = Trace;
 
 	});
 
 	unwrapExports(protos$1);
 	var protos_1 = protos$1.TraceConfig;
+	var protos_2 = protos$1.Trace;
 
 	var backend = createCommonjsModule(function (module, exports) {
 	/*
@@ -6685,26 +23629,50 @@ var perfetto = (function () {
 	        this.id = id;
 	        this.state = 'LOADING';
 	        this.name = '';
+	        this.file = null;
+	        this.proto = null;
+	        this.num_packets = null;
 	    }
 	    details() {
 	        return {
 	            id: this.id,
 	            state: this.state,
 	            name: this.name,
+	            num_packets: this.num_packets,
 	        };
 	    }
 	    setup(trace) {
 	        console.log('setup');
 	        this.name = trace.name || '';
 	        this.state = 'LOADING';
+	        this.file = trace.file;
 	        gState.backends[this.id] = this.details();
 	        setTimeout(() => {
-	            this.state = 'READY';
-	            dispatch(publishBackend(this.details()));
+	            new Promise((resolve, reject) => {
+	                if (!this.file) {
+	                    reject();
+	                    return;
+	                }
+	                const reader = new FileReader();
+	                reader.onload = () => resolve(reader.result);
+	                reader.readAsArrayBuffer(this.file);
+	            }).then((buffer) => {
+	                const uint8array = new Uint8Array(buffer);
+	                const decoded = protos$1.Trace.decode(uint8array);
+	                return decoded;
+	            }).then((proto) => {
+	                console.log(proto);
+	                this.proto = proto;
+	                this.state = 'READY';
+	                this.num_packets = proto.packet.length;
+	                dispatch(publishBackend(this.details()));
+	            }).catch(() => {
+	                this.state = 'ERROR';
+	                dispatch(publishBackend(this.details()));
+	            });
 	        }, 1000);
 	    }
-	    update(state$$1) {
-	        console.log('update', state$$1);
+	    update(_) {
 	    }
 	    teardown() {
 	        console.log('teardown');
@@ -6787,6 +23755,7 @@ var perfetto = (function () {
 	            console.log('load_trace_file', file);
 	            gState.traces.push({
 	                name: file.name,
+	                file: file,
 	                id: '' + gLargestKnownId++,
 	            });
 	            break;
