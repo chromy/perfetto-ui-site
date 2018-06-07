@@ -23666,7 +23666,7 @@ var perfetto = (function () {
 	                this.state = 'READY';
 	                this.num_packets = proto.packet.length;
 	                dispatch(publishBackend(this.details()));
-	            }).catch(() => {
+	            }).catch((_e) => {
 	                this.state = 'ERROR';
 	                dispatch(publishBackend(this.details()));
 	            });

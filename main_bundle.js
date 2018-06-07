@@ -1660,17 +1660,13 @@ var perfetto = (function () {
 	            mithril('#content.home', mithril("input[type=file].center", {
 	                onchange: quietDispatch((e) => {
 	                    const file = e.target.files.item(0);
-	                    console.log(file);
 	                    return loadTraceFile(file);
 	                }),
 	            }, "Load trace"), gState.traces.length === 0
 	                ? mithril('span.center', 'No traces loaded')
-	                : // m("ul", gState.traces.map(t => m('li', t.name))),
-	                    mithril('.traces', Object.values(gState.backends).map(b => mithril('.trace-card', {
-	                        class: `trace-backend-state-${b.state}`,
-	                    }, b.num_packets === null
-	                        ? `${b.name}, ${b.state}`
-	                        : `${b.name}, ${b.state}, #packets ${b.num_packets}`)))),
+	                : mithril('.traces', Object.values(gState.backends).map(b => mithril('.trace-card', {
+	                    class: `trace-backend-state-${b.state}`,
+	                }, mithril('.trace-card-name', b.name), mithril('.trace-card-status', b.state), mithril('.trace-card-info', b.num_packets === null ? '-' : `#packets ${b.num_packets}`))))),
 	        ];
 	    },
 	};
