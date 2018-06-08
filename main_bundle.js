@@ -3686,6 +3686,10 @@ var perfetto = (function () {
 	}
 	function main() {
 	    console.log('Hello from the main thread!');
+	    const processor = new Worker("processor_bundle.js");
+	    processor.onerror = e => {
+	        console.error(e);
+	    };
 	    const worker = new Worker("worker_bundle.js");
 	    worker.onerror = e => {
 	        console.error(e);
@@ -3740,21 +3744,22 @@ var perfetto = (function () {
 	 */
 	Object.defineProperty(exports, "__esModule", { value: true });
 
-	function writeToUIConsole(line) {
-	    const lineElement = document.createElement('div');
-	    lineElement.innerText = line;
-	    const container = document.getElementById('console');
-	    if (!container)
-	        throw new Error('OMG');
-	    container.appendChild(lineElement);
-	}
-	// TODO(primiano): temporary for testing, just instantiates the WASM module on
-	// the main thread.
-	window.Module = {
-	    locateFile: (s) => '/wasm/' + s,
-	    print: writeToUIConsole,
-	    printErr: writeToUIConsole,
-	};
+	//function writeToUIConsole(line:string) {
+	//  const lineElement = document.createElement('div');
+	//  lineElement.innerText = line;
+	//  const container = document.getElementById('console');
+	//  if (!container)
+	//    throw new Error('OMG');
+	//  container.appendChild(lineElement);
+	//}
+	//
+	//// TODO(primiano): temporary for testing, just instantiates the WASM module on
+	//// the main thread.
+	//(<any>window).Module = {
+	//    locateFile: (s: string) => '/wasm/' + s,
+	//    print: writeToUIConsole,
+	//    printErr: writeToUIConsole,
+	//};
 	frontend.main();
 
 	});
