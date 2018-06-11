@@ -5,9 +5,10 @@
 !logo.png
 !main_bundle.js
 !main_bundle.js.map
-!wasm
 !worker_bundle.js
 !worker_bundle.js.map
 !processor_bundle.js
 !processor_bundle.js.map
+!trace_processor.js
+!trace_processor.wasm
 
