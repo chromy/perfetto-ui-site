@@ -2841,6 +2841,1091 @@ var perfetto = (function () {
 	            return Sched;
 	        })();
 
+	        protos.RawQueryArgs = (function() {
+
+	            /**
+	             * Properties of a RawQueryArgs.
+	             * @memberof perfetto.protos
+	             * @interface IRawQueryArgs
+	             * @property {string|null} [sqlQuery] RawQueryArgs sqlQuery
+	             */
+
+	            /**
+	             * Constructs a new RawQueryArgs.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a RawQueryArgs.
+	             * @implements IRawQueryArgs
+	             * @constructor
+	             * @param {perfetto.protos.IRawQueryArgs=} [properties] Properties to set
+	             */
+	            function RawQueryArgs(properties) {
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * RawQueryArgs sqlQuery.
+	             * @member {string} sqlQuery
+	             * @memberof perfetto.protos.RawQueryArgs
+	             * @instance
+	             */
+	            RawQueryArgs.prototype.sqlQuery = "";
+
+	            /**
+	             * Creates a new RawQueryArgs instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.RawQueryArgs
+	             * @static
+	             * @param {perfetto.protos.IRawQueryArgs=} [properties] Properties to set
+	             * @returns {perfetto.protos.RawQueryArgs} RawQueryArgs instance
+	             */
+	            RawQueryArgs.create = function create(properties) {
+	                return new RawQueryArgs(properties);
+	            };
+
+	            /**
+	             * Encodes the specified RawQueryArgs message. Does not implicitly {@link perfetto.protos.RawQueryArgs.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.RawQueryArgs
+	             * @static
+	             * @param {perfetto.protos.IRawQueryArgs} message RawQueryArgs message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            RawQueryArgs.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.sqlQuery != null && message.hasOwnProperty("sqlQuery"))
+	                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.sqlQuery);
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified RawQueryArgs message, length delimited. Does not implicitly {@link perfetto.protos.RawQueryArgs.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.RawQueryArgs
+	             * @static
+	             * @param {perfetto.protos.IRawQueryArgs} message RawQueryArgs message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            RawQueryArgs.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a RawQueryArgs message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.RawQueryArgs
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.RawQueryArgs} RawQueryArgs
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            RawQueryArgs.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.RawQueryArgs();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        message.sqlQuery = reader.string();
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a RawQueryArgs message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.RawQueryArgs
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.RawQueryArgs} RawQueryArgs
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            RawQueryArgs.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a RawQueryArgs message.
+	             * @function verify
+	             * @memberof perfetto.protos.RawQueryArgs
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            RawQueryArgs.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.sqlQuery != null && message.hasOwnProperty("sqlQuery"))
+	                    if (!$util.isString(message.sqlQuery))
+	                        return "sqlQuery: string expected";
+	                return null;
+	            };
+
+	            /**
+	             * Creates a RawQueryArgs message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.RawQueryArgs
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.RawQueryArgs} RawQueryArgs
+	             */
+	            RawQueryArgs.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.RawQueryArgs)
+	                    return object;
+	                var message = new $root.perfetto.protos.RawQueryArgs();
+	                if (object.sqlQuery != null)
+	                    message.sqlQuery = String(object.sqlQuery);
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a RawQueryArgs message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.RawQueryArgs
+	             * @static
+	             * @param {perfetto.protos.RawQueryArgs} message RawQueryArgs
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            RawQueryArgs.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.defaults)
+	                    object.sqlQuery = "";
+	                if (message.sqlQuery != null && message.hasOwnProperty("sqlQuery"))
+	                    object.sqlQuery = message.sqlQuery;
+	                return object;
+	            };
+
+	            /**
+	             * Converts this RawQueryArgs to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.RawQueryArgs
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            RawQueryArgs.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            return RawQueryArgs;
+	        })();
+
+	        protos.RawQueryResult = (function() {
+
+	            /**
+	             * Properties of a RawQueryResult.
+	             * @memberof perfetto.protos
+	             * @interface IRawQueryResult
+	             * @property {Array.<perfetto.protos.RawQueryResult.IColumnDesc>|null} [columnDescriptors] RawQueryResult columnDescriptors
+	             * @property {number|Long|null} [numRecords] RawQueryResult numRecords
+	             * @property {Array.<perfetto.protos.RawQueryResult.IColumnValues>|null} [columns] RawQueryResult columns
+	             */
+
+	            /**
+	             * Constructs a new RawQueryResult.
+	             * @memberof perfetto.protos
+	             * @classdesc Represents a RawQueryResult.
+	             * @implements IRawQueryResult
+	             * @constructor
+	             * @param {perfetto.protos.IRawQueryResult=} [properties] Properties to set
+	             */
+	            function RawQueryResult(properties) {
+	                this.columnDescriptors = [];
+	                this.columns = [];
+	                if (properties)
+	                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                        if (properties[keys[i]] != null)
+	                            this[keys[i]] = properties[keys[i]];
+	            }
+
+	            /**
+	             * RawQueryResult columnDescriptors.
+	             * @member {Array.<perfetto.protos.RawQueryResult.IColumnDesc>} columnDescriptors
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @instance
+	             */
+	            RawQueryResult.prototype.columnDescriptors = $util.emptyArray;
+
+	            /**
+	             * RawQueryResult numRecords.
+	             * @member {number|Long} numRecords
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @instance
+	             */
+	            RawQueryResult.prototype.numRecords = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+	            /**
+	             * RawQueryResult columns.
+	             * @member {Array.<perfetto.protos.RawQueryResult.IColumnValues>} columns
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @instance
+	             */
+	            RawQueryResult.prototype.columns = $util.emptyArray;
+
+	            /**
+	             * Creates a new RawQueryResult instance using the specified properties.
+	             * @function create
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @static
+	             * @param {perfetto.protos.IRawQueryResult=} [properties] Properties to set
+	             * @returns {perfetto.protos.RawQueryResult} RawQueryResult instance
+	             */
+	            RawQueryResult.create = function create(properties) {
+	                return new RawQueryResult(properties);
+	            };
+
+	            /**
+	             * Encodes the specified RawQueryResult message. Does not implicitly {@link perfetto.protos.RawQueryResult.verify|verify} messages.
+	             * @function encode
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @static
+	             * @param {perfetto.protos.IRawQueryResult} message RawQueryResult message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            RawQueryResult.encode = function encode(message, writer) {
+	                if (!writer)
+	                    writer = $Writer.create();
+	                if (message.columnDescriptors != null && message.columnDescriptors.length)
+	                    for (var i = 0; i < message.columnDescriptors.length; ++i)
+	                        $root.perfetto.protos.RawQueryResult.ColumnDesc.encode(message.columnDescriptors[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+	                if (message.numRecords != null && message.hasOwnProperty("numRecords"))
+	                    writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.numRecords);
+	                if (message.columns != null && message.columns.length)
+	                    for (var i = 0; i < message.columns.length; ++i)
+	                        $root.perfetto.protos.RawQueryResult.ColumnValues.encode(message.columns[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+	                return writer;
+	            };
+
+	            /**
+	             * Encodes the specified RawQueryResult message, length delimited. Does not implicitly {@link perfetto.protos.RawQueryResult.verify|verify} messages.
+	             * @function encodeDelimited
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @static
+	             * @param {perfetto.protos.IRawQueryResult} message RawQueryResult message or plain object to encode
+	             * @param {$protobuf.Writer} [writer] Writer to encode to
+	             * @returns {$protobuf.Writer} Writer
+	             */
+	            RawQueryResult.encodeDelimited = function encodeDelimited(message, writer) {
+	                return this.encode(message, writer).ldelim();
+	            };
+
+	            /**
+	             * Decodes a RawQueryResult message from the specified reader or buffer.
+	             * @function decode
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @param {number} [length] Message length if known beforehand
+	             * @returns {perfetto.protos.RawQueryResult} RawQueryResult
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            RawQueryResult.decode = function decode(reader, length) {
+	                if (!(reader instanceof $Reader))
+	                    reader = $Reader.create(reader);
+	                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.RawQueryResult();
+	                while (reader.pos < end) {
+	                    var tag = reader.uint32();
+	                    switch (tag >>> 3) {
+	                    case 1:
+	                        if (!(message.columnDescriptors && message.columnDescriptors.length))
+	                            message.columnDescriptors = [];
+	                        message.columnDescriptors.push($root.perfetto.protos.RawQueryResult.ColumnDesc.decode(reader, reader.uint32()));
+	                        break;
+	                    case 2:
+	                        message.numRecords = reader.uint64();
+	                        break;
+	                    case 3:
+	                        if (!(message.columns && message.columns.length))
+	                            message.columns = [];
+	                        message.columns.push($root.perfetto.protos.RawQueryResult.ColumnValues.decode(reader, reader.uint32()));
+	                        break;
+	                    default:
+	                        reader.skipType(tag & 7);
+	                        break;
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Decodes a RawQueryResult message from the specified reader or buffer, length delimited.
+	             * @function decodeDelimited
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @static
+	             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	             * @returns {perfetto.protos.RawQueryResult} RawQueryResult
+	             * @throws {Error} If the payload is not a reader or valid buffer
+	             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	             */
+	            RawQueryResult.decodeDelimited = function decodeDelimited(reader) {
+	                if (!(reader instanceof $Reader))
+	                    reader = new $Reader(reader);
+	                return this.decode(reader, reader.uint32());
+	            };
+
+	            /**
+	             * Verifies a RawQueryResult message.
+	             * @function verify
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @static
+	             * @param {Object.<string,*>} message Plain object to verify
+	             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	             */
+	            RawQueryResult.verify = function verify(message) {
+	                if (typeof message !== "object" || message === null)
+	                    return "object expected";
+	                if (message.columnDescriptors != null && message.hasOwnProperty("columnDescriptors")) {
+	                    if (!Array.isArray(message.columnDescriptors))
+	                        return "columnDescriptors: array expected";
+	                    for (var i = 0; i < message.columnDescriptors.length; ++i) {
+	                        var error = $root.perfetto.protos.RawQueryResult.ColumnDesc.verify(message.columnDescriptors[i]);
+	                        if (error)
+	                            return "columnDescriptors." + error;
+	                    }
+	                }
+	                if (message.numRecords != null && message.hasOwnProperty("numRecords"))
+	                    if (!$util.isInteger(message.numRecords) && !(message.numRecords && $util.isInteger(message.numRecords.low) && $util.isInteger(message.numRecords.high)))
+	                        return "numRecords: integer|Long expected";
+	                if (message.columns != null && message.hasOwnProperty("columns")) {
+	                    if (!Array.isArray(message.columns))
+	                        return "columns: array expected";
+	                    for (var i = 0; i < message.columns.length; ++i) {
+	                        var error = $root.perfetto.protos.RawQueryResult.ColumnValues.verify(message.columns[i]);
+	                        if (error)
+	                            return "columns." + error;
+	                    }
+	                }
+	                return null;
+	            };
+
+	            /**
+	             * Creates a RawQueryResult message from a plain object. Also converts values to their respective internal types.
+	             * @function fromObject
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @static
+	             * @param {Object.<string,*>} object Plain object
+	             * @returns {perfetto.protos.RawQueryResult} RawQueryResult
+	             */
+	            RawQueryResult.fromObject = function fromObject(object) {
+	                if (object instanceof $root.perfetto.protos.RawQueryResult)
+	                    return object;
+	                var message = new $root.perfetto.protos.RawQueryResult();
+	                if (object.columnDescriptors) {
+	                    if (!Array.isArray(object.columnDescriptors))
+	                        throw TypeError(".perfetto.protos.RawQueryResult.columnDescriptors: array expected");
+	                    message.columnDescriptors = [];
+	                    for (var i = 0; i < object.columnDescriptors.length; ++i) {
+	                        if (typeof object.columnDescriptors[i] !== "object")
+	                            throw TypeError(".perfetto.protos.RawQueryResult.columnDescriptors: object expected");
+	                        message.columnDescriptors[i] = $root.perfetto.protos.RawQueryResult.ColumnDesc.fromObject(object.columnDescriptors[i]);
+	                    }
+	                }
+	                if (object.numRecords != null)
+	                    if ($util.Long)
+	                        (message.numRecords = $util.Long.fromValue(object.numRecords)).unsigned = true;
+	                    else if (typeof object.numRecords === "string")
+	                        message.numRecords = parseInt(object.numRecords, 10);
+	                    else if (typeof object.numRecords === "number")
+	                        message.numRecords = object.numRecords;
+	                    else if (typeof object.numRecords === "object")
+	                        message.numRecords = new $util.LongBits(object.numRecords.low >>> 0, object.numRecords.high >>> 0).toNumber(true);
+	                if (object.columns) {
+	                    if (!Array.isArray(object.columns))
+	                        throw TypeError(".perfetto.protos.RawQueryResult.columns: array expected");
+	                    message.columns = [];
+	                    for (var i = 0; i < object.columns.length; ++i) {
+	                        if (typeof object.columns[i] !== "object")
+	                            throw TypeError(".perfetto.protos.RawQueryResult.columns: object expected");
+	                        message.columns[i] = $root.perfetto.protos.RawQueryResult.ColumnValues.fromObject(object.columns[i]);
+	                    }
+	                }
+	                return message;
+	            };
+
+	            /**
+	             * Creates a plain object from a RawQueryResult message. Also converts values to other types if specified.
+	             * @function toObject
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @static
+	             * @param {perfetto.protos.RawQueryResult} message RawQueryResult
+	             * @param {$protobuf.IConversionOptions} [options] Conversion options
+	             * @returns {Object.<string,*>} Plain object
+	             */
+	            RawQueryResult.toObject = function toObject(message, options) {
+	                if (!options)
+	                    options = {};
+	                var object = {};
+	                if (options.arrays || options.defaults) {
+	                    object.columnDescriptors = [];
+	                    object.columns = [];
+	                }
+	                if (options.defaults)
+	                    if ($util.Long) {
+	                        var long = new $util.Long(0, 0, true);
+	                        object.numRecords = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+	                    } else
+	                        object.numRecords = options.longs === String ? "0" : 0;
+	                if (message.columnDescriptors && message.columnDescriptors.length) {
+	                    object.columnDescriptors = [];
+	                    for (var j = 0; j < message.columnDescriptors.length; ++j)
+	                        object.columnDescriptors[j] = $root.perfetto.protos.RawQueryResult.ColumnDesc.toObject(message.columnDescriptors[j], options);
+	                }
+	                if (message.numRecords != null && message.hasOwnProperty("numRecords"))
+	                    if (typeof message.numRecords === "number")
+	                        object.numRecords = options.longs === String ? String(message.numRecords) : message.numRecords;
+	                    else
+	                        object.numRecords = options.longs === String ? $util.Long.prototype.toString.call(message.numRecords) : options.longs === Number ? new $util.LongBits(message.numRecords.low >>> 0, message.numRecords.high >>> 0).toNumber(true) : message.numRecords;
+	                if (message.columns && message.columns.length) {
+	                    object.columns = [];
+	                    for (var j = 0; j < message.columns.length; ++j)
+	                        object.columns[j] = $root.perfetto.protos.RawQueryResult.ColumnValues.toObject(message.columns[j], options);
+	                }
+	                return object;
+	            };
+
+	            /**
+	             * Converts this RawQueryResult to JSON.
+	             * @function toJSON
+	             * @memberof perfetto.protos.RawQueryResult
+	             * @instance
+	             * @returns {Object.<string,*>} JSON object
+	             */
+	            RawQueryResult.prototype.toJSON = function toJSON() {
+	                return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	            };
+
+	            RawQueryResult.ColumnDesc = (function() {
+
+	                /**
+	                 * Properties of a ColumnDesc.
+	                 * @memberof perfetto.protos.RawQueryResult
+	                 * @interface IColumnDesc
+	                 * @property {string|null} [name] ColumnDesc name
+	                 * @property {perfetto.protos.RawQueryResult.ColumnDesc.Type|null} [type] ColumnDesc type
+	                 */
+
+	                /**
+	                 * Constructs a new ColumnDesc.
+	                 * @memberof perfetto.protos.RawQueryResult
+	                 * @classdesc Represents a ColumnDesc.
+	                 * @implements IColumnDesc
+	                 * @constructor
+	                 * @param {perfetto.protos.RawQueryResult.IColumnDesc=} [properties] Properties to set
+	                 */
+	                function ColumnDesc(properties) {
+	                    if (properties)
+	                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                            if (properties[keys[i]] != null)
+	                                this[keys[i]] = properties[keys[i]];
+	                }
+
+	                /**
+	                 * ColumnDesc name.
+	                 * @member {string} name
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @instance
+	                 */
+	                ColumnDesc.prototype.name = "";
+
+	                /**
+	                 * ColumnDesc type.
+	                 * @member {perfetto.protos.RawQueryResult.ColumnDesc.Type} type
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @instance
+	                 */
+	                ColumnDesc.prototype.type = 1;
+
+	                /**
+	                 * Creates a new ColumnDesc instance using the specified properties.
+	                 * @function create
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @static
+	                 * @param {perfetto.protos.RawQueryResult.IColumnDesc=} [properties] Properties to set
+	                 * @returns {perfetto.protos.RawQueryResult.ColumnDesc} ColumnDesc instance
+	                 */
+	                ColumnDesc.create = function create(properties) {
+	                    return new ColumnDesc(properties);
+	                };
+
+	                /**
+	                 * Encodes the specified ColumnDesc message. Does not implicitly {@link perfetto.protos.RawQueryResult.ColumnDesc.verify|verify} messages.
+	                 * @function encode
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @static
+	                 * @param {perfetto.protos.RawQueryResult.IColumnDesc} message ColumnDesc message or plain object to encode
+	                 * @param {$protobuf.Writer} [writer] Writer to encode to
+	                 * @returns {$protobuf.Writer} Writer
+	                 */
+	                ColumnDesc.encode = function encode(message, writer) {
+	                    if (!writer)
+	                        writer = $Writer.create();
+	                    if (message.name != null && message.hasOwnProperty("name"))
+	                        writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+	                    if (message.type != null && message.hasOwnProperty("type"))
+	                        writer.uint32(/* id 2, wireType 0 =*/16).int32(message.type);
+	                    return writer;
+	                };
+
+	                /**
+	                 * Encodes the specified ColumnDesc message, length delimited. Does not implicitly {@link perfetto.protos.RawQueryResult.ColumnDesc.verify|verify} messages.
+	                 * @function encodeDelimited
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @static
+	                 * @param {perfetto.protos.RawQueryResult.IColumnDesc} message ColumnDesc message or plain object to encode
+	                 * @param {$protobuf.Writer} [writer] Writer to encode to
+	                 * @returns {$protobuf.Writer} Writer
+	                 */
+	                ColumnDesc.encodeDelimited = function encodeDelimited(message, writer) {
+	                    return this.encode(message, writer).ldelim();
+	                };
+
+	                /**
+	                 * Decodes a ColumnDesc message from the specified reader or buffer.
+	                 * @function decode
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @static
+	                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	                 * @param {number} [length] Message length if known beforehand
+	                 * @returns {perfetto.protos.RawQueryResult.ColumnDesc} ColumnDesc
+	                 * @throws {Error} If the payload is not a reader or valid buffer
+	                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	                 */
+	                ColumnDesc.decode = function decode(reader, length) {
+	                    if (!(reader instanceof $Reader))
+	                        reader = $Reader.create(reader);
+	                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.RawQueryResult.ColumnDesc();
+	                    while (reader.pos < end) {
+	                        var tag = reader.uint32();
+	                        switch (tag >>> 3) {
+	                        case 1:
+	                            message.name = reader.string();
+	                            break;
+	                        case 2:
+	                            message.type = reader.int32();
+	                            break;
+	                        default:
+	                            reader.skipType(tag & 7);
+	                            break;
+	                        }
+	                    }
+	                    return message;
+	                };
+
+	                /**
+	                 * Decodes a ColumnDesc message from the specified reader or buffer, length delimited.
+	                 * @function decodeDelimited
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @static
+	                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	                 * @returns {perfetto.protos.RawQueryResult.ColumnDesc} ColumnDesc
+	                 * @throws {Error} If the payload is not a reader or valid buffer
+	                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	                 */
+	                ColumnDesc.decodeDelimited = function decodeDelimited(reader) {
+	                    if (!(reader instanceof $Reader))
+	                        reader = new $Reader(reader);
+	                    return this.decode(reader, reader.uint32());
+	                };
+
+	                /**
+	                 * Verifies a ColumnDesc message.
+	                 * @function verify
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @static
+	                 * @param {Object.<string,*>} message Plain object to verify
+	                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	                 */
+	                ColumnDesc.verify = function verify(message) {
+	                    if (typeof message !== "object" || message === null)
+	                        return "object expected";
+	                    if (message.name != null && message.hasOwnProperty("name"))
+	                        if (!$util.isString(message.name))
+	                            return "name: string expected";
+	                    if (message.type != null && message.hasOwnProperty("type"))
+	                        switch (message.type) {
+	                        default:
+	                            return "type: enum value expected";
+	                        case 1:
+	                        case 2:
+	                        case 3:
+	                        case 4:
+	                            break;
+	                        }
+	                    return null;
+	                };
+
+	                /**
+	                 * Creates a ColumnDesc message from a plain object. Also converts values to their respective internal types.
+	                 * @function fromObject
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @static
+	                 * @param {Object.<string,*>} object Plain object
+	                 * @returns {perfetto.protos.RawQueryResult.ColumnDesc} ColumnDesc
+	                 */
+	                ColumnDesc.fromObject = function fromObject(object) {
+	                    if (object instanceof $root.perfetto.protos.RawQueryResult.ColumnDesc)
+	                        return object;
+	                    var message = new $root.perfetto.protos.RawQueryResult.ColumnDesc();
+	                    if (object.name != null)
+	                        message.name = String(object.name);
+	                    switch (object.type) {
+	                    case "INT":
+	                    case 1:
+	                        message.type = 1;
+	                        break;
+	                    case "LONG":
+	                    case 2:
+	                        message.type = 2;
+	                        break;
+	                    case "UNSIGNED_INT":
+	                    case 3:
+	                        message.type = 3;
+	                        break;
+	                    case "UNSIGNED_LONG":
+	                    case 4:
+	                        message.type = 4;
+	                        break;
+	                    }
+	                    return message;
+	                };
+
+	                /**
+	                 * Creates a plain object from a ColumnDesc message. Also converts values to other types if specified.
+	                 * @function toObject
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @static
+	                 * @param {perfetto.protos.RawQueryResult.ColumnDesc} message ColumnDesc
+	                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+	                 * @returns {Object.<string,*>} Plain object
+	                 */
+	                ColumnDesc.toObject = function toObject(message, options) {
+	                    if (!options)
+	                        options = {};
+	                    var object = {};
+	                    if (options.defaults) {
+	                        object.name = "";
+	                        object.type = options.enums === String ? "INT" : 1;
+	                    }
+	                    if (message.name != null && message.hasOwnProperty("name"))
+	                        object.name = message.name;
+	                    if (message.type != null && message.hasOwnProperty("type"))
+	                        object.type = options.enums === String ? $root.perfetto.protos.RawQueryResult.ColumnDesc.Type[message.type] : message.type;
+	                    return object;
+	                };
+
+	                /**
+	                 * Converts this ColumnDesc to JSON.
+	                 * @function toJSON
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnDesc
+	                 * @instance
+	                 * @returns {Object.<string,*>} JSON object
+	                 */
+	                ColumnDesc.prototype.toJSON = function toJSON() {
+	                    return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	                };
+
+	                /**
+	                 * Type enum.
+	                 * @name perfetto.protos.RawQueryResult.ColumnDesc.Type
+	                 * @enum {string}
+	                 * @property {number} INT=1 INT value
+	                 * @property {number} LONG=2 LONG value
+	                 * @property {number} UNSIGNED_INT=3 UNSIGNED_INT value
+	                 * @property {number} UNSIGNED_LONG=4 UNSIGNED_LONG value
+	                 */
+	                ColumnDesc.Type = (function() {
+	                    var valuesById = {}, values = Object.create(valuesById);
+	                    values[valuesById[1] = "INT"] = 1;
+	                    values[valuesById[2] = "LONG"] = 2;
+	                    values[valuesById[3] = "UNSIGNED_INT"] = 3;
+	                    values[valuesById[4] = "UNSIGNED_LONG"] = 4;
+	                    return values;
+	                })();
+
+	                return ColumnDesc;
+	            })();
+
+	            RawQueryResult.ColumnValues = (function() {
+
+	                /**
+	                 * Properties of a ColumnValues.
+	                 * @memberof perfetto.protos.RawQueryResult
+	                 * @interface IColumnValues
+	                 * @property {Array.<number>|null} [intValues] ColumnValues intValues
+	                 * @property {Array.<number|Long>|null} [longValues] ColumnValues longValues
+	                 * @property {Array.<number>|null} [uintValues] ColumnValues uintValues
+	                 * @property {Array.<number|Long>|null} [ulongValues] ColumnValues ulongValues
+	                 */
+
+	                /**
+	                 * Constructs a new ColumnValues.
+	                 * @memberof perfetto.protos.RawQueryResult
+	                 * @classdesc Represents a ColumnValues.
+	                 * @implements IColumnValues
+	                 * @constructor
+	                 * @param {perfetto.protos.RawQueryResult.IColumnValues=} [properties] Properties to set
+	                 */
+	                function ColumnValues(properties) {
+	                    this.intValues = [];
+	                    this.longValues = [];
+	                    this.uintValues = [];
+	                    this.ulongValues = [];
+	                    if (properties)
+	                        for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+	                            if (properties[keys[i]] != null)
+	                                this[keys[i]] = properties[keys[i]];
+	                }
+
+	                /**
+	                 * ColumnValues intValues.
+	                 * @member {Array.<number>} intValues
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @instance
+	                 */
+	                ColumnValues.prototype.intValues = $util.emptyArray;
+
+	                /**
+	                 * ColumnValues longValues.
+	                 * @member {Array.<number|Long>} longValues
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @instance
+	                 */
+	                ColumnValues.prototype.longValues = $util.emptyArray;
+
+	                /**
+	                 * ColumnValues uintValues.
+	                 * @member {Array.<number>} uintValues
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @instance
+	                 */
+	                ColumnValues.prototype.uintValues = $util.emptyArray;
+
+	                /**
+	                 * ColumnValues ulongValues.
+	                 * @member {Array.<number|Long>} ulongValues
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @instance
+	                 */
+	                ColumnValues.prototype.ulongValues = $util.emptyArray;
+
+	                /**
+	                 * Creates a new ColumnValues instance using the specified properties.
+	                 * @function create
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @static
+	                 * @param {perfetto.protos.RawQueryResult.IColumnValues=} [properties] Properties to set
+	                 * @returns {perfetto.protos.RawQueryResult.ColumnValues} ColumnValues instance
+	                 */
+	                ColumnValues.create = function create(properties) {
+	                    return new ColumnValues(properties);
+	                };
+
+	                /**
+	                 * Encodes the specified ColumnValues message. Does not implicitly {@link perfetto.protos.RawQueryResult.ColumnValues.verify|verify} messages.
+	                 * @function encode
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @static
+	                 * @param {perfetto.protos.RawQueryResult.IColumnValues} message ColumnValues message or plain object to encode
+	                 * @param {$protobuf.Writer} [writer] Writer to encode to
+	                 * @returns {$protobuf.Writer} Writer
+	                 */
+	                ColumnValues.encode = function encode(message, writer) {
+	                    if (!writer)
+	                        writer = $Writer.create();
+	                    if (message.intValues != null && message.intValues.length)
+	                        for (var i = 0; i < message.intValues.length; ++i)
+	                            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.intValues[i]);
+	                    if (message.longValues != null && message.longValues.length)
+	                        for (var i = 0; i < message.longValues.length; ++i)
+	                            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.longValues[i]);
+	                    if (message.uintValues != null && message.uintValues.length)
+	                        for (var i = 0; i < message.uintValues.length; ++i)
+	                            writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.uintValues[i]);
+	                    if (message.ulongValues != null && message.ulongValues.length)
+	                        for (var i = 0; i < message.ulongValues.length; ++i)
+	                            writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.ulongValues[i]);
+	                    return writer;
+	                };
+
+	                /**
+	                 * Encodes the specified ColumnValues message, length delimited. Does not implicitly {@link perfetto.protos.RawQueryResult.ColumnValues.verify|verify} messages.
+	                 * @function encodeDelimited
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @static
+	                 * @param {perfetto.protos.RawQueryResult.IColumnValues} message ColumnValues message or plain object to encode
+	                 * @param {$protobuf.Writer} [writer] Writer to encode to
+	                 * @returns {$protobuf.Writer} Writer
+	                 */
+	                ColumnValues.encodeDelimited = function encodeDelimited(message, writer) {
+	                    return this.encode(message, writer).ldelim();
+	                };
+
+	                /**
+	                 * Decodes a ColumnValues message from the specified reader or buffer.
+	                 * @function decode
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @static
+	                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	                 * @param {number} [length] Message length if known beforehand
+	                 * @returns {perfetto.protos.RawQueryResult.ColumnValues} ColumnValues
+	                 * @throws {Error} If the payload is not a reader or valid buffer
+	                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	                 */
+	                ColumnValues.decode = function decode(reader, length) {
+	                    if (!(reader instanceof $Reader))
+	                        reader = $Reader.create(reader);
+	                    var end = length === undefined ? reader.len : reader.pos + length, message = new $root.perfetto.protos.RawQueryResult.ColumnValues();
+	                    while (reader.pos < end) {
+	                        var tag = reader.uint32();
+	                        switch (tag >>> 3) {
+	                        case 1:
+	                            if (!(message.intValues && message.intValues.length))
+	                                message.intValues = [];
+	                            if ((tag & 7) === 2) {
+	                                var end2 = reader.uint32() + reader.pos;
+	                                while (reader.pos < end2)
+	                                    message.intValues.push(reader.int32());
+	                            } else
+	                                message.intValues.push(reader.int32());
+	                            break;
+	                        case 2:
+	                            if (!(message.longValues && message.longValues.length))
+	                                message.longValues = [];
+	                            if ((tag & 7) === 2) {
+	                                var end2 = reader.uint32() + reader.pos;
+	                                while (reader.pos < end2)
+	                                    message.longValues.push(reader.int64());
+	                            } else
+	                                message.longValues.push(reader.int64());
+	                            break;
+	                        case 3:
+	                            if (!(message.uintValues && message.uintValues.length))
+	                                message.uintValues = [];
+	                            if ((tag & 7) === 2) {
+	                                var end2 = reader.uint32() + reader.pos;
+	                                while (reader.pos < end2)
+	                                    message.uintValues.push(reader.uint32());
+	                            } else
+	                                message.uintValues.push(reader.uint32());
+	                            break;
+	                        case 4:
+	                            if (!(message.ulongValues && message.ulongValues.length))
+	                                message.ulongValues = [];
+	                            if ((tag & 7) === 2) {
+	                                var end2 = reader.uint32() + reader.pos;
+	                                while (reader.pos < end2)
+	                                    message.ulongValues.push(reader.uint64());
+	                            } else
+	                                message.ulongValues.push(reader.uint64());
+	                            break;
+	                        default:
+	                            reader.skipType(tag & 7);
+	                            break;
+	                        }
+	                    }
+	                    return message;
+	                };
+
+	                /**
+	                 * Decodes a ColumnValues message from the specified reader or buffer, length delimited.
+	                 * @function decodeDelimited
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @static
+	                 * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+	                 * @returns {perfetto.protos.RawQueryResult.ColumnValues} ColumnValues
+	                 * @throws {Error} If the payload is not a reader or valid buffer
+	                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+	                 */
+	                ColumnValues.decodeDelimited = function decodeDelimited(reader) {
+	                    if (!(reader instanceof $Reader))
+	                        reader = new $Reader(reader);
+	                    return this.decode(reader, reader.uint32());
+	                };
+
+	                /**
+	                 * Verifies a ColumnValues message.
+	                 * @function verify
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @static
+	                 * @param {Object.<string,*>} message Plain object to verify
+	                 * @returns {string|null} `null` if valid, otherwise the reason why it is not
+	                 */
+	                ColumnValues.verify = function verify(message) {
+	                    if (typeof message !== "object" || message === null)
+	                        return "object expected";
+	                    if (message.intValues != null && message.hasOwnProperty("intValues")) {
+	                        if (!Array.isArray(message.intValues))
+	                            return "intValues: array expected";
+	                        for (var i = 0; i < message.intValues.length; ++i)
+	                            if (!$util.isInteger(message.intValues[i]))
+	                                return "intValues: integer[] expected";
+	                    }
+	                    if (message.longValues != null && message.hasOwnProperty("longValues")) {
+	                        if (!Array.isArray(message.longValues))
+	                            return "longValues: array expected";
+	                        for (var i = 0; i < message.longValues.length; ++i)
+	                            if (!$util.isInteger(message.longValues[i]) && !(message.longValues[i] && $util.isInteger(message.longValues[i].low) && $util.isInteger(message.longValues[i].high)))
+	                                return "longValues: integer|Long[] expected";
+	                    }
+	                    if (message.uintValues != null && message.hasOwnProperty("uintValues")) {
+	                        if (!Array.isArray(message.uintValues))
+	                            return "uintValues: array expected";
+	                        for (var i = 0; i < message.uintValues.length; ++i)
+	                            if (!$util.isInteger(message.uintValues[i]))
+	                                return "uintValues: integer[] expected";
+	                    }
+	                    if (message.ulongValues != null && message.hasOwnProperty("ulongValues")) {
+	                        if (!Array.isArray(message.ulongValues))
+	                            return "ulongValues: array expected";
+	                        for (var i = 0; i < message.ulongValues.length; ++i)
+	                            if (!$util.isInteger(message.ulongValues[i]) && !(message.ulongValues[i] && $util.isInteger(message.ulongValues[i].low) && $util.isInteger(message.ulongValues[i].high)))
+	                                return "ulongValues: integer|Long[] expected";
+	                    }
+	                    return null;
+	                };
+
+	                /**
+	                 * Creates a ColumnValues message from a plain object. Also converts values to their respective internal types.
+	                 * @function fromObject
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @static
+	                 * @param {Object.<string,*>} object Plain object
+	                 * @returns {perfetto.protos.RawQueryResult.ColumnValues} ColumnValues
+	                 */
+	                ColumnValues.fromObject = function fromObject(object) {
+	                    if (object instanceof $root.perfetto.protos.RawQueryResult.ColumnValues)
+	                        return object;
+	                    var message = new $root.perfetto.protos.RawQueryResult.ColumnValues();
+	                    if (object.intValues) {
+	                        if (!Array.isArray(object.intValues))
+	                            throw TypeError(".perfetto.protos.RawQueryResult.ColumnValues.intValues: array expected");
+	                        message.intValues = [];
+	                        for (var i = 0; i < object.intValues.length; ++i)
+	                            message.intValues[i] = object.intValues[i] | 0;
+	                    }
+	                    if (object.longValues) {
+	                        if (!Array.isArray(object.longValues))
+	                            throw TypeError(".perfetto.protos.RawQueryResult.ColumnValues.longValues: array expected");
+	                        message.longValues = [];
+	                        for (var i = 0; i < object.longValues.length; ++i)
+	                            if ($util.Long)
+	                                (message.longValues[i] = $util.Long.fromValue(object.longValues[i])).unsigned = false;
+	                            else if (typeof object.longValues[i] === "string")
+	                                message.longValues[i] = parseInt(object.longValues[i], 10);
+	                            else if (typeof object.longValues[i] === "number")
+	                                message.longValues[i] = object.longValues[i];
+	                            else if (typeof object.longValues[i] === "object")
+	                                message.longValues[i] = new $util.LongBits(object.longValues[i].low >>> 0, object.longValues[i].high >>> 0).toNumber();
+	                    }
+	                    if (object.uintValues) {
+	                        if (!Array.isArray(object.uintValues))
+	                            throw TypeError(".perfetto.protos.RawQueryResult.ColumnValues.uintValues: array expected");
+	                        message.uintValues = [];
+	                        for (var i = 0; i < object.uintValues.length; ++i)
+	                            message.uintValues[i] = object.uintValues[i] >>> 0;
+	                    }
+	                    if (object.ulongValues) {
+	                        if (!Array.isArray(object.ulongValues))
+	                            throw TypeError(".perfetto.protos.RawQueryResult.ColumnValues.ulongValues: array expected");
+	                        message.ulongValues = [];
+	                        for (var i = 0; i < object.ulongValues.length; ++i)
+	                            if ($util.Long)
+	                                (message.ulongValues[i] = $util.Long.fromValue(object.ulongValues[i])).unsigned = true;
+	                            else if (typeof object.ulongValues[i] === "string")
+	                                message.ulongValues[i] = parseInt(object.ulongValues[i], 10);
+	                            else if (typeof object.ulongValues[i] === "number")
+	                                message.ulongValues[i] = object.ulongValues[i];
+	                            else if (typeof object.ulongValues[i] === "object")
+	                                message.ulongValues[i] = new $util.LongBits(object.ulongValues[i].low >>> 0, object.ulongValues[i].high >>> 0).toNumber(true);
+	                    }
+	                    return message;
+	                };
+
+	                /**
+	                 * Creates a plain object from a ColumnValues message. Also converts values to other types if specified.
+	                 * @function toObject
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @static
+	                 * @param {perfetto.protos.RawQueryResult.ColumnValues} message ColumnValues
+	                 * @param {$protobuf.IConversionOptions} [options] Conversion options
+	                 * @returns {Object.<string,*>} Plain object
+	                 */
+	                ColumnValues.toObject = function toObject(message, options) {
+	                    if (!options)
+	                        options = {};
+	                    var object = {};
+	                    if (options.arrays || options.defaults) {
+	                        object.intValues = [];
+	                        object.longValues = [];
+	                        object.uintValues = [];
+	                        object.ulongValues = [];
+	                    }
+	                    if (message.intValues && message.intValues.length) {
+	                        object.intValues = [];
+	                        for (var j = 0; j < message.intValues.length; ++j)
+	                            object.intValues[j] = message.intValues[j];
+	                    }
+	                    if (message.longValues && message.longValues.length) {
+	                        object.longValues = [];
+	                        for (var j = 0; j < message.longValues.length; ++j)
+	                            if (typeof message.longValues[j] === "number")
+	                                object.longValues[j] = options.longs === String ? String(message.longValues[j]) : message.longValues[j];
+	                            else
+	                                object.longValues[j] = options.longs === String ? $util.Long.prototype.toString.call(message.longValues[j]) : options.longs === Number ? new $util.LongBits(message.longValues[j].low >>> 0, message.longValues[j].high >>> 0).toNumber() : message.longValues[j];
+	                    }
+	                    if (message.uintValues && message.uintValues.length) {
+	                        object.uintValues = [];
+	                        for (var j = 0; j < message.uintValues.length; ++j)
+	                            object.uintValues[j] = message.uintValues[j];
+	                    }
+	                    if (message.ulongValues && message.ulongValues.length) {
+	                        object.ulongValues = [];
+	                        for (var j = 0; j < message.ulongValues.length; ++j)
+	                            if (typeof message.ulongValues[j] === "number")
+	                                object.ulongValues[j] = options.longs === String ? String(message.ulongValues[j]) : message.ulongValues[j];
+	                            else
+	                                object.ulongValues[j] = options.longs === String ? $util.Long.prototype.toString.call(message.ulongValues[j]) : options.longs === Number ? new $util.LongBits(message.ulongValues[j].low >>> 0, message.ulongValues[j].high >>> 0).toNumber(true) : message.ulongValues[j];
+	                    }
+	                    return object;
+	                };
+
+	                /**
+	                 * Converts this ColumnValues to JSON.
+	                 * @function toJSON
+	                 * @memberof perfetto.protos.RawQueryResult.ColumnValues
+	                 * @instance
+	                 * @returns {Object.<string,*>} JSON object
+	                 */
+	                ColumnValues.prototype.toJSON = function toJSON() {
+	                    return this.constructor.toObject(this, minimal$1.util.toJSONOptions);
+	                };
+
+	                return ColumnValues;
+	            })();
+
+	            return RawQueryResult;
+	        })();
+
 	        protos.ChromeConfig = (function() {
 
 	            /**
@@ -23753,6 +24838,13 @@ var perfetto = (function () {
 	        case 'load_trace_file': {
 	            const file = action.file;
 	            console.log('load_trace_file', file);
+	            any_self.postMessage({
+	                topic: 'msg_processor',
+	                msg: {
+	                    topic: 'load_file',
+	                    file,
+	                },
+	            });
 	            gState.traces.push({
 	                name: file.name,
 	                file: file,
