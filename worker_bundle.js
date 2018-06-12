@@ -24605,12 +24605,108 @@ var perfetto = (function () {
 	exports.TraceConfig = TraceConfig;
 	const Trace = protos.perfetto.protos.Trace;
 	exports.Trace = Trace;
+	const RawQueryResult = protos.perfetto.protos.RawQueryResult;
+	exports.RawQueryResult = RawQueryResult;
+	const RawQueryArgs = protos.perfetto.protos.RawQueryArgs;
+	exports.RawQueryArgs = RawQueryArgs;
 
 	});
 
 	unwrapExports(protos$1);
 	var protos_1 = protos$1.TraceConfig;
 	var protos_2 = protos$1.Trace;
+	var protos_3 = protos$1.RawQueryResult;
+	var protos_4 = protos$1.RawQueryArgs;
+
+	var ipc = createCommonjsModule(function (module, exports) {
+	/*
+	 * Copyright (C) 2018 The Android Open Source Project
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 *      http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 */
+	Object.defineProperty(exports, "__esModule", { value: true });
+	class Receiver {
+	    constructor(port, client) {
+	        this.port = port;
+	        this.client = client;
+	        this.port.onmessage = this.recv.bind(this);
+	    }
+	    recv(msg) {
+	        const name = msg.data.name;
+	        const args = msg.data.args;
+	        const requestId = msg.data.requestId;
+	        const pending = this.client[name].apply(this.client, args);
+	        pending.then(result => this.send(requestId, result));
+	    }
+	    send(requestId, result) {
+	        this.port.postMessage({
+	            requestId,
+	            result,
+	        });
+	    }
+	}
+	class SenderTarget {
+	    constructor(port) {
+	        this.port = port;
+	        this.requestId = 0;
+	        this.pendingRequests = {};
+	        this.port.onmessage = this.recv.bind(this);
+	    }
+	    recv(msg) {
+	        const requestId = msg.data.requestId;
+	        const result = msg.data.result;
+	        console.assert(this.pendingRequests[requestId]);
+	        this.pendingRequests[requestId](result);
+	        delete this.pendingRequests[requestId];
+	    }
+	    send(name, args) {
+	        const requestId = this.requestId++;
+	        const pending = new Promise(resolve => {
+	            this.pendingRequests[requestId] = resolve;
+	        });
+	        this.port.postMessage({
+	            requestId,
+	            name,
+	            args,
+	        });
+	        return pending;
+	    }
+	}
+	class SenderHandler {
+	    constructor() {
+	    }
+	    get(rawTarget, p, _receiver) {
+	        const target = rawTarget;
+	        return function (...args) {
+	            return target.send(p, args);
+	        };
+	    }
+	}
+	function createReceiver(port, client) {
+	    return new Receiver(port, client);
+	}
+	exports.createReceiver = createReceiver;
+	function createSender(port) {
+	    const target = new SenderTarget(port);
+	    return new Proxy(target, new SenderHandler());
+	}
+	exports.createSender = createSender;
+
+	});
+
+	unwrapExports(ipc);
+	var ipc_1 = ipc.createReceiver;
+	var ipc_2 = ipc.createSender;
 
 	var backend = createCommonjsModule(function (module, exports) {
 	/*
@@ -24631,9 +24727,11 @@ var perfetto = (function () {
 	Object.defineProperty(exports, "__esModule", { value: true });
 
 
+
 	let gState = state.createZeroState();
 	let gTracesController = null;
 	let gLargestKnownId = 0;
+	let gPort = null;
 	function createConfig(state$$1) {
 	    const ftraceEvents = [];
 	    const atraceCategories = Object.keys(state$$1.atrace_categories);
@@ -24709,21 +24807,26 @@ var perfetto = (function () {
 	        info,
 	    };
 	}
+	function updateDone(id) {
+	    return {
+	        topic: 'query_done',
+	        id,
+	    };
+	}
 	class TraceController {
 	    constructor(id) {
 	        this.id = id;
 	        this.state = 'LOADING';
 	        this.name = '';
 	        this.file = null;
-	        this.proto = null;
-	        this.num_packets = null;
+	        this.remoteTraceProcessorBridge = null;
 	    }
 	    details() {
 	        return {
 	            id: this.id,
 	            state: this.state,
 	            name: this.name,
-	            num_packets: this.num_packets,
+	            result: this.result,
 	        };
 	    }
 	    setup(trace) {
@@ -24732,32 +24835,30 @@ var perfetto = (function () {
 	        this.state = 'LOADING';
 	        this.file = trace.file;
 	        gState.backends[this.id] = this.details();
-	        setTimeout(() => {
-	            new Promise((resolve, reject) => {
-	                if (!this.file) {
-	                    reject();
-	                    return;
-	                }
-	                const reader = new FileReader();
-	                reader.onload = () => resolve(reader.result);
-	                reader.readAsArrayBuffer(this.file);
-	            }).then((buffer) => {
-	                const uint8array = new Uint8Array(buffer);
-	                const decoded = protos$1.Trace.decode(uint8array);
-	                return decoded;
-	            }).then((proto) => {
-	                console.log(proto);
-	                this.proto = proto;
+	        self.postMessage({
+	            topic: 'start_processor',
+	        });
+	    }
+	    update(_, request) {
+	        if (this.state === 'LOADING' && this.file && gPort) {
+	            const bridge = ipc.createSender(gPort);
+	            this.remoteTraceProcessorBridge = bridge;
+	            this.remoteTraceProcessorBridge.loadBlob(this.file).then(() => {
 	                this.state = 'READY';
-	                this.num_packets = proto.packet.length;
-	                dispatch(publishBackend(this.details()));
-	            }).catch((_e) => {
-	                this.state = 'ERROR';
 	                dispatch(publishBackend(this.details()));
 	            });
-	        }, 1000);
-	    }
-	    update(_) {
+	            gPort = null;
+	        }
+	        if (this.state === 'READY' &&
+	            this.remoteTraceProcessorBridge &&
+	            request.needs_update) {
+	            this.remoteTraceProcessorBridge.query(request.query).then((x) => {
+	                console.log(x);
+	                this.result = x;
+	                dispatch(updateDone(this.id));
+	                dispatch(publishBackend(this.details()));
+	            });
+	        }
 	    }
 	    teardown() {
 	        console.log('teardown');
@@ -24780,7 +24881,7 @@ var perfetto = (function () {
 	            const controller = this.controllers.get(trace.id);
 	            if (!controller)
 	                throw 'Missing id';
-	            controller.update(state$$1);
+	            controller.update(state$$1, trace);
 	        }
 	        const ids = new Set(state$$1.traces.map(t => t.id));
 	        for (const controller of this.controllers.values()) {
@@ -24794,6 +24895,10 @@ var perfetto = (function () {
 	function dispatch(action) {
 	    const any_self = self;
 	    switch (action.topic) {
+	        case 'processor_started': {
+	            gPort = action.port;
+	            break;
+	        }
 	        case 'init': {
 	            gState = action.initial_state;
 	            break;
@@ -24837,19 +24942,32 @@ var perfetto = (function () {
 	        }
 	        case 'load_trace_file': {
 	            const file = action.file;
-	            console.log('load_trace_file', file);
-	            any_self.postMessage({
-	                topic: 'msg_processor',
-	                msg: {
-	                    topic: 'load_file',
-	                    file,
-	                },
-	            });
 	            gState.traces.push({
 	                name: file.name,
+	                needs_update: false,
 	                file: file,
 	                id: '' + gLargestKnownId++,
+	                query: '',
 	            });
+	            break;
+	        }
+	        case 'query': {
+	            const id = action.id;
+	            const query = action.query;
+	            for (const trace of gState.traces) {
+	                if (trace.id === id) {
+	                    trace.needs_update = true;
+	                    trace.query = query;
+	                }
+	            }
+	            break;
+	        }
+	        case 'query_done': {
+	            const id = action.id;
+	            for (const trace of gState.traces) {
+	                if (trace.id === id)
+	                    trace.needs_update = false;
+	            }
 	            break;
 	        }
 	        default:

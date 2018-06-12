@@ -1729,7 +1729,7 @@ var ASM_CONSTS = [];
 
 STATIC_BASE = GLOBAL_BASE;
 
-STATICTOP = STATIC_BASE + 47408;
+STATICTOP = STATIC_BASE + 52848;
 /* global initializers */  __ATINIT__.push({ func: function() { __GLOBAL__sub_I_status_cc() } });
 
 
@@ -1738,7 +1738,7 @@ STATICTOP = STATIC_BASE + 47408;
 
 
 
-var STATIC_BUMP = 47408;
+var STATIC_BUMP = 52848;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 
@@ -1781,6 +1781,10 @@ function copyTempDouble(ptr) {
 
 // {{PRE_LIBRARY}}
 
+
+  function ___assert_fail(condition, filename, line, func) {
+      abort('Assertion failed: ' + Pointer_stringify(condition) + ', at: ' + [filename ? Pointer_stringify(filename) : 'unknown filename', line, func ? Pointer_stringify(func) : 'unknown function']);
+    }
 
   function ___cxa_pure_virtual() {
       ABORT = true;
@@ -3653,9 +3657,11 @@ function nullFunc_viijiiiii(x) { Module["printErr"]("Invalid function pointer ca
 
 function nullFunc_vij(x) { Module["printErr"]("Invalid function pointer called with signature 'vij'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-Module['wasmTableSize'] = 20480;
+function nullFunc_viji(x) { Module["printErr"]("Invalid function pointer called with signature 'viji'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this)");  Module["printErr"]("Build with ASSERTIONS=2 for more info.");abort(x) }
 
-Module['wasmMaxTableSize'] = 20480;
+Module['wasmTableSize'] = 24640;
+
+Module['wasmMaxTableSize'] = 24640;
 
 function invoke_di(index,a1) {
   try {
@@ -4177,9 +4183,22 @@ function jsCall_vij(index,a1,a2) {
     functionPointers[index](a1,a2);
 }
 
+function invoke_viji(index,a1,a2,a3,a4) {
+  try {
+    Module["dynCall_viji"](index,a1,a2,a3,a4);
+  } catch(e) {
+    if (typeof e !== 'number' && e !== 'longjmp') throw e;
+    Module["setThrew"](1, 0);
+  }
+}
+
+function jsCall_viji(index,a1,a2,a3) {
+    functionPointers[index](a1,a2,a3);
+}
+
 Module.asmGlobalArg = {};
 
-Module.asmLibraryArg = { "abort": abort, "assert": assert, "enlargeMemory": enlargeMemory, "getTotalMemory": getTotalMemory, "abortOnCannotGrowMemory": abortOnCannotGrowMemory, "abortStackOverflow": abortStackOverflow, "nullFunc_di": nullFunc_di, "nullFunc_dii": nullFunc_dii, "nullFunc_i": nullFunc_i, "nullFunc_ii": nullFunc_ii, "nullFunc_iii": nullFunc_iii, "nullFunc_iiid": nullFunc_iiid, "nullFunc_iiii": nullFunc_iiii, "nullFunc_iiiii": nullFunc_iiiii, "nullFunc_iiiiii": nullFunc_iiiiii, "nullFunc_iiiiiii": nullFunc_iiiiiii, "nullFunc_iiiiiiiii": nullFunc_iiiiiiiii, "nullFunc_iiiiiiiiii": nullFunc_iiiiiiiiii, "nullFunc_iiiiijii": nullFunc_iiiiijii, "nullFunc_iiiij": nullFunc_iiiij, "nullFunc_iiiiji": nullFunc_iiiiji, "nullFunc_iiiijii": nullFunc_iiiijii, "nullFunc_iiij": nullFunc_iiij, "nullFunc_iij": nullFunc_iij, "nullFunc_iiji": nullFunc_iiji, "nullFunc_iijii": nullFunc_iijii, "nullFunc_ij": nullFunc_ij, "nullFunc_j": nullFunc_j, "nullFunc_ji": nullFunc_ji, "nullFunc_jii": nullFunc_jii, "nullFunc_jiij": nullFunc_jiij, "nullFunc_jj": nullFunc_jj, "nullFunc_v": nullFunc_v, "nullFunc_vi": nullFunc_vi, "nullFunc_vid": nullFunc_vid, "nullFunc_vii": nullFunc_vii, "nullFunc_viii": nullFunc_viii, "nullFunc_viiii": nullFunc_viiii, "nullFunc_viiiii": nullFunc_viiiii, "nullFunc_viiiiii": nullFunc_viiiiii, "nullFunc_viiiij": nullFunc_viiiij, "nullFunc_viij": nullFunc_viij, "nullFunc_viiji": nullFunc_viiji, "nullFunc_viijii": nullFunc_viijii, "nullFunc_viijiiiii": nullFunc_viijiiiii, "nullFunc_vij": nullFunc_vij, "invoke_di": invoke_di, "jsCall_di": jsCall_di, "invoke_dii": invoke_dii, "jsCall_dii": jsCall_dii, "invoke_i": invoke_i, "jsCall_i": jsCall_i, "invoke_ii": invoke_ii, "jsCall_ii": jsCall_ii, "invoke_iii": invoke_iii, "jsCall_iii": jsCall_iii, "invoke_iiid": invoke_iiid, "jsCall_iiid": jsCall_iiid, "invoke_iiii": invoke_iiii, "jsCall_iiii": jsCall_iiii, "invoke_iiiii": invoke_iiiii, "jsCall_iiiii": jsCall_iiiii, "invoke_iiiiii": invoke_iiiiii, "jsCall_iiiiii": jsCall_iiiiii, "invoke_iiiiiii": invoke_iiiiiii, "jsCall_iiiiiii": jsCall_iiiiiii, "invoke_iiiiiiiii": invoke_iiiiiiiii, "jsCall_iiiiiiiii": jsCall_iiiiiiiii, "invoke_iiiiiiiiii": invoke_iiiiiiiiii, "jsCall_iiiiiiiiii": jsCall_iiiiiiiiii, "invoke_iiiiijii": invoke_iiiiijii, "jsCall_iiiiijii": jsCall_iiiiijii, "invoke_iiiij": invoke_iiiij, "jsCall_iiiij": jsCall_iiiij, "invoke_iiiiji": invoke_iiiiji, "jsCall_iiiiji": jsCall_iiiiji, "invoke_iiiijii": invoke_iiiijii, "jsCall_iiiijii": jsCall_iiiijii, "invoke_iiij": invoke_iiij, "jsCall_iiij": jsCall_iiij, "invoke_iij": invoke_iij, "jsCall_iij": jsCall_iij, "invoke_iiji": invoke_iiji, "jsCall_iiji": jsCall_iiji, "invoke_iijii": invoke_iijii, "jsCall_iijii": jsCall_iijii, "invoke_ij": invoke_ij, "jsCall_ij": jsCall_ij, "invoke_j": invoke_j, "jsCall_j": jsCall_j, "invoke_ji": invoke_ji, "jsCall_ji": jsCall_ji, "invoke_jii": invoke_jii, "jsCall_jii": jsCall_jii, "invoke_jiij": invoke_jiij, "jsCall_jiij": jsCall_jiij, "invoke_jj": invoke_jj, "jsCall_jj": jsCall_jj, "invoke_v": invoke_v, "jsCall_v": jsCall_v, "invoke_vi": invoke_vi, "jsCall_vi": jsCall_vi, "invoke_vid": invoke_vid, "jsCall_vid": jsCall_vid, "invoke_vii": invoke_vii, "jsCall_vii": jsCall_vii, "invoke_viii": invoke_viii, "jsCall_viii": jsCall_viii, "invoke_viiii": invoke_viiii, "jsCall_viiii": jsCall_viiii, "invoke_viiiii": invoke_viiiii, "jsCall_viiiii": jsCall_viiiii, "invoke_viiiiii": invoke_viiiiii, "jsCall_viiiiii": jsCall_viiiiii, "invoke_viiiij": invoke_viiiij, "jsCall_viiiij": jsCall_viiiij, "invoke_viij": invoke_viij, "jsCall_viij": jsCall_viij, "invoke_viiji": invoke_viiji, "jsCall_viiji": jsCall_viiji, "invoke_viijii": invoke_viijii, "jsCall_viijii": jsCall_viijii, "invoke_viijiiiii": invoke_viijiiiii, "jsCall_viijiiiii": jsCall_viijiiiii, "invoke_vij": invoke_vij, "jsCall_vij": jsCall_vij, "___buildEnvironment": ___buildEnvironment, "___cxa_pure_virtual": ___cxa_pure_virtual, "___lock": ___lock, "___setErrNo": ___setErrNo, "___syscall10": ___syscall10, "___syscall118": ___syscall118, "___syscall140": ___syscall140, "___syscall146": ___syscall146, "___syscall15": ___syscall15, "___syscall183": ___syscall183, "___syscall192": ___syscall192, "___syscall194": ___syscall194, "___syscall195": ___syscall195, "___syscall196": ___syscall196, "___syscall197": ___syscall197, "___syscall20": ___syscall20, "___syscall201": ___syscall201, "___syscall202": ___syscall202, "___syscall207": ___syscall207, "___syscall212": ___syscall212, "___syscall221": ___syscall221, "___syscall3": ___syscall3, "___syscall33": ___syscall33, "___syscall39": ___syscall39, "___syscall4": ___syscall4, "___syscall40": ___syscall40, "___syscall5": ___syscall5, "___syscall54": ___syscall54, "___syscall6": ___syscall6, "___syscall85": ___syscall85, "___syscall91": ___syscall91, "___syscall94": ___syscall94, "___unlock": ___unlock, "_abort": _abort, "_dlclose": _dlclose, "_dlerror": _dlerror, "_dlopen": _dlopen, "_dlsym": _dlsym, "_emscripten_async_call": _emscripten_async_call, "_emscripten_get_now": _emscripten_get_now, "_emscripten_memcpy_big": _emscripten_memcpy_big, "_emscripten_set_main_loop": _emscripten_set_main_loop, "_emscripten_set_main_loop_timing": _emscripten_set_main_loop_timing, "_getenv": _getenv, "_gettimeofday": _gettimeofday, "_llvm_trap": _llvm_trap, "_localtime": _localtime, "_localtime_r": _localtime_r, "_pthread_mutex_destroy": _pthread_mutex_destroy, "_pthread_mutex_init": _pthread_mutex_init, "_sched_yield": _sched_yield, "_sysconf": _sysconf, "_time": _time, "_tzset": _tzset, "_usleep": _usleep, "_utime": _utime, "flush_NO_FILESYSTEM": flush_NO_FILESYSTEM, "DYNAMICTOP_PTR": DYNAMICTOP_PTR, "tempDoublePtr": tempDoublePtr, "ABORT": ABORT, "STACKTOP": STACKTOP, "STACK_MAX": STACK_MAX };
+Module.asmLibraryArg = { "abort": abort, "assert": assert, "enlargeMemory": enlargeMemory, "getTotalMemory": getTotalMemory, "abortOnCannotGrowMemory": abortOnCannotGrowMemory, "abortStackOverflow": abortStackOverflow, "nullFunc_di": nullFunc_di, "nullFunc_dii": nullFunc_dii, "nullFunc_i": nullFunc_i, "nullFunc_ii": nullFunc_ii, "nullFunc_iii": nullFunc_iii, "nullFunc_iiid": nullFunc_iiid, "nullFunc_iiii": nullFunc_iiii, "nullFunc_iiiii": nullFunc_iiiii, "nullFunc_iiiiii": nullFunc_iiiiii, "nullFunc_iiiiiii": nullFunc_iiiiiii, "nullFunc_iiiiiiiii": nullFunc_iiiiiiiii, "nullFunc_iiiiiiiiii": nullFunc_iiiiiiiiii, "nullFunc_iiiiijii": nullFunc_iiiiijii, "nullFunc_iiiij": nullFunc_iiiij, "nullFunc_iiiiji": nullFunc_iiiiji, "nullFunc_iiiijii": nullFunc_iiiijii, "nullFunc_iiij": nullFunc_iiij, "nullFunc_iij": nullFunc_iij, "nullFunc_iiji": nullFunc_iiji, "nullFunc_iijii": nullFunc_iijii, "nullFunc_ij": nullFunc_ij, "nullFunc_j": nullFunc_j, "nullFunc_ji": nullFunc_ji, "nullFunc_jii": nullFunc_jii, "nullFunc_jiij": nullFunc_jiij, "nullFunc_jj": nullFunc_jj, "nullFunc_v": nullFunc_v, "nullFunc_vi": nullFunc_vi, "nullFunc_vid": nullFunc_vid, "nullFunc_vii": nullFunc_vii, "nullFunc_viii": nullFunc_viii, "nullFunc_viiii": nullFunc_viiii, "nullFunc_viiiii": nullFunc_viiiii, "nullFunc_viiiiii": nullFunc_viiiiii, "nullFunc_viiiij": nullFunc_viiiij, "nullFunc_viij": nullFunc_viij, "nullFunc_viiji": nullFunc_viiji, "nullFunc_viijii": nullFunc_viijii, "nullFunc_viijiiiii": nullFunc_viijiiiii, "nullFunc_vij": nullFunc_vij, "nullFunc_viji": nullFunc_viji, "invoke_di": invoke_di, "jsCall_di": jsCall_di, "invoke_dii": invoke_dii, "jsCall_dii": jsCall_dii, "invoke_i": invoke_i, "jsCall_i": jsCall_i, "invoke_ii": invoke_ii, "jsCall_ii": jsCall_ii, "invoke_iii": invoke_iii, "jsCall_iii": jsCall_iii, "invoke_iiid": invoke_iiid, "jsCall_iiid": jsCall_iiid, "invoke_iiii": invoke_iiii, "jsCall_iiii": jsCall_iiii, "invoke_iiiii": invoke_iiiii, "jsCall_iiiii": jsCall_iiiii, "invoke_iiiiii": invoke_iiiiii, "jsCall_iiiiii": jsCall_iiiiii, "invoke_iiiiiii": invoke_iiiiiii, "jsCall_iiiiiii": jsCall_iiiiiii, "invoke_iiiiiiiii": invoke_iiiiiiiii, "jsCall_iiiiiiiii": jsCall_iiiiiiiii, "invoke_iiiiiiiiii": invoke_iiiiiiiiii, "jsCall_iiiiiiiiii": jsCall_iiiiiiiiii, "invoke_iiiiijii": invoke_iiiiijii, "jsCall_iiiiijii": jsCall_iiiiijii, "invoke_iiiij": invoke_iiiij, "jsCall_iiiij": jsCall_iiiij, "invoke_iiiiji": invoke_iiiiji, "jsCall_iiiiji": jsCall_iiiiji, "invoke_iiiijii": invoke_iiiijii, "jsCall_iiiijii": jsCall_iiiijii, "invoke_iiij": invoke_iiij, "jsCall_iiij": jsCall_iiij, "invoke_iij": invoke_iij, "jsCall_iij": jsCall_iij, "invoke_iiji": invoke_iiji, "jsCall_iiji": jsCall_iiji, "invoke_iijii": invoke_iijii, "jsCall_iijii": jsCall_iijii, "invoke_ij": invoke_ij, "jsCall_ij": jsCall_ij, "invoke_j": invoke_j, "jsCall_j": jsCall_j, "invoke_ji": invoke_ji, "jsCall_ji": jsCall_ji, "invoke_jii": invoke_jii, "jsCall_jii": jsCall_jii, "invoke_jiij": invoke_jiij, "jsCall_jiij": jsCall_jiij, "invoke_jj": invoke_jj, "jsCall_jj": jsCall_jj, "invoke_v": invoke_v, "jsCall_v": jsCall_v, "invoke_vi": invoke_vi, "jsCall_vi": jsCall_vi, "invoke_vid": invoke_vid, "jsCall_vid": jsCall_vid, "invoke_vii": invoke_vii, "jsCall_vii": jsCall_vii, "invoke_viii": invoke_viii, "jsCall_viii": jsCall_viii, "invoke_viiii": invoke_viiii, "jsCall_viiii": jsCall_viiii, "invoke_viiiii": invoke_viiiii, "jsCall_viiiii": jsCall_viiiii, "invoke_viiiiii": invoke_viiiiii, "jsCall_viiiiii": jsCall_viiiiii, "invoke_viiiij": invoke_viiiij, "jsCall_viiiij": jsCall_viiiij, "invoke_viij": invoke_viij, "jsCall_viij": jsCall_viij, "invoke_viiji": invoke_viiji, "jsCall_viiji": jsCall_viiji, "invoke_viijii": invoke_viijii, "jsCall_viijii": jsCall_viijii, "invoke_viijiiiii": invoke_viijiiiii, "jsCall_viijiiiii": jsCall_viijiiiii, "invoke_vij": invoke_vij, "jsCall_vij": jsCall_vij, "invoke_viji": invoke_viji, "jsCall_viji": jsCall_viji, "___assert_fail": ___assert_fail, "___buildEnvironment": ___buildEnvironment, "___cxa_pure_virtual": ___cxa_pure_virtual, "___lock": ___lock, "___setErrNo": ___setErrNo, "___syscall10": ___syscall10, "___syscall118": ___syscall118, "___syscall140": ___syscall140, "___syscall146": ___syscall146, "___syscall15": ___syscall15, "___syscall183": ___syscall183, "___syscall192": ___syscall192, "___syscall194": ___syscall194, "___syscall195": ___syscall195, "___syscall196": ___syscall196, "___syscall197": ___syscall197, "___syscall20": ___syscall20, "___syscall201": ___syscall201, "___syscall202": ___syscall202, "___syscall207": ___syscall207, "___syscall212": ___syscall212, "___syscall221": ___syscall221, "___syscall3": ___syscall3, "___syscall33": ___syscall33, "___syscall39": ___syscall39, "___syscall4": ___syscall4, "___syscall40": ___syscall40, "___syscall5": ___syscall5, "___syscall54": ___syscall54, "___syscall6": ___syscall6, "___syscall85": ___syscall85, "___syscall91": ___syscall91, "___syscall94": ___syscall94, "___unlock": ___unlock, "_abort": _abort, "_dlclose": _dlclose, "_dlerror": _dlerror, "_dlopen": _dlopen, "_dlsym": _dlsym, "_emscripten_async_call": _emscripten_async_call, "_emscripten_get_now": _emscripten_get_now, "_emscripten_memcpy_big": _emscripten_memcpy_big, "_emscripten_set_main_loop": _emscripten_set_main_loop, "_emscripten_set_main_loop_timing": _emscripten_set_main_loop_timing, "_getenv": _getenv, "_gettimeofday": _gettimeofday, "_llvm_trap": _llvm_trap, "_localtime": _localtime, "_localtime_r": _localtime_r, "_pthread_mutex_destroy": _pthread_mutex_destroy, "_pthread_mutex_init": _pthread_mutex_init, "_sched_yield": _sched_yield, "_sysconf": _sysconf, "_time": _time, "_tzset": _tzset, "_usleep": _usleep, "_utime": _utime, "flush_NO_FILESYSTEM": flush_NO_FILESYSTEM, "DYNAMICTOP_PTR": DYNAMICTOP_PTR, "tempDoublePtr": tempDoublePtr, "ABORT": ABORT, "STACKTOP": STACKTOP, "STACK_MAX": STACK_MAX };
 // EMSCRIPTEN_START_ASM
 var asm =Module["asm"]// EMSCRIPTEN_END_ASM
 (Module.asmGlobalArg, Module.asmLibraryArg, buffer);
@@ -4226,6 +4245,114 @@ var real___ZN10__cxxabiv121__vmi_class_type_infoD0Ev = asm["__ZN10__cxxabiv121__
   return real___ZN10__cxxabiv121__vmi_class_type_infoD0Ev.apply(null, arguments);
 };
 
+var real___ZN6google8protobuf11MessageLiteD0Ev = asm["__ZN6google8protobuf11MessageLiteD0Ev"]; asm["__ZN6google8protobuf11MessageLiteD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf11MessageLiteD0Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf11MessageLiteD2Ev = asm["__ZN6google8protobuf11MessageLiteD2Ev"]; asm["__ZN6google8protobuf11MessageLiteD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf11MessageLiteD2Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED0Ev = asm["__ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED0Ev"]; asm["__ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED0Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED2Ev = asm["__ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED2Ev"]; asm["__ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED2Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io17ArrayOutputStream4NextEPPvPi = asm["__ZN6google8protobuf2io17ArrayOutputStream4NextEPPvPi"]; asm["__ZN6google8protobuf2io17ArrayOutputStream4NextEPPvPi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io17ArrayOutputStream4NextEPPvPi.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io17ArrayOutputStream6BackUpEi = asm["__ZN6google8protobuf2io17ArrayOutputStream6BackUpEi"]; asm["__ZN6google8protobuf2io17ArrayOutputStream6BackUpEi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io17ArrayOutputStream6BackUpEi.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io17ArrayOutputStreamD0Ev = asm["__ZN6google8protobuf2io17ArrayOutputStreamD0Ev"]; asm["__ZN6google8protobuf2io17ArrayOutputStreamD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io17ArrayOutputStreamD0Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io17ArrayOutputStreamD2Ev = asm["__ZN6google8protobuf2io17ArrayOutputStreamD2Ev"]; asm["__ZN6google8protobuf2io17ArrayOutputStreamD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io17ArrayOutputStreamD2Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io18StringOutputStream4NextEPPvPi = asm["__ZN6google8protobuf2io18StringOutputStream4NextEPPvPi"]; asm["__ZN6google8protobuf2io18StringOutputStream4NextEPPvPi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io18StringOutputStream4NextEPPvPi.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io18StringOutputStream6BackUpEi = asm["__ZN6google8protobuf2io18StringOutputStream6BackUpEi"]; asm["__ZN6google8protobuf2io18StringOutputStream6BackUpEi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io18StringOutputStream6BackUpEi.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io18StringOutputStreamD0Ev = asm["__ZN6google8protobuf2io18StringOutputStreamD0Ev"]; asm["__ZN6google8protobuf2io18StringOutputStreamD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io18StringOutputStreamD0Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io18StringOutputStreamD2Ev = asm["__ZN6google8protobuf2io18StringOutputStreamD2Ev"]; asm["__ZN6google8protobuf2io18StringOutputStreamD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io18StringOutputStreamD2Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io20ZeroCopyOutputStream15WriteAliasedRawEPKvi = asm["__ZN6google8protobuf2io20ZeroCopyOutputStream15WriteAliasedRawEPKvi"]; asm["__ZN6google8protobuf2io20ZeroCopyOutputStream15WriteAliasedRawEPKvi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io20ZeroCopyOutputStream15WriteAliasedRawEPKvi.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io20ZeroCopyOutputStreamD0Ev = asm["__ZN6google8protobuf2io20ZeroCopyOutputStreamD0Ev"]; asm["__ZN6google8protobuf2io20ZeroCopyOutputStreamD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io20ZeroCopyOutputStreamD0Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io20ZeroCopyOutputStreamD2Ev = asm["__ZN6google8protobuf2io20ZeroCopyOutputStreamD2Ev"]; asm["__ZN6google8protobuf2io20ZeroCopyOutputStreamD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io20ZeroCopyOutputStreamD2Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io22LazyStringOutputStream4NextEPPvPi = asm["__ZN6google8protobuf2io22LazyStringOutputStream4NextEPPvPi"]; asm["__ZN6google8protobuf2io22LazyStringOutputStream4NextEPPvPi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io22LazyStringOutputStream4NextEPPvPi.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io22LazyStringOutputStreamD0Ev = asm["__ZN6google8protobuf2io22LazyStringOutputStreamD0Ev"]; asm["__ZN6google8protobuf2io22LazyStringOutputStreamD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io22LazyStringOutputStreamD0Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf2io22LazyStringOutputStreamD2Ev = asm["__ZN6google8protobuf2io22LazyStringOutputStreamD2Ev"]; asm["__ZN6google8protobuf2io22LazyStringOutputStreamD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf2io22LazyStringOutputStreamD2Ev.apply(null, arguments);
+};
+
 var real___ZN6google8protobuf7ClosureD0Ev = asm["__ZN6google8protobuf7ClosureD0Ev"]; asm["__ZN6google8protobuf7ClosureD0Ev"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -4236,6 +4363,12 @@ var real___ZN6google8protobuf7ClosureD2Ev = asm["__ZN6google8protobuf7ClosureD2E
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return real___ZN6google8protobuf7ClosureD2Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal15InitEmptyStringEv = asm["__ZN6google8protobuf8internal15InitEmptyStringEv"]; asm["__ZN6google8protobuf8internal15InitEmptyStringEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal15InitEmptyStringEv.apply(null, arguments);
 };
 
 var real___ZN6google8protobuf8internal16FunctionClosure03RunEv = asm["__ZN6google8protobuf8internal16FunctionClosure03RunEv"]; asm["__ZN6google8protobuf8internal16FunctionClosure03RunEv"] = function() {
@@ -4256,10 +4389,58 @@ var real___ZN6google8protobuf8internal16FunctionClosure0D2Ev = asm["__ZN6google8
   return real___ZN6google8protobuf8internal16FunctionClosure0D2Ev.apply(null, arguments);
 };
 
+var real___ZN6google8protobuf8internal17DeleteEmptyStringEv = asm["__ZN6google8protobuf8internal17DeleteEmptyStringEv"]; asm["__ZN6google8protobuf8internal17DeleteEmptyStringEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal17DeleteEmptyStringEv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos12RawQueryArgsEEEvPv = asm["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos12RawQueryArgsEEEvPv"]; asm["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos12RawQueryArgsEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos12RawQueryArgsEEEvPv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos14RawQueryResultEEEvPv = asm["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos14RawQueryResultEEEvPv"]; asm["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos14RawQueryResultEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos14RawQueryResultEEEvPv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv = asm["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv"]; asm["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv = asm["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv"]; asm["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal19arena_delete_objectINS0_11MessageLiteEEEvPv = asm["__ZN6google8protobuf8internal19arena_delete_objectINS0_11MessageLiteEEEvPv"]; asm["__ZN6google8protobuf8internal19arena_delete_objectINS0_11MessageLiteEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal19arena_delete_objectINS0_11MessageLiteEEEvPv.apply(null, arguments);
+};
+
 var real___ZN6google8protobuf8internal20InitLogSilencerCountEv = asm["__ZN6google8protobuf8internal20InitLogSilencerCountEv"]; asm["__ZN6google8protobuf8internal20InitLogSilencerCountEv"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return real___ZN6google8protobuf8internal20InitLogSilencerCountEv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos25RawQueryResult_ColumnDescEE11TypeHandlerEEEvPPvSB_ii = asm["__ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos25RawQueryResult_ColumnDescEE11TypeHandlerEEEvPPvSB_ii"]; asm["__ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos25RawQueryResult_ColumnDescEE11TypeHandlerEEEvPPvSB_ii"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos25RawQueryResult_ColumnDescEE11TypeHandlerEEEvPPvSB_ii.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos27RawQueryResult_ColumnValuesEE11TypeHandlerEEEvPPvSB_ii = asm["__ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos27RawQueryResult_ColumnValuesEE11TypeHandlerEEEvPPvSB_ii"]; asm["__ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos27RawQueryResult_ColumnValuesEE11TypeHandlerEEEvPPvSB_ii"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos27RawQueryResult_ColumnValuesEE11TypeHandlerEEEvPPvSB_ii.apply(null, arguments);
 };
 
 var real___ZN6google8protobuf8internal21InitShutdownFunctionsEv = asm["__ZN6google8protobuf8internal21InitShutdownFunctionsEv"]; asm["__ZN6google8protobuf8internal21InitShutdownFunctionsEv"] = function() {
@@ -4268,10 +4449,94 @@ var real___ZN6google8protobuf8internal21InitShutdownFunctionsEv = asm["__ZN6goog
   return real___ZN6google8protobuf8internal21InitShutdownFunctionsEv.apply(null, arguments);
 };
 
+var real___ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv = asm["__ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv"]; asm["__ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv = asm["__ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv"]; asm["__ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv.apply(null, arguments);
+};
+
 var real___ZN6google8protobuf8internal22DeleteLogSilencerCountEv = asm["__ZN6google8protobuf8internal22DeleteLogSilencerCountEv"]; asm["__ZN6google8protobuf8internal22DeleteLogSilencerCountEv"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return real___ZN6google8protobuf8internal22DeleteLogSilencerCountEv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEE3RunEv = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEE3RunEv"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEE3RunEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEE3RunEv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED0Ev = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED0Ev"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED0Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED2Ev = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED2Ev"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED2Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEE3RunEv = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEE3RunEv"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEE3RunEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEE3RunEv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED0Ev = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED0Ev"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED0Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED2Ev = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED2Ev"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED2Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEE3RunEv = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEE3RunEv"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEE3RunEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEE3RunEv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED0Ev = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED0Ev"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED0Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED2Ev = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED2Ev"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED2Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEE3RunEv = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEE3RunEv"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEE3RunEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEE3RunEv.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED0Ev = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED0Ev"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED0Ev.apply(null, arguments);
+};
+
+var real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED2Ev = asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED2Ev"]; asm["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED2Ev.apply(null, arguments);
 };
 
 var real___ZN8perfetto15trace_processor10BlobReaderD0Ev = asm["__ZN8perfetto15trace_processor10BlobReaderD0Ev"]; asm["__ZN8perfetto15trace_processor10BlobReaderD0Ev"] = function() {
@@ -4382,6 +4647,162 @@ var real___ZN8perfetto4base10TaskRunnerD2Ev = asm["__ZN8perfetto4base10TaskRunne
   return real___ZN8perfetto4base10TaskRunnerD2Ev.apply(null, arguments);
 };
 
+var real___ZN8perfetto6protos12RawQueryArgs21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE = asm["__ZN8perfetto6protos12RawQueryArgs21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"]; asm["__ZN8perfetto6protos12RawQueryArgs21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos12RawQueryArgs21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos12RawQueryArgs27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE = asm["__ZN8perfetto6protos12RawQueryArgs27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"]; asm["__ZN8perfetto6protos12RawQueryArgs27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos12RawQueryArgs27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos12RawQueryArgs5ClearEv = asm["__ZN8perfetto6protos12RawQueryArgs5ClearEv"]; asm["__ZN8perfetto6protos12RawQueryArgs5ClearEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos12RawQueryArgs5ClearEv.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos12RawQueryArgsD0Ev = asm["__ZN8perfetto6protos12RawQueryArgsD0Ev"]; asm["__ZN8perfetto6protos12RawQueryArgsD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos12RawQueryArgsD0Ev.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos12RawQueryArgsD2Ev = asm["__ZN8perfetto6protos12RawQueryArgsD2Ev"]; asm["__ZN8perfetto6protos12RawQueryArgsD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos12RawQueryArgsD2Ev.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos14RawQueryResult21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE = asm["__ZN8perfetto6protos14RawQueryResult21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"]; asm["__ZN8perfetto6protos14RawQueryResult21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos14RawQueryResult21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos14RawQueryResult27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE = asm["__ZN8perfetto6protos14RawQueryResult27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"]; asm["__ZN8perfetto6protos14RawQueryResult27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos14RawQueryResult27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos14RawQueryResult5ClearEv = asm["__ZN8perfetto6protos14RawQueryResult5ClearEv"]; asm["__ZN8perfetto6protos14RawQueryResult5ClearEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos14RawQueryResult5ClearEv.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos14RawQueryResultD0Ev = asm["__ZN8perfetto6protos14RawQueryResultD0Ev"]; asm["__ZN8perfetto6protos14RawQueryResultD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos14RawQueryResultD0Ev.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos14RawQueryResultD2Ev = asm["__ZN8perfetto6protos14RawQueryResultD2Ev"]; asm["__ZN8perfetto6protos14RawQueryResultD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos14RawQueryResultD2Ev.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos25RawQueryResult_ColumnDesc21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE = asm["__ZN8perfetto6protos25RawQueryResult_ColumnDesc21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"]; asm["__ZN8perfetto6protos25RawQueryResult_ColumnDesc21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos25RawQueryResult_ColumnDesc21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos25RawQueryResult_ColumnDesc27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE = asm["__ZN8perfetto6protos25RawQueryResult_ColumnDesc27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"]; asm["__ZN8perfetto6protos25RawQueryResult_ColumnDesc27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos25RawQueryResult_ColumnDesc27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos25RawQueryResult_ColumnDesc5ClearEv = asm["__ZN8perfetto6protos25RawQueryResult_ColumnDesc5ClearEv"]; asm["__ZN8perfetto6protos25RawQueryResult_ColumnDesc5ClearEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos25RawQueryResult_ColumnDesc5ClearEv.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos25RawQueryResult_ColumnDescD0Ev = asm["__ZN8perfetto6protos25RawQueryResult_ColumnDescD0Ev"]; asm["__ZN8perfetto6protos25RawQueryResult_ColumnDescD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos25RawQueryResult_ColumnDescD0Ev.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos25RawQueryResult_ColumnDescD2Ev = asm["__ZN8perfetto6protos25RawQueryResult_ColumnDescD2Ev"]; asm["__ZN8perfetto6protos25RawQueryResult_ColumnDescD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos25RawQueryResult_ColumnDescD2Ev.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos27RawQueryResult_ColumnValues21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE = asm["__ZN8perfetto6protos27RawQueryResult_ColumnValues21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"]; asm["__ZN8perfetto6protos27RawQueryResult_ColumnValues21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos27RawQueryResult_ColumnValues21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos27RawQueryResult_ColumnValues27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE = asm["__ZN8perfetto6protos27RawQueryResult_ColumnValues27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"]; asm["__ZN8perfetto6protos27RawQueryResult_ColumnValues27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos27RawQueryResult_ColumnValues27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos27RawQueryResult_ColumnValues5ClearEv = asm["__ZN8perfetto6protos27RawQueryResult_ColumnValues5ClearEv"]; asm["__ZN8perfetto6protos27RawQueryResult_ColumnValues5ClearEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos27RawQueryResult_ColumnValues5ClearEv.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos27RawQueryResult_ColumnValuesD0Ev = asm["__ZN8perfetto6protos27RawQueryResult_ColumnValuesD0Ev"]; asm["__ZN8perfetto6protos27RawQueryResult_ColumnValuesD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos27RawQueryResult_ColumnValuesD0Ev.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos27RawQueryResult_ColumnValuesD2Ev = asm["__ZN8perfetto6protos27RawQueryResult_ColumnValuesD2Ev"]; asm["__ZN8perfetto6protos27RawQueryResult_ColumnValuesD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos27RawQueryResult_ColumnValuesD2Ev.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos72protobuf_AddDesc_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eproto_implEv = asm["__ZN8perfetto6protos72protobuf_AddDesc_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eproto_implEv"]; asm["__ZN8perfetto6protos72protobuf_AddDesc_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eproto_implEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos72protobuf_AddDesc_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eproto_implEv.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protos72protobuf_ShutdownFile_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eprotoEv = asm["__ZN8perfetto6protos72protobuf_ShutdownFile_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eprotoEv"]; asm["__ZN8perfetto6protos72protobuf_ShutdownFile_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eprotoEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protos72protobuf_ShutdownFile_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eprotoEv.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protosL35MutableUnknownFieldsForRawQueryArgsEPNS0_12RawQueryArgsE = asm["__ZN8perfetto6protosL35MutableUnknownFieldsForRawQueryArgsEPNS0_12RawQueryArgsE"]; asm["__ZN8perfetto6protosL35MutableUnknownFieldsForRawQueryArgsEPNS0_12RawQueryArgsE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protosL35MutableUnknownFieldsForRawQueryArgsEPNS0_12RawQueryArgsE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protosL37MutableUnknownFieldsForRawQueryResultEPNS0_14RawQueryResultE = asm["__ZN8perfetto6protosL37MutableUnknownFieldsForRawQueryResultEPNS0_14RawQueryResultE"]; asm["__ZN8perfetto6protosL37MutableUnknownFieldsForRawQueryResultEPNS0_14RawQueryResultE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protosL37MutableUnknownFieldsForRawQueryResultEPNS0_14RawQueryResultE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protosL48MutableUnknownFieldsForRawQueryResult_ColumnDescEPNS0_25RawQueryResult_ColumnDescE = asm["__ZN8perfetto6protosL48MutableUnknownFieldsForRawQueryResult_ColumnDescEPNS0_25RawQueryResult_ColumnDescE"]; asm["__ZN8perfetto6protosL48MutableUnknownFieldsForRawQueryResult_ColumnDescEPNS0_25RawQueryResult_ColumnDescE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protosL48MutableUnknownFieldsForRawQueryResult_ColumnDescEPNS0_25RawQueryResult_ColumnDescE.apply(null, arguments);
+};
+
+var real___ZN8perfetto6protosL50MutableUnknownFieldsForRawQueryResult_ColumnValuesEPNS0_27RawQueryResult_ColumnValuesE = asm["__ZN8perfetto6protosL50MutableUnknownFieldsForRawQueryResult_ColumnValuesEPNS0_27RawQueryResult_ColumnValuesE"]; asm["__ZN8perfetto6protosL50MutableUnknownFieldsForRawQueryResult_ColumnValuesEPNS0_27RawQueryResult_ColumnValuesE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZN8perfetto6protosL50MutableUnknownFieldsForRawQueryResult_ColumnValuesEPNS0_27RawQueryResult_ColumnValuesE.apply(null, arguments);
+};
+
 var real___ZNK10__cxxabiv116__shim_type_info5noop1Ev = asm["__ZNK10__cxxabiv116__shim_type_info5noop1Ev"]; asm["__ZNK10__cxxabiv116__shim_type_info5noop1Ev"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -4454,6 +4875,228 @@ var real___ZNK10__cxxabiv121__vmi_class_type_info27has_unambiguous_public_baseEP
   return real___ZNK10__cxxabiv121__vmi_class_type_info27has_unambiguous_public_baseEPNS_19__dynamic_cast_infoEPvi.apply(null, arguments);
 };
 
+var real___ZNK6google8protobuf11MessageLite20GetMaybeArenaPointerEv = asm["__ZNK6google8protobuf11MessageLite20GetMaybeArenaPointerEv"]; asm["__ZNK6google8protobuf11MessageLite20GetMaybeArenaPointerEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK6google8protobuf11MessageLite20GetMaybeArenaPointerEv.apply(null, arguments);
+};
+
+var real___ZNK6google8protobuf11MessageLite25InitializationErrorStringEv = asm["__ZNK6google8protobuf11MessageLite25InitializationErrorStringEv"]; asm["__ZNK6google8protobuf11MessageLite25InitializationErrorStringEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK6google8protobuf11MessageLite25InitializationErrorStringEv.apply(null, arguments);
+};
+
+var real___ZNK6google8protobuf11MessageLite31SerializeWithCachedSizesToArrayEPh = asm["__ZNK6google8protobuf11MessageLite31SerializeWithCachedSizesToArrayEPh"]; asm["__ZNK6google8protobuf11MessageLite31SerializeWithCachedSizesToArrayEPh"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK6google8protobuf11MessageLite31SerializeWithCachedSizesToArrayEPh.apply(null, arguments);
+};
+
+var real___ZNK6google8protobuf11MessageLite3NewEPNS0_5ArenaE = asm["__ZNK6google8protobuf11MessageLite3NewEPNS0_5ArenaE"]; asm["__ZNK6google8protobuf11MessageLite3NewEPNS0_5ArenaE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK6google8protobuf11MessageLite3NewEPNS0_5ArenaE.apply(null, arguments);
+};
+
+var real___ZNK6google8protobuf11MessageLite8GetArenaEv = asm["__ZNK6google8protobuf11MessageLite8GetArenaEv"]; asm["__ZNK6google8protobuf11MessageLite8GetArenaEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK6google8protobuf11MessageLite8GetArenaEv.apply(null, arguments);
+};
+
+var real___ZNK6google8protobuf2io17ArrayOutputStream9ByteCountEv = asm["__ZNK6google8protobuf2io17ArrayOutputStream9ByteCountEv"]; asm["__ZNK6google8protobuf2io17ArrayOutputStream9ByteCountEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK6google8protobuf2io17ArrayOutputStream9ByteCountEv.apply(null, arguments);
+};
+
+var real___ZNK6google8protobuf2io18StringOutputStream9ByteCountEv = asm["__ZNK6google8protobuf2io18StringOutputStream9ByteCountEv"]; asm["__ZNK6google8protobuf2io18StringOutputStream9ByteCountEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK6google8protobuf2io18StringOutputStream9ByteCountEv.apply(null, arguments);
+};
+
+var real___ZNK6google8protobuf2io20ZeroCopyOutputStream14AllowsAliasingEv = asm["__ZNK6google8protobuf2io20ZeroCopyOutputStream14AllowsAliasingEv"]; asm["__ZNK6google8protobuf2io20ZeroCopyOutputStream14AllowsAliasingEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK6google8protobuf2io20ZeroCopyOutputStream14AllowsAliasingEv.apply(null, arguments);
+};
+
+var real___ZNK6google8protobuf2io22LazyStringOutputStream9ByteCountEv = asm["__ZNK6google8protobuf2io22LazyStringOutputStream9ByteCountEv"]; asm["__ZNK6google8protobuf2io22LazyStringOutputStream9ByteCountEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK6google8protobuf2io22LazyStringOutputStream9ByteCountEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos12RawQueryArgs11GetTypeNameEv = asm["__ZNK8perfetto6protos12RawQueryArgs11GetTypeNameEv"]; asm["__ZNK8perfetto6protos12RawQueryArgs11GetTypeNameEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos12RawQueryArgs11GetTypeNameEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos12RawQueryArgs13GetCachedSizeEv = asm["__ZNK8perfetto6protos12RawQueryArgs13GetCachedSizeEv"]; asm["__ZNK8perfetto6protos12RawQueryArgs13GetCachedSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos12RawQueryArgs13GetCachedSizeEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos12RawQueryArgs13IsInitializedEv = asm["__ZNK8perfetto6protos12RawQueryArgs13IsInitializedEv"]; asm["__ZNK8perfetto6protos12RawQueryArgs13IsInitializedEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos12RawQueryArgs13IsInitializedEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos12RawQueryArgs24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE = asm["__ZNK8perfetto6protos12RawQueryArgs24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"]; asm["__ZNK8perfetto6protos12RawQueryArgs24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos12RawQueryArgs24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos12RawQueryArgs3NewEPN6google8protobuf5ArenaE = asm["__ZNK8perfetto6protos12RawQueryArgs3NewEPN6google8protobuf5ArenaE"]; asm["__ZNK8perfetto6protos12RawQueryArgs3NewEPN6google8protobuf5ArenaE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos12RawQueryArgs3NewEPN6google8protobuf5ArenaE.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos12RawQueryArgs3NewEv = asm["__ZNK8perfetto6protos12RawQueryArgs3NewEv"]; asm["__ZNK8perfetto6protos12RawQueryArgs3NewEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos12RawQueryArgs3NewEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos12RawQueryArgs8ByteSizeEv = asm["__ZNK8perfetto6protos12RawQueryArgs8ByteSizeEv"]; asm["__ZNK8perfetto6protos12RawQueryArgs8ByteSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos12RawQueryArgs8ByteSizeEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos14RawQueryResult11GetTypeNameEv = asm["__ZNK8perfetto6protos14RawQueryResult11GetTypeNameEv"]; asm["__ZNK8perfetto6protos14RawQueryResult11GetTypeNameEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos14RawQueryResult11GetTypeNameEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos14RawQueryResult13GetCachedSizeEv = asm["__ZNK8perfetto6protos14RawQueryResult13GetCachedSizeEv"]; asm["__ZNK8perfetto6protos14RawQueryResult13GetCachedSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos14RawQueryResult13GetCachedSizeEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos14RawQueryResult13IsInitializedEv = asm["__ZNK8perfetto6protos14RawQueryResult13IsInitializedEv"]; asm["__ZNK8perfetto6protos14RawQueryResult13IsInitializedEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos14RawQueryResult13IsInitializedEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos14RawQueryResult24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE = asm["__ZNK8perfetto6protos14RawQueryResult24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"]; asm["__ZNK8perfetto6protos14RawQueryResult24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos14RawQueryResult24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos14RawQueryResult3NewEPN6google8protobuf5ArenaE = asm["__ZNK8perfetto6protos14RawQueryResult3NewEPN6google8protobuf5ArenaE"]; asm["__ZNK8perfetto6protos14RawQueryResult3NewEPN6google8protobuf5ArenaE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos14RawQueryResult3NewEPN6google8protobuf5ArenaE.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos14RawQueryResult3NewEv = asm["__ZNK8perfetto6protos14RawQueryResult3NewEv"]; asm["__ZNK8perfetto6protos14RawQueryResult3NewEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos14RawQueryResult3NewEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos14RawQueryResult8ByteSizeEv = asm["__ZNK8perfetto6protos14RawQueryResult8ByteSizeEv"]; asm["__ZNK8perfetto6protos14RawQueryResult8ByteSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos14RawQueryResult8ByteSizeEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc11GetTypeNameEv = asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc11GetTypeNameEv"]; asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc11GetTypeNameEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc11GetTypeNameEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc13GetCachedSizeEv = asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc13GetCachedSizeEv"]; asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc13GetCachedSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc13GetCachedSizeEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc13IsInitializedEv = asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc13IsInitializedEv"]; asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc13IsInitializedEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc13IsInitializedEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE = asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"]; asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEPN6google8protobuf5ArenaE = asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEPN6google8protobuf5ArenaE"]; asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEPN6google8protobuf5ArenaE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEPN6google8protobuf5ArenaE.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEv = asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEv"]; asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc8ByteSizeEv = asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc8ByteSizeEv"]; asm["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc8ByteSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos25RawQueryResult_ColumnDesc8ByteSizeEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos27RawQueryResult_ColumnValues11GetTypeNameEv = asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues11GetTypeNameEv"]; asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues11GetTypeNameEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos27RawQueryResult_ColumnValues11GetTypeNameEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos27RawQueryResult_ColumnValues13GetCachedSizeEv = asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues13GetCachedSizeEv"]; asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues13GetCachedSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos27RawQueryResult_ColumnValues13GetCachedSizeEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos27RawQueryResult_ColumnValues13IsInitializedEv = asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues13IsInitializedEv"]; asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues13IsInitializedEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos27RawQueryResult_ColumnValues13IsInitializedEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos27RawQueryResult_ColumnValues24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE = asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"]; asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos27RawQueryResult_ColumnValues24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEPN6google8protobuf5ArenaE = asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEPN6google8protobuf5ArenaE"]; asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEPN6google8protobuf5ArenaE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEPN6google8protobuf5ArenaE.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEv = asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEv"]; asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEv.apply(null, arguments);
+};
+
+var real___ZNK8perfetto6protos27RawQueryResult_ColumnValues8ByteSizeEv = asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues8ByteSizeEv"]; asm["__ZNK8perfetto6protos27RawQueryResult_ColumnValues8ByteSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNK8perfetto6protos27RawQueryResult_ColumnValues8ByteSizeEv.apply(null, arguments);
+};
+
 var real___ZNKSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEE7__cloneEPNS0_6__baseIS5_EE = asm["__ZNKSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEE7__cloneEPNS0_6__baseIS5_EE"]; asm["__ZNKSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEE7__cloneEPNS0_6__baseIS5_EE"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -4464,6 +5107,18 @@ var real___ZNKSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvv
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return real___ZNKSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEE7__cloneEv.apply(null, arguments);
+};
+
+var real___ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEPNS0_6__baseIS8_EE = asm["__ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEPNS0_6__baseIS8_EE"]; asm["__ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEPNS0_6__baseIS8_EE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEPNS0_6__baseIS8_EE.apply(null, arguments);
+};
+
+var real___ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEv = asm["__ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEv"]; asm["__ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEv.apply(null, arguments);
 };
 
 var real___ZNKSt3__210__function6__funcIZN8perfetto15trace_processor13TraceDatabase14LoadTraceChunkENS_8functionIFvvEEEE3__0NS_9allocatorIS8_EES6_E7__cloneEPNS0_6__baseIS6_EE = asm["__ZNKSt3__210__function6__funcIZN8perfetto15trace_processor13TraceDatabase14LoadTraceChunkENS_8functionIFvvEEEE3__0NS_9allocatorIS8_EES6_E7__cloneEPNS0_6__baseIS6_EE"]; asm["__ZNKSt3__210__function6__funcIZN8perfetto15trace_processor13TraceDatabase14LoadTraceChunkENS_8functionIFvvEEEE3__0NS_9allocatorIS8_EES6_E7__cloneEPNS0_6__baseIS6_EE"] = function() {
@@ -4482,6 +5137,18 @@ var real___ZNKSt3__219__shared_weak_count13__get_deleterERKSt9type_info = asm["_
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return real___ZNKSt3__219__shared_weak_count13__get_deleterERKSt9type_info.apply(null, arguments);
+};
+
+var real___ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED0Ev = asm["__ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED0Ev"]; asm["__ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED0Ev.apply(null, arguments);
+};
+
+var real___ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED2Ev = asm["__ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED2Ev"]; asm["__ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED2Ev.apply(null, arguments);
 };
 
 var real___ZNSt3__210__function6__baseIFvvEED0Ev = asm["__ZNSt3__210__function6__baseIFvvEED0Ev"]; asm["__ZNSt3__210__function6__baseIFvvEED0Ev"] = function() {
@@ -4524,6 +5191,36 @@ var real___ZNSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvE
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return real___ZNSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEEclEv.apply(null, arguments);
+};
+
+var real___ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE18destroy_deallocateEv = asm["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE18destroy_deallocateEv"]; asm["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE18destroy_deallocateEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE18destroy_deallocateEv.apply(null, arguments);
+};
+
+var real___ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7destroyEv = asm["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7destroyEv"]; asm["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7destroyEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7destroyEv.apply(null, arguments);
+};
+
+var real___ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED0Ev = asm["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED0Ev"]; asm["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED0Ev.apply(null, arguments);
+};
+
+var real___ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED2Ev = asm["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED2Ev"]; asm["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED2Ev.apply(null, arguments);
+};
+
+var real___ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEEclEOS7_ = asm["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEEclEOS7_"]; asm["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEEclEOS7_"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real___ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEEclEOS7_.apply(null, arguments);
 };
 
 var real___ZNSt3__210__function6__funcIZN8perfetto15trace_processor13TraceDatabase14LoadTraceChunkENS_8functionIFvvEEEE3__0NS_9allocatorIS8_EES6_E18destroy_deallocateEv = asm["__ZNSt3__210__function6__funcIZN8perfetto15trace_processor13TraceDatabase14LoadTraceChunkENS_8functionIFvvEEEE3__0NS_9allocatorIS8_EES6_E18destroy_deallocateEv"]; asm["__ZNSt3__210__function6__funcIZN8perfetto15trace_processor13TraceDatabase14LoadTraceChunkENS_8functionIFvvEEEE3__0NS_9allocatorIS8_EES6_E18destroy_deallocateEv"] = function() {
@@ -7308,6 +8005,78 @@ var __ZN10__cxxabiv121__vmi_class_type_infoD0Ev = Module["__ZN10__cxxabiv121__vm
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZN10__cxxabiv121__vmi_class_type_infoD0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf11MessageLiteD0Ev = Module["__ZN6google8protobuf11MessageLiteD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf11MessageLiteD0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf11MessageLiteD2Ev = Module["__ZN6google8protobuf11MessageLiteD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf11MessageLiteD2Ev"].apply(null, arguments) };
+var __ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED0Ev = Module["__ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED2Ev = Module["__ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf14ResultCallbackIPNSt3__212basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEED2Ev"].apply(null, arguments) };
+var __ZN6google8protobuf2io17ArrayOutputStream4NextEPPvPi = Module["__ZN6google8protobuf2io17ArrayOutputStream4NextEPPvPi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io17ArrayOutputStream4NextEPPvPi"].apply(null, arguments) };
+var __ZN6google8protobuf2io17ArrayOutputStream6BackUpEi = Module["__ZN6google8protobuf2io17ArrayOutputStream6BackUpEi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io17ArrayOutputStream6BackUpEi"].apply(null, arguments) };
+var __ZN6google8protobuf2io17ArrayOutputStreamD0Ev = Module["__ZN6google8protobuf2io17ArrayOutputStreamD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io17ArrayOutputStreamD0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf2io17ArrayOutputStreamD2Ev = Module["__ZN6google8protobuf2io17ArrayOutputStreamD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io17ArrayOutputStreamD2Ev"].apply(null, arguments) };
+var __ZN6google8protobuf2io18StringOutputStream4NextEPPvPi = Module["__ZN6google8protobuf2io18StringOutputStream4NextEPPvPi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io18StringOutputStream4NextEPPvPi"].apply(null, arguments) };
+var __ZN6google8protobuf2io18StringOutputStream6BackUpEi = Module["__ZN6google8protobuf2io18StringOutputStream6BackUpEi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io18StringOutputStream6BackUpEi"].apply(null, arguments) };
+var __ZN6google8protobuf2io18StringOutputStreamD0Ev = Module["__ZN6google8protobuf2io18StringOutputStreamD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io18StringOutputStreamD0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf2io18StringOutputStreamD2Ev = Module["__ZN6google8protobuf2io18StringOutputStreamD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io18StringOutputStreamD2Ev"].apply(null, arguments) };
+var __ZN6google8protobuf2io20ZeroCopyOutputStream15WriteAliasedRawEPKvi = Module["__ZN6google8protobuf2io20ZeroCopyOutputStream15WriteAliasedRawEPKvi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io20ZeroCopyOutputStream15WriteAliasedRawEPKvi"].apply(null, arguments) };
+var __ZN6google8protobuf2io20ZeroCopyOutputStreamD0Ev = Module["__ZN6google8protobuf2io20ZeroCopyOutputStreamD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io20ZeroCopyOutputStreamD0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf2io20ZeroCopyOutputStreamD2Ev = Module["__ZN6google8protobuf2io20ZeroCopyOutputStreamD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io20ZeroCopyOutputStreamD2Ev"].apply(null, arguments) };
+var __ZN6google8protobuf2io22LazyStringOutputStream4NextEPPvPi = Module["__ZN6google8protobuf2io22LazyStringOutputStream4NextEPPvPi"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io22LazyStringOutputStream4NextEPPvPi"].apply(null, arguments) };
+var __ZN6google8protobuf2io22LazyStringOutputStreamD0Ev = Module["__ZN6google8protobuf2io22LazyStringOutputStreamD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io22LazyStringOutputStreamD0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf2io22LazyStringOutputStreamD2Ev = Module["__ZN6google8protobuf2io22LazyStringOutputStreamD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf2io22LazyStringOutputStreamD2Ev"].apply(null, arguments) };
 var __ZN6google8protobuf7ClosureD0Ev = Module["__ZN6google8protobuf7ClosureD0Ev"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -7316,6 +8085,10 @@ var __ZN6google8protobuf7ClosureD2Ev = Module["__ZN6google8protobuf7ClosureD2Ev"
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZN6google8protobuf7ClosureD2Ev"].apply(null, arguments) };
+var __ZN6google8protobuf8internal15InitEmptyStringEv = Module["__ZN6google8protobuf8internal15InitEmptyStringEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal15InitEmptyStringEv"].apply(null, arguments) };
 var __ZN6google8protobuf8internal16FunctionClosure03RunEv = Module["__ZN6google8protobuf8internal16FunctionClosure03RunEv"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -7328,18 +8101,106 @@ var __ZN6google8protobuf8internal16FunctionClosure0D2Ev = Module["__ZN6google8pr
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZN6google8protobuf8internal16FunctionClosure0D2Ev"].apply(null, arguments) };
+var __ZN6google8protobuf8internal17DeleteEmptyStringEv = Module["__ZN6google8protobuf8internal17DeleteEmptyStringEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal17DeleteEmptyStringEv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos12RawQueryArgsEEEvPv = Module["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos12RawQueryArgsEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos12RawQueryArgsEEEvPv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos14RawQueryResultEEEvPv = Module["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos14RawQueryResultEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos14RawQueryResultEEEvPv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv = Module["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv = Module["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal19arena_delete_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal19arena_delete_objectINS0_11MessageLiteEEEvPv = Module["__ZN6google8protobuf8internal19arena_delete_objectINS0_11MessageLiteEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal19arena_delete_objectINS0_11MessageLiteEEEvPv"].apply(null, arguments) };
 var __ZN6google8protobuf8internal20InitLogSilencerCountEv = Module["__ZN6google8protobuf8internal20InitLogSilencerCountEv"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZN6google8protobuf8internal20InitLogSilencerCountEv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos25RawQueryResult_ColumnDescEE11TypeHandlerEEEvPPvSB_ii = Module["__ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos25RawQueryResult_ColumnDescEE11TypeHandlerEEEvPPvSB_ii"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos25RawQueryResult_ColumnDescEE11TypeHandlerEEEvPPvSB_ii"].apply(null, arguments) };
+var __ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos27RawQueryResult_ColumnValuesEE11TypeHandlerEEEvPPvSB_ii = Module["__ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos27RawQueryResult_ColumnValuesEE11TypeHandlerEEEvPPvSB_ii"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal20RepeatedPtrFieldBase18MergeFromInnerLoopINS0_16RepeatedPtrFieldIN8perfetto6protos27RawQueryResult_ColumnValuesEE11TypeHandlerEEEvPPvSB_ii"].apply(null, arguments) };
 var __ZN6google8protobuf8internal21InitShutdownFunctionsEv = Module["__ZN6google8protobuf8internal21InitShutdownFunctionsEv"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZN6google8protobuf8internal21InitShutdownFunctionsEv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv = Module["__ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos25RawQueryResult_ColumnDescEEEvPv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv = Module["__ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal21arena_destruct_objectIN8perfetto6protos27RawQueryResult_ColumnValuesEEEvPv"].apply(null, arguments) };
 var __ZN6google8protobuf8internal22DeleteLogSilencerCountEv = Module["__ZN6google8protobuf8internal22DeleteLogSilencerCountEv"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZN6google8protobuf8internal22DeleteLogSilencerCountEv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEE3RunEv = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEE3RunEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEE3RunEv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED0Ev = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED2Ev = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos12RawQueryArgsEED2Ev"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEE3RunEv = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEE3RunEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEE3RunEv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED0Ev = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED2Ev = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos14RawQueryResultEED2Ev"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEE3RunEv = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEE3RunEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEE3RunEv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED0Ev = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED2Ev = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos25RawQueryResult_ColumnDescEED2Ev"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEE3RunEv = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEE3RunEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEE3RunEv"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED0Ev = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED0Ev"].apply(null, arguments) };
+var __ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED2Ev = Module["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN6google8protobuf8internal26FunctionResultCallback_1_0IPNSt3__212basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPN8perfetto6protos27RawQueryResult_ColumnValuesEED2Ev"].apply(null, arguments) };
 var __ZN8perfetto15trace_processor10BlobReaderD0Ev = Module["__ZN8perfetto15trace_processor10BlobReaderD0Ev"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -7412,6 +8273,110 @@ var __ZN8perfetto4base10TaskRunnerD2Ev = Module["__ZN8perfetto4base10TaskRunnerD
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZN8perfetto4base10TaskRunnerD2Ev"].apply(null, arguments) };
+var __ZN8perfetto6protos12RawQueryArgs21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE = Module["__ZN8perfetto6protos12RawQueryArgs21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos12RawQueryArgs21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"].apply(null, arguments) };
+var __ZN8perfetto6protos12RawQueryArgs27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE = Module["__ZN8perfetto6protos12RawQueryArgs27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos12RawQueryArgs27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"].apply(null, arguments) };
+var __ZN8perfetto6protos12RawQueryArgs5ClearEv = Module["__ZN8perfetto6protos12RawQueryArgs5ClearEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos12RawQueryArgs5ClearEv"].apply(null, arguments) };
+var __ZN8perfetto6protos12RawQueryArgsD0Ev = Module["__ZN8perfetto6protos12RawQueryArgsD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos12RawQueryArgsD0Ev"].apply(null, arguments) };
+var __ZN8perfetto6protos12RawQueryArgsD2Ev = Module["__ZN8perfetto6protos12RawQueryArgsD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos12RawQueryArgsD2Ev"].apply(null, arguments) };
+var __ZN8perfetto6protos14RawQueryResult21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE = Module["__ZN8perfetto6protos14RawQueryResult21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos14RawQueryResult21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"].apply(null, arguments) };
+var __ZN8perfetto6protos14RawQueryResult27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE = Module["__ZN8perfetto6protos14RawQueryResult27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos14RawQueryResult27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"].apply(null, arguments) };
+var __ZN8perfetto6protos14RawQueryResult5ClearEv = Module["__ZN8perfetto6protos14RawQueryResult5ClearEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos14RawQueryResult5ClearEv"].apply(null, arguments) };
+var __ZN8perfetto6protos14RawQueryResultD0Ev = Module["__ZN8perfetto6protos14RawQueryResultD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos14RawQueryResultD0Ev"].apply(null, arguments) };
+var __ZN8perfetto6protos14RawQueryResultD2Ev = Module["__ZN8perfetto6protos14RawQueryResultD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos14RawQueryResultD2Ev"].apply(null, arguments) };
+var __ZN8perfetto6protos25RawQueryResult_ColumnDesc21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE = Module["__ZN8perfetto6protos25RawQueryResult_ColumnDesc21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos25RawQueryResult_ColumnDesc21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"].apply(null, arguments) };
+var __ZN8perfetto6protos25RawQueryResult_ColumnDesc27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE = Module["__ZN8perfetto6protos25RawQueryResult_ColumnDesc27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos25RawQueryResult_ColumnDesc27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"].apply(null, arguments) };
+var __ZN8perfetto6protos25RawQueryResult_ColumnDesc5ClearEv = Module["__ZN8perfetto6protos25RawQueryResult_ColumnDesc5ClearEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos25RawQueryResult_ColumnDesc5ClearEv"].apply(null, arguments) };
+var __ZN8perfetto6protos25RawQueryResult_ColumnDescD0Ev = Module["__ZN8perfetto6protos25RawQueryResult_ColumnDescD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos25RawQueryResult_ColumnDescD0Ev"].apply(null, arguments) };
+var __ZN8perfetto6protos25RawQueryResult_ColumnDescD2Ev = Module["__ZN8perfetto6protos25RawQueryResult_ColumnDescD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos25RawQueryResult_ColumnDescD2Ev"].apply(null, arguments) };
+var __ZN8perfetto6protos27RawQueryResult_ColumnValues21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE = Module["__ZN8perfetto6protos27RawQueryResult_ColumnValues21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos27RawQueryResult_ColumnValues21CheckTypeAndMergeFromERKN6google8protobuf11MessageLiteE"].apply(null, arguments) };
+var __ZN8perfetto6protos27RawQueryResult_ColumnValues27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE = Module["__ZN8perfetto6protos27RawQueryResult_ColumnValues27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos27RawQueryResult_ColumnValues27MergePartialFromCodedStreamEPN6google8protobuf2io16CodedInputStreamE"].apply(null, arguments) };
+var __ZN8perfetto6protos27RawQueryResult_ColumnValues5ClearEv = Module["__ZN8perfetto6protos27RawQueryResult_ColumnValues5ClearEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos27RawQueryResult_ColumnValues5ClearEv"].apply(null, arguments) };
+var __ZN8perfetto6protos27RawQueryResult_ColumnValuesD0Ev = Module["__ZN8perfetto6protos27RawQueryResult_ColumnValuesD0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos27RawQueryResult_ColumnValuesD0Ev"].apply(null, arguments) };
+var __ZN8perfetto6protos27RawQueryResult_ColumnValuesD2Ev = Module["__ZN8perfetto6protos27RawQueryResult_ColumnValuesD2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos27RawQueryResult_ColumnValuesD2Ev"].apply(null, arguments) };
+var __ZN8perfetto6protos72protobuf_AddDesc_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eproto_implEv = Module["__ZN8perfetto6protos72protobuf_AddDesc_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eproto_implEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos72protobuf_AddDesc_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eproto_implEv"].apply(null, arguments) };
+var __ZN8perfetto6protos72protobuf_ShutdownFile_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eprotoEv = Module["__ZN8perfetto6protos72protobuf_ShutdownFile_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eprotoEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protos72protobuf_ShutdownFile_perfetto_2ftrace_5fprocessor_2fraw_5fquery_2eprotoEv"].apply(null, arguments) };
+var __ZN8perfetto6protosL35MutableUnknownFieldsForRawQueryArgsEPNS0_12RawQueryArgsE = Module["__ZN8perfetto6protosL35MutableUnknownFieldsForRawQueryArgsEPNS0_12RawQueryArgsE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protosL35MutableUnknownFieldsForRawQueryArgsEPNS0_12RawQueryArgsE"].apply(null, arguments) };
+var __ZN8perfetto6protosL37MutableUnknownFieldsForRawQueryResultEPNS0_14RawQueryResultE = Module["__ZN8perfetto6protosL37MutableUnknownFieldsForRawQueryResultEPNS0_14RawQueryResultE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protosL37MutableUnknownFieldsForRawQueryResultEPNS0_14RawQueryResultE"].apply(null, arguments) };
+var __ZN8perfetto6protosL48MutableUnknownFieldsForRawQueryResult_ColumnDescEPNS0_25RawQueryResult_ColumnDescE = Module["__ZN8perfetto6protosL48MutableUnknownFieldsForRawQueryResult_ColumnDescEPNS0_25RawQueryResult_ColumnDescE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protosL48MutableUnknownFieldsForRawQueryResult_ColumnDescEPNS0_25RawQueryResult_ColumnDescE"].apply(null, arguments) };
+var __ZN8perfetto6protosL50MutableUnknownFieldsForRawQueryResult_ColumnValuesEPNS0_27RawQueryResult_ColumnValuesE = Module["__ZN8perfetto6protosL50MutableUnknownFieldsForRawQueryResult_ColumnValuesEPNS0_27RawQueryResult_ColumnValuesE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZN8perfetto6protosL50MutableUnknownFieldsForRawQueryResult_ColumnValuesEPNS0_27RawQueryResult_ColumnValuesE"].apply(null, arguments) };
 var __ZNK10__cxxabiv116__shim_type_info5noop1Ev = Module["__ZNK10__cxxabiv116__shim_type_info5noop1Ev"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -7460,6 +8425,154 @@ var __ZNK10__cxxabiv121__vmi_class_type_info27has_unambiguous_public_baseEPNS_19
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZNK10__cxxabiv121__vmi_class_type_info27has_unambiguous_public_baseEPNS_19__dynamic_cast_infoEPvi"].apply(null, arguments) };
+var __ZNK6google8protobuf11MessageLite20GetMaybeArenaPointerEv = Module["__ZNK6google8protobuf11MessageLite20GetMaybeArenaPointerEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK6google8protobuf11MessageLite20GetMaybeArenaPointerEv"].apply(null, arguments) };
+var __ZNK6google8protobuf11MessageLite25InitializationErrorStringEv = Module["__ZNK6google8protobuf11MessageLite25InitializationErrorStringEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK6google8protobuf11MessageLite25InitializationErrorStringEv"].apply(null, arguments) };
+var __ZNK6google8protobuf11MessageLite31SerializeWithCachedSizesToArrayEPh = Module["__ZNK6google8protobuf11MessageLite31SerializeWithCachedSizesToArrayEPh"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK6google8protobuf11MessageLite31SerializeWithCachedSizesToArrayEPh"].apply(null, arguments) };
+var __ZNK6google8protobuf11MessageLite3NewEPNS0_5ArenaE = Module["__ZNK6google8protobuf11MessageLite3NewEPNS0_5ArenaE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK6google8protobuf11MessageLite3NewEPNS0_5ArenaE"].apply(null, arguments) };
+var __ZNK6google8protobuf11MessageLite8GetArenaEv = Module["__ZNK6google8protobuf11MessageLite8GetArenaEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK6google8protobuf11MessageLite8GetArenaEv"].apply(null, arguments) };
+var __ZNK6google8protobuf2io17ArrayOutputStream9ByteCountEv = Module["__ZNK6google8protobuf2io17ArrayOutputStream9ByteCountEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK6google8protobuf2io17ArrayOutputStream9ByteCountEv"].apply(null, arguments) };
+var __ZNK6google8protobuf2io18StringOutputStream9ByteCountEv = Module["__ZNK6google8protobuf2io18StringOutputStream9ByteCountEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK6google8protobuf2io18StringOutputStream9ByteCountEv"].apply(null, arguments) };
+var __ZNK6google8protobuf2io20ZeroCopyOutputStream14AllowsAliasingEv = Module["__ZNK6google8protobuf2io20ZeroCopyOutputStream14AllowsAliasingEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK6google8protobuf2io20ZeroCopyOutputStream14AllowsAliasingEv"].apply(null, arguments) };
+var __ZNK6google8protobuf2io22LazyStringOutputStream9ByteCountEv = Module["__ZNK6google8protobuf2io22LazyStringOutputStream9ByteCountEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK6google8protobuf2io22LazyStringOutputStream9ByteCountEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos12RawQueryArgs11GetTypeNameEv = Module["__ZNK8perfetto6protos12RawQueryArgs11GetTypeNameEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos12RawQueryArgs11GetTypeNameEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos12RawQueryArgs13GetCachedSizeEv = Module["__ZNK8perfetto6protos12RawQueryArgs13GetCachedSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos12RawQueryArgs13GetCachedSizeEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos12RawQueryArgs13IsInitializedEv = Module["__ZNK8perfetto6protos12RawQueryArgs13IsInitializedEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos12RawQueryArgs13IsInitializedEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos12RawQueryArgs24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE = Module["__ZNK8perfetto6protos12RawQueryArgs24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos12RawQueryArgs24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"].apply(null, arguments) };
+var __ZNK8perfetto6protos12RawQueryArgs3NewEPN6google8protobuf5ArenaE = Module["__ZNK8perfetto6protos12RawQueryArgs3NewEPN6google8protobuf5ArenaE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos12RawQueryArgs3NewEPN6google8protobuf5ArenaE"].apply(null, arguments) };
+var __ZNK8perfetto6protos12RawQueryArgs3NewEv = Module["__ZNK8perfetto6protos12RawQueryArgs3NewEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos12RawQueryArgs3NewEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos12RawQueryArgs8ByteSizeEv = Module["__ZNK8perfetto6protos12RawQueryArgs8ByteSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos12RawQueryArgs8ByteSizeEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos14RawQueryResult11GetTypeNameEv = Module["__ZNK8perfetto6protos14RawQueryResult11GetTypeNameEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos14RawQueryResult11GetTypeNameEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos14RawQueryResult13GetCachedSizeEv = Module["__ZNK8perfetto6protos14RawQueryResult13GetCachedSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos14RawQueryResult13GetCachedSizeEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos14RawQueryResult13IsInitializedEv = Module["__ZNK8perfetto6protos14RawQueryResult13IsInitializedEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos14RawQueryResult13IsInitializedEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos14RawQueryResult24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE = Module["__ZNK8perfetto6protos14RawQueryResult24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos14RawQueryResult24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"].apply(null, arguments) };
+var __ZNK8perfetto6protos14RawQueryResult3NewEPN6google8protobuf5ArenaE = Module["__ZNK8perfetto6protos14RawQueryResult3NewEPN6google8protobuf5ArenaE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos14RawQueryResult3NewEPN6google8protobuf5ArenaE"].apply(null, arguments) };
+var __ZNK8perfetto6protos14RawQueryResult3NewEv = Module["__ZNK8perfetto6protos14RawQueryResult3NewEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos14RawQueryResult3NewEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos14RawQueryResult8ByteSizeEv = Module["__ZNK8perfetto6protos14RawQueryResult8ByteSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos14RawQueryResult8ByteSizeEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos25RawQueryResult_ColumnDesc11GetTypeNameEv = Module["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc11GetTypeNameEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc11GetTypeNameEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos25RawQueryResult_ColumnDesc13GetCachedSizeEv = Module["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc13GetCachedSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc13GetCachedSizeEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos25RawQueryResult_ColumnDesc13IsInitializedEv = Module["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc13IsInitializedEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc13IsInitializedEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos25RawQueryResult_ColumnDesc24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE = Module["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"].apply(null, arguments) };
+var __ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEPN6google8protobuf5ArenaE = Module["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEPN6google8protobuf5ArenaE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEPN6google8protobuf5ArenaE"].apply(null, arguments) };
+var __ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEv = Module["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc3NewEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos25RawQueryResult_ColumnDesc8ByteSizeEv = Module["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc8ByteSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos25RawQueryResult_ColumnDesc8ByteSizeEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos27RawQueryResult_ColumnValues11GetTypeNameEv = Module["__ZNK8perfetto6protos27RawQueryResult_ColumnValues11GetTypeNameEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos27RawQueryResult_ColumnValues11GetTypeNameEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos27RawQueryResult_ColumnValues13GetCachedSizeEv = Module["__ZNK8perfetto6protos27RawQueryResult_ColumnValues13GetCachedSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos27RawQueryResult_ColumnValues13GetCachedSizeEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos27RawQueryResult_ColumnValues13IsInitializedEv = Module["__ZNK8perfetto6protos27RawQueryResult_ColumnValues13IsInitializedEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos27RawQueryResult_ColumnValues13IsInitializedEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos27RawQueryResult_ColumnValues24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE = Module["__ZNK8perfetto6protos27RawQueryResult_ColumnValues24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos27RawQueryResult_ColumnValues24SerializeWithCachedSizesEPN6google8protobuf2io17CodedOutputStreamE"].apply(null, arguments) };
+var __ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEPN6google8protobuf5ArenaE = Module["__ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEPN6google8protobuf5ArenaE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEPN6google8protobuf5ArenaE"].apply(null, arguments) };
+var __ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEv = Module["__ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos27RawQueryResult_ColumnValues3NewEv"].apply(null, arguments) };
+var __ZNK8perfetto6protos27RawQueryResult_ColumnValues8ByteSizeEv = Module["__ZNK8perfetto6protos27RawQueryResult_ColumnValues8ByteSizeEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNK8perfetto6protos27RawQueryResult_ColumnValues8ByteSizeEv"].apply(null, arguments) };
 var __ZNKSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEE7__cloneEPNS0_6__baseIS5_EE = Module["__ZNKSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEE7__cloneEPNS0_6__baseIS5_EE"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -7468,6 +8581,14 @@ var __ZNKSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEE7__
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZNKSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEE7__cloneEv"].apply(null, arguments) };
+var __ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEPNS0_6__baseIS8_EE = Module["__ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEPNS0_6__baseIS8_EE"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEPNS0_6__baseIS8_EE"].apply(null, arguments) };
+var __ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEv = Module["__ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNKSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7__cloneEv"].apply(null, arguments) };
 var __ZNKSt3__210__function6__funcIZN8perfetto15trace_processor13TraceDatabase14LoadTraceChunkENS_8functionIFvvEEEE3__0NS_9allocatorIS8_EES6_E7__cloneEPNS0_6__baseIS6_EE = Module["__ZNKSt3__210__function6__funcIZN8perfetto15trace_processor13TraceDatabase14LoadTraceChunkENS_8functionIFvvEEEE3__0NS_9allocatorIS8_EES6_E7__cloneEPNS0_6__baseIS6_EE"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -7480,6 +8601,14 @@ var __ZNKSt3__219__shared_weak_count13__get_deleterERKSt9type_info = Module["__Z
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZNKSt3__219__shared_weak_count13__get_deleterERKSt9type_info"].apply(null, arguments) };
+var __ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED0Ev = Module["__ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED0Ev"].apply(null, arguments) };
+var __ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED2Ev = Module["__ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNSt3__210__function6__baseIFvN8perfetto6protos14RawQueryResultEEED2Ev"].apply(null, arguments) };
 var __ZNSt3__210__function6__baseIFvvEED0Ev = Module["__ZNSt3__210__function6__baseIFvvEED0Ev"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -7508,6 +8637,26 @@ var __ZNSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEEclEv
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["__ZNSt3__210__function6__funcIZ10InitializeE3__0NS_9allocatorIS2_EEFvvEEclEv"].apply(null, arguments) };
+var __ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE18destroy_deallocateEv = Module["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE18destroy_deallocateEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE18destroy_deallocateEv"].apply(null, arguments) };
+var __ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7destroyEv = Module["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7destroyEv"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEE7destroyEv"].apply(null, arguments) };
+var __ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED0Ev = Module["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED0Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED0Ev"].apply(null, arguments) };
+var __ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED2Ev = Module["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED2Ev"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEED2Ev"].apply(null, arguments) };
+var __ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEEclEOS7_ = Module["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEEclEOS7_"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["__ZNSt3__210__function6__funcIZ12ExecuteQueryE3__1NS_9allocatorIS2_EEFvN8perfetto6protos14RawQueryResultEEEclEOS7_"].apply(null, arguments) };
 var __ZNSt3__210__function6__funcIZN8perfetto15trace_processor13TraceDatabase14LoadTraceChunkENS_8functionIFvvEEEE3__0NS_9allocatorIS8_EES6_E18destroy_deallocateEv = Module["__ZNSt3__210__function6__funcIZN8perfetto15trace_processor13TraceDatabase14LoadTraceChunkENS_8functionIFvvEEEE3__0NS_9allocatorIS8_EES6_E18destroy_deallocateEv"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -9516,6 +10665,10 @@ var dynCall_vij = Module["dynCall_vij"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["dynCall_vij"].apply(null, arguments) };
+var dynCall_viji = Module["dynCall_viji"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["dynCall_viji"].apply(null, arguments) };
 ;
 
 
