@@ -2,6 +2,8 @@
 <html lang="en-us">
 <head>
   <title>Perfetto test</title>
+  <link rel="shortcut icon" type="image/png" href="logo.png"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300" rel="stylesheet">
   <style type="text/css">
     html {
       font-family: Roboto, verdana, sans-serif;
@@ -50,6 +52,7 @@
       align-content: center;
       flex-direction: column; 
       border-top: solid 1px #404853;
+      cursor: pointer;
     }
 
     #side > ul.items > li:last-child {
@@ -77,6 +80,7 @@
 
     #trace-ui-container {
       grid-area: content;
+      background-color: #f3f8fe;
     }
 
     #masthead {
@@ -158,6 +162,24 @@
    input {
      margin-right: 0.5rem;
    }
+
+   .trace-item {
+      color: #babdc1;
+      margin: 0;
+      padding: 0 1rem;
+      display: flex;
+      height: 2rem;
+      justify-content: center;
+      align-content: center;
+      flex-direction: column; 
+      border-top: solid 1px #404853;
+      cursor: pointer;
+   }
+
+    .trace-items button {
+      margin: 0 1rem;
+      display: block;
+    }
 
 .checkbox {
   position: relative;

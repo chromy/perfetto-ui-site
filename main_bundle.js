@@ -243,6 +243,20 @@ var perfetto = (function () {
 	        traces: [],
 	        backends: {},
 	        config_commandline: "echo 'Create a config above'",
+	        tracks: {},
+	        trackTrees: {},
+	        tracksData: {},
+	        traceCpuData: [],
+	        rootTrackTree: null,
+	        gps: {
+	            startVisibleWindow: 0,
+	            endVisibleWindow: 0,
+	        },
+	        maxVisibleWindow: {
+	            start: 0,
+	            end: 0,
+	        },
+	        selection: null,
 	    };
 	}
 	exports.createZeroState = createZeroState;
@@ -3316,7 +3330,7 @@ var perfetto = (function () {
 	        const v = attrInfo[a] === true ? '' : attrInfo[a];
 	        if (v || v === '' || v === 0) {
 	            if (element.getAttribute(a) !== v) {
-	                element.setAttribute(a, v);
+	                element.setAttribute(a, String(v));
 	            }
 	        }
 	        else if (element.hasAttribute(a)) {
@@ -3373,6 +3387,12 @@ var perfetto = (function () {
 	        super.ready();
 	        this._firstRendered();
 	    }
+	    connectedCallback() {
+	        if (window.ShadyCSS && this._root) {
+	            window.ShadyCSS.styleElement(this);
+	        }
+	        super.connectedCallback();
+	    }
 	    /**
 	     * Called after the element DOM is rendered for the first time.
 	     * Implement to perform tasks after first rendering like capturing a
@@ -3395,7 +3415,7 @@ var perfetto = (function () {
 	     * Override which returns the value of `_shouldRender` which users
 	     * should implement to control rendering. If this method returns false,
 	     * _propertiesChanged will not be called and no rendering will occur even
-	     * if property values change or `_requestRender` is called.
+	     * if property values change or `requestRender` is called.
 	     * @param _props Current element properties
 	     * @param _changedProps Changing element properties
 	     * @param _prevProps Previous element properties
@@ -3410,7 +3430,7 @@ var perfetto = (function () {
 	    }
 	    /**
 	     * Implement to control if rendering should occur when property values
-	     * change or `_requestRender` is called. By default, this method always
+	     * change or `requestRender` is called. By default, this method always
 	     * returns true, but this can be customized as an optimization to avoid
 	     * rendering work when changes occur which should not be rendered.
 	     * @param _props Current element properties
@@ -3452,6 +3472,7 @@ var perfetto = (function () {
 	     * @param value {any}
 	     * @param old {any}
 	     */
+	    // tslint:disable-next-line no-any
 	    _shouldPropertyChange(property, value, old) {
 	        const change = super._shouldPropertyChange(property, value, old);
 	        if (change && this.__isChanging) {
@@ -3464,10 +3485,10 @@ var perfetto = (function () {
 	    /**
 	     * Implement to describe the DOM which should be rendered in the element.
 	     * Ideally, the implementation is a pure function using only props to describe
-	     * the element template. The implementation must a `lit-html` TemplateResult.
-	     * By default this template is rendered into the element's shadowRoot.
-	     * This can be customized by implementing `_createRoot`. This method must be
-	     * implemented.
+	     * the element template. The implementation must return a `lit-html`
+	     * TemplateResult. By default this template is rendered into the element's
+	     * shadowRoot. This can be customized by implementing `_createRoot`. This
+	     * method must be implemented.
 	     * @param {*} _props Current element properties
 	     * @returns {TemplateResult} Must return a lit-html TemplateResult.
 	     */
@@ -3499,7 +3520,7 @@ var perfetto = (function () {
 	     * Call to request the element to asynchronously re-render regardless
 	     * of whether or not any property changes are pending.
 	     */
-	    _requestRender() { this._invalidateProperties(); }
+	    requestRender() { this._invalidateProperties(); }
 	    /**
 	     * Override which provides tracking of invalidated state.
 	     */
@@ -3521,11 +3542,10 @@ var perfetto = (function () {
 	    get renderComplete() {
 	        if (!this.__renderComplete) {
 	            this.__renderComplete = new Promise((resolve) => {
-	                this.__resolveRenderComplete =
-	                    (value) => {
-	                        this.__resolveRenderComplete = this.__renderComplete = null;
-	                        resolve(value);
-	                    };
+	                this.__resolveRenderComplete = (value) => {
+	                    this.__resolveRenderComplete = this.__renderComplete = null;
+	                    resolve(value);
+	                };
 	            });
 	            if (!this.__isInvalid && this.__resolveRenderComplete) {
 	                Promise.resolve().then(() => this.__resolveRenderComplete(false));
@@ -3540,7 +3560,8 @@ var perfetto = (function () {
 		classString: classString,
 		styleString: styleString,
 		LitElement: LitElement,
-		html: html$1
+		html: html$1,
+		svg: svg$1
 	});
 
 	var trackCanvasController = createCommonjsModule(function (module, exports) {
@@ -3548,17 +3569,18 @@ var perfetto = (function () {
 
 
 	class CanvasController extends litElement.LitElement {
-	    constructor(width, height, winHeight, reRender) {
+	    constructor(width, heightWindowFactor, winHeight, reRender) {
 	        super();
 	        this.width = width;
-	        this.height = height;
+	        this.heightWindowFactor = heightWindowFactor;
 	        this.winHeight = winHeight;
 	        this.reRender = reRender;
 	        this.top = 0;
 	        this.maxHeight = 100000;
+	        this.height = winHeight * this.heightWindowFactor;
 	        this.canvas = document.createElement('canvas');
-	        this.canvas.setAttribute('height', this.height.toString());
 	        this.canvas.setAttribute('width', this.width.toString());
+	        this.canvas.setAttribute('height', this.height.toString());
 	        console.log('Canvas created.');
 	        //TODO: getContext can return null. Need better solution.
 	        this.ctx = this.canvas.getContext('2d');
@@ -3586,8 +3608,18 @@ var perfetto = (function () {
 	    onResize() {
 	        //TODO
 	    }
+	    setWinDimensions(winWidth, winHeight) {
+	        this.width = winWidth;
+	        this.winHeight = winHeight;
+	        this.height = winHeight * this.heightWindowFactor;
+	        this.canvas.setAttribute('width', this.width.toString());
+	        this.canvas.setAttribute('height', this.height.toString());
+	        this.tCtx.setDimensions(this.width, this.height);
+	        this._invalidateProperties();
+	    }
 	    setMaxHeight(maxHeight) {
 	        this.maxHeight = maxHeight;
+	        this._invalidateProperties();
 	    }
 	    _render() {
 	        return litHtml.html `
@@ -3633,11 +3665,38 @@ var perfetto = (function () {
 	    setYOffset(offset) {
 	        this.yOffset = offset;
 	    }
+	    moveTo(x, y) {
+	        this.ctx.moveTo(x + this.xOffset, y + this.yOffset);
+	    }
+	    lineTo(x, y) {
+	        this.ctx.lineTo(x + this.xOffset, y + this.yOffset);
+	    }
+	    stroke() {
+	        this.ctx.stroke();
+	    }
+	    beginPath() {
+	        this.ctx.beginPath();
+	    }
+	    closePath() {
+	        this.ctx.closePath();
+	    }
+	    measureText(text) {
+	        return this.ctx.measureText(text);
+	    }
+	    fillText(text, x, y) {
+	        this.ctx.fillText(text, x + this.xOffset, y + this.yOffset);
+	    }
 	    set strokeStyle(v) {
 	        this.ctx.strokeStyle = v;
 	    }
 	    set fillStyle(v) {
 	        this.ctx.fillStyle = v;
+	    }
+	    set lineWidth(width) {
+	        this.ctx.lineWidth = width;
+	    }
+	    set font(fontString) {
+	        this.ctx.font = fontString;
 	    }
 	}
 	exports.TrackCanvasContext = TrackCanvasContext;
@@ -3652,7 +3711,7 @@ var perfetto = (function () {
 	var trackCanvasController_2 = trackCanvasController.TrackCanvasContext;
 	var trackCanvasController_3 = trackCanvasController.OutOfBoundsDrawingError;
 
-	var version = "5.4.0";
+	var version = "5.5.0";
 
 	function ascending(a, b) {
 	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -8860,12 +8919,12 @@ var perfetto = (function () {
 	  map.set(key, value);
 	}
 
-	function Set() {}
+	function Set$1() {}
 
 	var proto = map$1.prototype;
 
-	Set.prototype = set$2.prototype = {
-	  constructor: Set,
+	Set$1.prototype = set$2.prototype = {
+	  constructor: Set$1,
 	  has: proto.has,
 	  add: function(value) {
 	    value += "";
@@ -8881,10 +8940,10 @@ var perfetto = (function () {
 	};
 
 	function set$2(object, f) {
-	  var set = new Set;
+	  var set = new Set$1;
 
 	  // Copy constructor.
-	  if (object instanceof Set) object.each(function(value) { set.add(value); });
+	  if (object instanceof Set$1) object.each(function(value) { set.add(value); });
 
 	  // Otherwise, assume it’s an array.
 	  else if (object) {
@@ -17207,15 +17266,16 @@ var perfetto = (function () {
 	function sequential(interpolator) {
 	  var x0 = 0,
 	      x1 = 1,
+	      k10 = 1,
 	      clamp = false;
 
 	  function scale(x) {
-	    var t = (x - x0) / (x1 - x0);
+	    var t = (x - x0) * k10;
 	    return interpolator(clamp ? Math.max(0, Math.min(1, t)) : t);
 	  }
 
 	  scale.domain = function(_) {
-	    return arguments.length ? (x0 = +_[0], x1 = +_[1], scale) : [x0, x1];
+	    return arguments.length ? (x0 = +_[0], x1 = +_[1], k10 = x0 === x1 ? 0 : 1 / (x1 - x0), scale) : [x0, x1];
 	  };
 
 	  scale.clamp = function(_) {
@@ -17228,6 +17288,38 @@ var perfetto = (function () {
 
 	  scale.copy = function() {
 	    return sequential(interpolator).domain([x0, x1]).clamp(clamp);
+	  };
+
+	  return linearish(scale);
+	}
+
+	function diverging(interpolator) {
+	  var x0 = 0,
+	      x1 = 0.5,
+	      x2 = 1,
+	      k10 = 1,
+	      k21 = 1,
+	      clamp = false;
+
+	  function scale(x) {
+	    var t = 0.5 + ((x = +x) - x1) * (x < x1 ? k10 : k21);
+	    return interpolator(clamp ? Math.max(0, Math.min(1, t)) : t);
+	  }
+
+	  scale.domain = function(_) {
+	    return arguments.length ? (x0 = +_[0], x1 = +_[1], x2 = +_[2], k10 = x0 === x1 ? 0 : 0.5 / (x1 - x0), k21 = x1 === x2 ? 0 : 0.5 / (x2 - x1), scale) : [x0, x1, x2];
+	  };
+
+	  scale.clamp = function(_) {
+	    return arguments.length ? (clamp = !!_, scale) : clamp;
+	  };
+
+	  scale.interpolator = function(_) {
+	    return arguments.length ? (interpolator = _, scale) : interpolator;
+	  };
+
+	  scale.copy = function() {
+	    return diverging(interpolator).domain([x0, x1, x2]).clamp(clamp);
 	  };
 
 	  return linearish(scale);
@@ -19431,7 +19523,7 @@ var perfetto = (function () {
 	  none$1(series, order);
 	}
 
-	function diverging(series, order) {
+	function diverging$1(series, order) {
 	  if (!((n = series.length) > 1)) return;
 	  for (var i, j = 0, d, dy, yp, yn, n, m = series[order[0]].length; j < m; ++j) {
 	    for (yp = yn = 0, i = 0; i < n; ++i) {
@@ -21249,6 +21341,7 @@ var perfetto = (function () {
 		scaleTime: time,
 		scaleUtc: utcTime,
 		scaleSequential: sequential,
+		scaleDiverging: diverging,
 		schemeCategory10: category10,
 		schemeAccent: Accent,
 		schemeDark2: Dark2,
@@ -21381,7 +21474,7 @@ var perfetto = (function () {
 		curveStepBefore: stepBefore,
 		stack: stack,
 		stackOffsetExpand: expand,
-		stackOffsetDiverging: diverging,
+		stackOffsetDiverging: diverging$1,
 		stackOffsetNone: none$1,
 		stackOffsetSilhouette: silhouette,
 		stackOffsetWiggle: wiggle,
@@ -21479,21 +21572,28 @@ var perfetto = (function () {
 
 
 	class CpuTimeline extends litElement.LitElement {
-	    constructor(state, x) {
+	    constructor(state, scale) {
 	        super();
 	        this.state = state;
-	        this.x = x;
+	        this.scale = scale;
 	        this.height = 100;
 	        this.cpuData = [];
-	        console.log(this.state);
 	        this.y = (cpu) => { return this.height - cpu * this.height; };
 	        this.setRandomCpuData();
-	        setInterval(() => this.setRandomCpuData(), 2000);
+	        //setInterval(() => this.setRandomCpuData(), 2000);
 	        this.path = document.createElementNS('http://www.w3.org/2000/svg', "path");
-	        this.path.setAttribute('stroke', '#d70');
+	        this.path.setAttribute('stroke', '#000');
 	        this.path.setAttribute('fill', 'none');
 	    }
 	    static get properties() { return { height: Number, cpuData: [String] }; }
+	    setState(state) {
+	        this.state = state;
+	        if (this.state.traceCpuData.length > 0) {
+	            this.cpuData = this.state.traceCpuData;
+	            const maxCpu = Math.max(...this.cpuData.map(d => d.cpu));
+	            this.y = (cpu) => (this.height - (cpu / maxCpu) * this.height);
+	        }
+	    }
 	    setRandomCpuData() {
 	        const start = 0;
 	        const end = 10000;
@@ -21505,14 +21605,14 @@ var perfetto = (function () {
 	    getPathD() {
 	        let d = 'M';
 	        for (const dataPoint of this.cpuData) {
-	            d += this.x(dataPoint.time) + ' ' + this.y(dataPoint.cpu) + ' L';
+	            d += this.scale.tsToPx(dataPoint.time) + ' ' + this.y(dataPoint.cpu) + ' L';
 	        }
 	        d = d.substr(0, d.length - 1);
 	        return d;
 	    }
 	    _render() {
 	        const d = this.getPathD();
-	        d3.select(this.path).transition().attr('d', d);
+	        d3.select(this.path).attr('d', d);
 	        const svgContent = litHtml.svg `${this.path}`;
 	        const g = document.createElementNS('http://www.w3.org/2000/svg', "g");
 	        litHtml.render(svgContent, g);
@@ -21534,7 +21634,6 @@ var perfetto = (function () {
     <div class="wrap">
       <svg>
         ${g}
-        <text y="20" x="20">Cpu Timeline</text>
       </svg>
     </div>`;
 	    }
@@ -21547,8 +21646,96 @@ var perfetto = (function () {
 	unwrapExports(cpuTimeline);
 	var cpuTimeline_1 = cpuTimeline.CpuTimeline;
 
+	var timeScale = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	class TimeScale {
+	    constructor(tStart, tEnd, pxStart, pxEnd, pxOffset = 0) {
+	        this.tStart = tStart;
+	        this.tEnd = tEnd;
+	        this.pxStart = pxStart;
+	        this.pxEnd = pxEnd;
+	        this.pxOffset = pxOffset;
+	    }
+	    tsToPx(time) {
+	        /*if(time < this.tStart) return this.pxStart;
+	        if(time > this.tEnd) return this.pxEnd;*/
+	        const percentage = (time - this.tStart) / (this.tEnd - this.tStart);
+	        const percentagePx = percentage * (this.pxEnd - this.pxStart);
+	        return this.pxStart + percentagePx - this.pxOffset;
+	    }
+	    pxToTs(px) {
+	        const percentage = (px - this.pxStart) / (this.pxEnd - this.pxStart);
+	        return this.tStart + percentage * (this.tEnd - this.tStart);
+	    }
+	    relativePxToTs(px) {
+	        return this.pxToTs(px) - this.pxToTs(0);
+	    }
+	    setTimeLimits(tStart, tEnd) {
+	        this.tStart = tStart;
+	        this.tEnd = tEnd;
+	    }
+	    setPxLimits(pxStart, pxEnd) {
+	        this.pxStart = pxStart;
+	        this.pxEnd = pxEnd;
+	    }
+	    getTimeLimits() {
+	        return {
+	            start: this.tStart,
+	            end: this.tEnd
+	        };
+	    }
+	}
+	exports.TimeScale = TimeScale;
+	class OffsetTimeScale {
+	    constructor(scale, pxOffset, width) {
+	        this.scale = scale;
+	        this.pxOffset = pxOffset;
+	        this.width = width;
+	    }
+	    tsToPx(time) {
+	        const result = this.scale.tsToPx(time) - this.pxOffset;
+	        if (result < 0)
+	            return 0;
+	        if (result > this.width)
+	            return this.width;
+	        return result;
+	    }
+	    pxToTs(px) {
+	        return this.scale.pxToTs(px + this.pxOffset);
+	    }
+	    relativePxToTs(px) {
+	        return this.scale.pxToTs(px + this.pxOffset) - this.scale.pxToTs(0);
+	    }
+	    getTimeLimits() {
+	        return this.scale.getTimeLimits();
+	    }
+	    setWidth(width) {
+	        this.width = width;
+	    }
+	}
+	exports.OffsetTimeScale = OffsetTimeScale;
+	// We are using enums because TypeScript does proper type checking for those,
+	// and disallows assigning a pixel value to a milliseconds value, even though
+	// there are numbers. Using types, this safeguard would not be here.
+	// See: https://stackoverflow.com/a/43832165
+	var Pixels;
+	(function (Pixels) {
+	})(Pixels = exports.Pixels || (exports.Pixels = {}));
+	var Nanoseconds;
+	(function (Nanoseconds) {
+	})(Nanoseconds = exports.Nanoseconds || (exports.Nanoseconds = {}));
+
+	});
+
+	unwrapExports(timeScale);
+	var timeScale_1 = timeScale.TimeScale;
+	var timeScale_2 = timeScale.OffsetTimeScale;
+	var timeScale_3 = timeScale.Pixels;
+	var timeScale_4 = timeScale.Nanoseconds;
+
 	var globalBrushTimeline = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
+
 
 
 
@@ -21558,79 +21745,114 @@ var perfetto = (function () {
 	        super();
 	        this.state = state;
 	        this.width = width;
-	        this.start = 0;
-	        this.end = 10000;
+	        this.onBrushed = onBrushed;
 	        this.height = 150;
-	        this.manualBrushSet = 0;
-	        console.log(this.state);
+	        this.brushHandleDragState = null;
 	        this.margin = {
-	            top: 10,
+	            top: 20,
 	            right: 20,
-	            bottom: 20,
+	            bottom: 10,
 	            left: 20
 	        };
-	        this.x = d3.scaleTime().range([this.margin.left, this.width - this.margin.right]);
-	        this.x.domain([this.start, this.end]);
-	        this.xAxis = d3.axisBottom(this.x);
+	        this.x = d3.scaleLinear().range([this.margin.left, this.width - this.margin.right]);
+	        this.xAxis = d3.axisTop(this.x);
 	        this.g = document.createElementNS('http://www.w3.org/2000/svg', "g");
 	        this.axisEl = d3.select(this.g).append("g")
 	            .attr("class", "axis axis--x")
-	            .attr("transform", "translate(0," + (this.height - this.margin.bottom) + ")");
+	            .attr("transform", "translate(0," + (this.margin.top) + ")");
+	        this.scale = new timeScale.TimeScale(this.state.maxVisibleWindow.start, this.state.maxVisibleWindow.end, this.margin.left, this.width - this.margin.right);
+	        this.setScales();
+	        this.cpuTimeline = new cpuTimeline.CpuTimeline(this.state, this.scale);
+	    }
+	    static get properties() { return { width: Number, brushingStartX: Number }; }
+	    setState(state) {
+	        this.state = state;
+	        this.cpuTimeline.setState(this.state);
+	        this.setScales();
+	    }
+	    setWidth(width) {
+	        this.width = width;
+	        this.x.range([this.margin.left, this.width - this.margin.right]);
+	        this.scale.setPxLimits(this.margin.left, this.width - this.margin.right);
+	        this._invalidateProperties();
 	        this.axisEl
 	            .call(this.xAxis);
-	        this.brush = d3.brushX()
-	            .extent([[0, 0], [this.width, this.height - this.margin.bottom]])
-	            .on("brush end", () => {
-	            if (this.manualBrushSet === 0) {
-	                //TODO: This should be communicated to some central place and then to the worker.
-	                this.state.gps.startVisibleWindow = this.x.invert(+d3.event.selection[0]).getTime();
-	                this.state.gps.endVisibleWindow = this.x.invert(+d3.event.selection[1]).getTime();
-	                onBrushed();
-	                //this.dispatchEvent(new CustomEvent(brushEventName, { detail: [start, end]}));
+	    }
+	    setScales() {
+	        this.scale.setTimeLimits(this.state.maxVisibleWindow.start, this.state.maxVisibleWindow.end);
+	        this.x.domain([this.state.maxVisibleWindow.start,
+	            this.state.maxVisibleWindow.end]);
+	        this.axisEl
+	            .call(this.xAxis);
+	    }
+	    brushHandleMouseDown(e, isLeft) {
+	        this.brushHandleDragState = {
+	            isLeft: isLeft,
+	            lastXPos: e.clientX
+	        };
+	        e.stopPropagation();
+	    }
+	    onMouseDown(e) {
+	        this.brushingStartX = e.offsetX;
+	        e.stopPropagation();
+	    }
+	    onMouseMove(e) {
+	        if (this.brushHandleDragState) {
+	            const movedPx = e.clientX - this.brushHandleDragState.lastXPos;
+	            const movedTs = this.scale.relativePxToTs(movedPx);
+	            if (this.brushHandleDragState.isLeft) {
+	                this.state.gps.startVisibleWindow += movedTs;
 	            }
 	            else {
-	                this.manualBrushSet--;
+	                this.state.gps.endVisibleWindow += movedTs;
 	            }
-	        });
-	        this.brushEl = d3.select(this.g).append("g")
-	            .attr("class", "brush");
-	        this.brushEl
-	            .call(this.brush);
-	        this.setBrush();
-	        this.cpuTimeline = new cpuTimeline.CpuTimeline(this.state, this.x);
-	        /*setTimeout(() => setInterval(() => {
-	          this.width = 500 + Math.round(Math.random() * 1000);
-	          this.x.range([this.margin.left, this.width - this.margin.right]);
-	          this.axisEl
-	              .transition()
-	              .call(this.xAxis);
-	          this.brushEl
-	              .transition()
-	              .call(this.brush.move, [
-	              this.x(this.state.gps.startVisibleWindow),
-	              this.x(this.state.gps.endVisibleWindow)]);
-	    
-	          this.cpuTimeline._invalidateProperties();
-	        }, 2000), 1000);*/
+	            this.onBrushed();
+	            this.brushHandleDragState.lastXPos = e.clientX;
+	            e.preventDefault();
+	        }
+	        else if (this.brushingStartX) {
+	            const xPositions = [this.brushingStartX, e.offsetX];
+	            const xLeft = Math.min(...xPositions);
+	            const xRight = Math.max(...xPositions);
+	            const tLeft = this.scale.pxToTs(xLeft);
+	            const tRight = this.scale.pxToTs(xRight);
+	            this.state.gps.startVisibleWindow = tLeft;
+	            this.state.gps.endVisibleWindow = tRight;
+	            this.onBrushed();
+	            e.preventDefault();
+	        }
 	    }
-	    static get properties() { return { width: Number }; }
-	    setBrush() {
-	        // onBrushEnd is called twice after this.
-	        this.manualBrushSet += 2;
-	        this.brushEl
-	            .call(this.brush.move, [
-	            this.x(this.state.gps.startVisibleWindow),
-	            this.x(this.state.gps.endVisibleWindow)
-	        ]);
+	    onMouseUp() {
+	        this.brushHandleDragState = null;
+	        this.brushingStartX = undefined;
 	    }
 	    getChildContent() {
 	        return litElement.html `${this.cpuTimeline}`;
 	    }
 	    _render() {
+	        this.cpuTimeline._invalidateProperties();
 	        const svgContent = litHtml.svg `
         ${this.g}
         `;
-	        this.setBrush();
+	        const handleBars = litElement.html `
+      <style>
+        .handle-bars {
+          position: relative;
+          top: 9px;
+        }
+        .bar {
+          height: 5px;
+          width: 8px;
+          margin-left: 2px;
+          border-top: 1px solid #888;
+        }
+      </style>
+      <div class="handle-bars">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    `;
 	        return litElement.html `
     <style>
       .wrap {
@@ -21638,7 +21860,7 @@ var perfetto = (function () {
         top: -1px;
         height: 150px;
         width: ${this.width}px;
-        background:#eee;
+        background: #f3f8fe;
         box-sizing: border-box;
         z-index: 500;
         will-change: transform;
@@ -21651,8 +21873,56 @@ var perfetto = (function () {
         height: 100%;
       }
       .brush .selection { stroke: none; }
+      .brush-left, .brush-right {
+        position: absolute;
+        background: rgba(210,210,210,0.7);
+        top: ${this.margin.top}px;
+        height: ${this.height - this.margin.bottom - this.margin.top}px;
+        z-index: 100;
+        pointer-events: none;
+      }
+      .brush-left {
+        left: ${this.margin.left}px;
+        width: ${this.scale.tsToPx(this.state.gps.startVisibleWindow) - this.margin.left}px;
+      }
+      .brush-right {
+        left: ${this.scale.tsToPx(this.state.gps.endVisibleWindow)}px;
+        width: ${this.width - this.margin.right - this.scale.tsToPx(this.state.gps.endVisibleWindow)}px;
+      }
+      .brush .handle {
+        position: absolute;
+        top: ${(this.height - this.margin.top - this.margin.bottom) / 2 - 15}px;
+        height: 30px;
+        width: 12px;
+        background: #fff;
+        border-radius: 3px;
+        border: 1px solid #999;
+        cursor: pointer;
+        z-index: 100;
+        pointer-events: ${this.brushingStartX ? 'none' : 'auto'};
+      }
+      .brush-left .handle {
+        left: ${this.scale.tsToPx(this.state.gps.startVisibleWindow) - this.margin.left - 6}px;
+      }
+      .brush-right .handle {
+        left: -6px;
+      }
     </style>
-    <div class="wrap" style="padding: ${this.margin.top}px 0px ${this.margin.bottom}px 0px">
+    <div class="wrap"
+      style="padding: ${this.margin.top}px 0px ${this.margin.bottom}px 0px"
+      on-mousedown=${(e) => { this.onMouseDown(e); }}
+      on-mousemove=${(e) => { this.onMouseMove(e); }}
+      on-mouseup="${() => { this.onMouseUp(); }}">
+      <div class="brush">
+        <div class="brush-left">
+          <div class="handle"
+            on-mousedown=${(e) => { this.brushHandleMouseDown(e, true); }}>${handleBars}</div>
+        </div>
+        <div class="brush-right">
+          <div class="handle"
+             on-mousedown=${(e) => { this.brushHandleMouseDown(e, false); }}>${handleBars}</div>
+          </div>
+      </div>
       ${this.getChildContent()}
       <svg>
         ${svgContent}
@@ -21681,10 +21951,14 @@ var perfetto = (function () {
 	        this.shellWidth = 200;
 	    }
 	    get contentPosition() {
-	        return { top: 0, right: 0, bottom: 0, left: 200 };
+	        return { top: 0, right: 0, bottom: 1, left: 200 };
 	    }
 	    getContentWidth() {
 	        return this.width - this.contentPosition.left - this.contentPosition.right;
+	    }
+	    setWidth(width) {
+	        this.width = width;
+	        this._invalidateProperties();
 	    }
 	    _render() {
 	        return litHtml.html `
@@ -21696,29 +21970,38 @@ var perfetto = (function () {
       box-sizing: border-box;
     }
     .wrap {
-      background: #eee;
       width: ${this.width}px;
       height: ${this.height}px;
       box-sizing: border-box;
       position: relative;
+      border-bottom: 1px solid #999;
     }
     .shell-content {
       background:#eee;
       box-sizing: border-box;
-      padding: 20px;
-      width: ${this.shellWidth}px;
-      height: ${this.height}px;
+      padding: 10px 20px;
+      width: ${this.shellWidth - 1}px;
+      height: ${this.height - 1}px;
       display: block;
+      border-left: 8px solid #36aa89;
+      border-right: 1px solid #999;
     }
     .track-content {
       position: absolute;
       top: ${this.contentPosition.top}px;
       left: ${this.contentPosition.left}px; 
       width: ${this.width - this.contentPosition.left - this.contentPosition.right}px;
+      height: ${this.height - this.contentPosition.top - this.contentPosition.bottom}px;
+    }
+    ul {
+      padding-left: 30px;
+      
     }
     </style>
     <div class="wrap">
-      <div class="shell-content">${this.name}</div>
+      <div class="shell-content">
+        <b>${this.name}</b>
+      </div>
       <div class="track-content">
         <slot></slot>
       </div>
@@ -21737,15 +22020,51 @@ var perfetto = (function () {
 	Object.defineProperty(exports, "__esModule", { value: true });
 
 	class TrackContent extends litElement.LitElement {
-	    constructor() {
+	    constructor(tCtx, width, height, x, gps, trackData, trackState) {
 	        super();
+	        this.tCtx = tCtx;
+	        this.width = width;
+	        this.height = height;
+	        this.x = x;
+	        this.gps = gps;
+	        this.trackData = trackData;
+	        this.trackState = trackState;
 	        /*protected width: number;*/
 	        this.start = 0;
 	        this.end = 1000;
-	        this.height = this.getHeight();
 	    }
-	    getHeight() {
-	        return 100;
+	    setState(gps, trackData, trackState) {
+	        this.gps = gps;
+	        this.trackData = trackData;
+	        this.trackState = trackState;
+	    }
+	    setWidth(width, x) {
+	        this.width = width;
+	        this.x = x;
+	    }
+	    drawGridLines() {
+	        this.tCtx.strokeStyle = '#999999';
+	        this.tCtx.lineWidth = 1;
+	        const limits = this.x.getTimeLimits();
+	        const range = limits.end - limits.start;
+	        let step = 0.001;
+	        while (range / step > 20) {
+	            step *= 10;
+	        }
+	        if (range / step < 5) {
+	            step /= 5;
+	        }
+	        if (range / step < 10) {
+	            step /= 2;
+	        }
+	        const start = Math.round(limits.start / step) * step;
+	        for (let t = start; t <= limits.end; t += step) {
+	            const xPos = Math.floor(this.x.tsToPx(t)) + 0.5;
+	            this.tCtx.beginPath();
+	            this.tCtx.moveTo(xPos, 0);
+	            this.tCtx.lineTo(xPos, this.height);
+	            this.tCtx.stroke();
+	        }
 	    }
 	}
 	exports.TrackContent = TrackContent;
@@ -21757,6 +22076,14 @@ var perfetto = (function () {
 
 	var traceDataStore = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
+
+	let gUiMockSliceId = 0;
+	function queryEquals(q1, q2) {
+	    return q1.start == q2.start &&
+	        q1.end == q2.end &&
+	        q1.process == q2.process &&
+	        q1.thread == q2.thread;
+	}
 	function getFirstIndexWhereTrue(slices, testFn) {
 	    // TODO: This should be a binary search.
 	    for (let i = 0; i < slices.length; i++) {
@@ -21767,39 +22094,39 @@ var perfetto = (function () {
 	}
 	class TraceDataStore {
 	    constructor() {
-	        this.data = new Map();
-	        this.populateWithMockData();
+	        // TODO: This is super ad hoc. Figure out how to actually cache data properly.
+	        // We need to figure out what the cache keys should be, and how data
+	        // expiration will work (LRU?)
+	        this.processDataMap = new Map();
+	        this.pendingQueries = [];
+	        this.terribleSliceCache = new Map();
 	    }
-	    populateWithMockData() {
-	        for (let pid = 1; pid < 10; pid++) {
-	            const threadData = new Map();
-	            for (let tid = 1; tid < 10; tid++) {
-	                const slices = [];
-	                let nextStart = 0;
-	                for (let t = 0; t <= 250 && nextStart < 10000; t += 1) {
-	                    const slice = {
-	                        start: nextStart,
-	                        end: nextStart + Math.round(Math.abs(Math.sin(t) * 50)),
-	                        title: 'SliceName',
-	                        tid: tid,
-	                        pid: pid,
-	                    };
-	                    slices.push(slice);
-	                    nextStart = slice.end + Math.round(Math.abs(Math.sin(t) * 20));
-	                }
-	                threadData.set(tid, slices);
-	            }
-	            this.data.set(pid, threadData);
-	        }
+	    initialize(rerenderCallback) {
+	        this.onNewDataReceived = rerenderCallback;
 	    }
 	    *getData(query) {
-	        if (query.process === undefined || query.thread === undefined)
+	        // At the moment, we need either process or thread in the query.
+	        if (query.process == null || query.thread == null)
 	            return;
 	        const process = query.process;
-	        const threadData = this.data.get(process);
-	        if (threadData == null)
+	        const threadData = this.processDataMap.get(process);
+	        if (threadData == null) {
+	            // If we do not have data for this process, schedule a fetch and return.
+	            this.fetchDataFromBackend(query);
 	            return;
-	        const slices = threadData.get(query.thread);
+	        }
+	        const cachedSlices = threadData.get(query.thread);
+	        if (cachedSlices == null) {
+	            // If we do not have data for this process, schedule a fetch and return.
+	            this.fetchDataFromBackend(query);
+	            return;
+	        }
+	        if (query.start < cachedSlices.start || query.end > cachedSlices.end) {
+	            // For now reissue the whole query. We will eventually do partial query to
+	            // top up the cache.
+	            this.fetchDataFromBackend(query);
+	        }
+	        const slices = cachedSlices.slices;
 	        if (slices == null || slices.length == 0)
 	            return;
 	        const beginIndex = getFirstIndexWhereTrue(slices, s => query.start < s.end);
@@ -21809,9 +22136,80 @@ var perfetto = (function () {
 	        }
 	    }
 	    onNewDataReceived() {
-	        //App.render();
+	        throw new Error("TraceDataStore must be initialized with rerender callback");
+	    }
+	    queryPending(query) {
+	        for (let pendingQuery of this.pendingQueries) {
+	            if (queryEquals(pendingQuery, query))
+	                return true;
+	        }
+	        return false;
+	    }
+	    fetchDataFromBackend(query) {
+	        return tslib_es6.__awaiter(this, void 0, void 0, function* () {
+	            const queryDuration = query.end - query.start;
+	            const widenedQuery = {
+	                thread: query.thread,
+	                process: query.process,
+	                start: query.start - (0.5 * queryDuration),
+	                end: query.end + (0.5 * queryDuration)
+	            };
+	            if (this.queryPending(widenedQuery))
+	                return;
+	            this.pendingQueries.push(widenedQuery);
+	            console.log("Fetching data from backend: ", query);
+	            // Toggle this line to introduce delay for testing.
+	            //    await sleep(50);
+	            this.mockFetchDataFromBackend(widenedQuery);
+	            // TODO: Implement slice eviction.
+	            this.onNewDataReceived();
+	        });
+	    }
+	    // Currently unused.
+	    checkCacheHit(query) {
+	        if (query.process == null || query.thread == null)
+	            return false;
+	        const threadData = this.processDataMap.get(query.process);
+	        if (threadData == null)
+	            return false;
+	        const cachedSlices = threadData.get(query.thread);
+	        if (cachedSlices == null)
+	            return false;
+	        return (query.start >= cachedSlices.start && query.end <= cachedSlices.end);
+	    }
+	    mockFetchDataFromBackend(query) {
+	        if (query.process == null || query.thread == null)
+	            return;
+	        let threadDataMap = this.processDataMap.get(query.process);
+	        if (threadDataMap == null) {
+	            threadDataMap = new Map();
+	            this.processDataMap.set(query.process, threadDataMap);
+	        }
+	        const sliceStartBegin = Math.floor(query.start / 100) * 100;
+	        const sliceStartEnd = query.end;
+	        const slices = [];
+	        for (let t = sliceStartBegin; t < sliceStartEnd; t += 100) {
+	            const cacheKey = '' + t + '-' + query.thread + '-' + query.process;
+	            let slice = this.terribleSliceCache.get(cacheKey);
+	            if (slice == null) {
+	                slice = {
+	                    id: 'mock-' + (gUiMockSliceId++),
+	                    start: t,
+	                    end: t + 50,
+	                    title: 'SliceName',
+	                };
+	                this.terribleSliceCache.set(cacheKey, slice);
+	            }
+	            slices.push(slice);
+	        }
+	        threadDataMap.set(query.thread, {
+	            start: query.start,
+	            end: query.end,
+	            slices,
+	        });
 	    }
 	}
+	// Singleton.
 	exports.traceDataStore = new TraceDataStore();
 
 	});
@@ -21819,50 +22217,123 @@ var perfetto = (function () {
 	unwrapExports(traceDataStore);
 	var traceDataStore_1 = traceDataStore.traceDataStore;
 
+	var uiDispatcher = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	// Wrapper over gDispatch so we can access it from anywhere.
+	class UIDispatcher {
+	    constructor() {
+	        this.gDispatch = _ => {
+	            throw "Dispatcher not initialized";
+	        };
+	    }
+	    initialize(gDispatch) {
+	        this.gDispatch = gDispatch;
+	    }
+	}
+	// Singleton.
+	exports.default = new UIDispatcher();
+
+	});
+
+	unwrapExports(uiDispatcher);
+
+	var uiStateStore = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+
+	// Wrapper over gState so we can access it from anywhere. In the real trace
+	// viewer, this is a good place to implement partial state subscription.
+	class UIStateStore {
+	    constructor() {
+	        this.gState = state.createZeroState();
+	    }
+	}
+	// Singleton.
+	exports.default = new UIStateStore();
+
+	});
+
+	unwrapExports(uiStateStore);
+
 	var sliceTrackContent = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 
 
 
+
+	// TODO: Think about whether UI state store should be directly accessed by a
+	// web component.
+
+	// TODO: We might need a smarter way to address slices.
+	function updateSliceSelection(slice) {
+	    return {
+	        topic: 'update_slice_selection',
+	        slice,
+	    };
+	}
 	class SliceTrackContent extends trackContent.TrackContent {
-	    constructor(tCtx, width, x) {
-	        super();
+	    constructor(tCtx, width, height, x, gps, trackData, trackState) {
+	        super(tCtx, width, height, x, gps, trackData, trackState);
 	        this.tCtx = tCtx;
 	        this.width = width;
+	        this.height = height;
 	        this.x = x;
-	        this.selectedSlice = null;
-	        this.color = this.getRandomColor();
-	        //this.vis = new SliceTrackContent();
+	        this.gps = gps;
+	        this.letterWidth = null;
 	    }
-	    //private state: TrackState | undefined;
-	    //private vis: TrackContent;
 	    static get properties() { return { data: [String], selectedSlice: String }; }
 	    draw() {
-	        this.tCtx.fillStyle = 'black';
+	        if (!this.letterWidth)
+	            this.letterWidth = this.tCtx.measureText('0').width;
+	        this.tCtx.fillStyle = '#f3f8fe';
 	        this.tCtx.fillRect(0, 0, this.width, this.height);
-	        this.tCtx.fillStyle = '#' + this.color;
+	        const selectedSliceId = uiStateStore.default.gState.selection ?
+	            uiStateStore.default.gState.selection.id : '';
+	        this.drawGridLines();
 	        const slices = this.getCurrentData();
 	        for (const slice of slices) {
-	            if (slice === this.selectedSlice) {
+	            if (slice.id === selectedSliceId) {
 	                this.tCtx.fillStyle = 'red';
 	            }
-	            this.tCtx.fillRect(this.x.tsToPx(slice.start), 0, this.x.tsToPx(slice.end) - this.x.tsToPx(slice.start), 20);
-	            if (slice === this.selectedSlice) {
-	                this.tCtx.fillStyle = '#' + this.color;
+	            else if (slice.color) {
+	                this.tCtx.fillStyle = slice.color;
 	            }
+	            else {
+	                this.tCtx.fillStyle = 'pink';
+	            }
+	            const sliceWidth = this.x.tsToPx(slice.end) - this.x.tsToPx(slice.start);
+	            this.tCtx.fillRect(this.x.tsToPx(slice.start), 0, sliceWidth, 20);
+	            let sliceText = null;
+	            const numLetters = Math.floor((sliceWidth - 20) / this.letterWidth);
+	            // Three cases:
+	            if (slice.title.length <= numLetters) {
+	                // Whole text fits.
+	                sliceText = slice.title;
+	            }
+	            else if (numLetters >= 6) {
+	                // Fit at least three chars + ...
+	                sliceText = slice.title.slice(0, numLetters - 3) + '...';
+	            }
+	            else {
+	                // No text fits.
+	                continue;
+	            }
+	            this.tCtx.fillStyle = '#000';
+	            this.tCtx.fillText(sliceText, this.x.tsToPx(slice.start), 15);
 	        }
 	    }
 	    getCurrentData() {
+	        if (this.trackData)
+	            return this.trackData.data;
+	        // This code path is only for mock data now.
+	        // TODO: Get proper process/thread instead of this giant hack.
+	        const process = parseInt(this.trackState.id.substring(3));
+	        const thread = parseInt(this.trackState.id.substring(3));
 	        return traceDataStore.traceDataStore.getData({
-	            start: 0,
-	            end: 14000,
-	            process: 1,
-	            thread: 1,
+	            start: this.gps.startVisibleWindow,
+	            end: this.gps.endVisibleWindow,
+	            process,
+	            thread,
 	        });
-	    }
-	    getRandomColor() {
-	        const alphabet = '0123456789abcdef';
-	        return [1, 2, 3, 4, 5, 6].map(() => alphabet[Math.round(Math.random() * (alphabet.length - 1))]).join('');
 	    }
 	    getHeight() {
 	        return 100;
@@ -21873,12 +22344,15 @@ var perfetto = (function () {
 	            const bcr = eventTarget.getBoundingClientRect();
 	            const rel = { x: e.clientX - bcr.x, y: e.clientY - bcr.y };
 	            let deselect = true;
+	            const selectedSliceId = uiStateStore.default.gState.selection ?
+	                uiStateStore.default.gState.selection.id : '';
 	            if (rel.y >= 0 && rel.y <= 20) {
 	                const t = this.x.pxToTs(rel.x);
 	                const slices = this.getCurrentData();
 	                for (const slice of slices) {
-	                    if (slice.start < t && slice.end > t && slice !== this.selectedSlice) {
-	                        this.selectedSlice = slice;
+	                    if (slice.start < t && slice.end > t
+	                        && slice.id !== selectedSliceId) {
+	                        this.selectSlice(slice);
 	                        deselect = false;
 	                    }
 	                }
@@ -21887,32 +22361,52 @@ var perfetto = (function () {
 	                deselect = true;
 	            }
 	            if (deselect) {
-	                this.selectedSlice = null;
+	                this.deselectSlice();
 	            }
 	        }
+	    }
+	    selectSlice(slice) {
+	        uiDispatcher.default.gDispatch(updateSliceSelection(slice));
+	    }
+	    deselectSlice() {
+	        uiDispatcher.default.gDispatch(updateSliceSelection(null));
 	    }
 	    _render() {
 	        this.draw(); // This makes it not a pure function since this is a side effect.
 	        return litExtended.html `
     <style>
       .wrap {
-        background: #fff;
+        background: #f3f8fe;
         height: ${this.height}px;
         box-sizing: border-box;
         position: relative;
         width: ${this.width}px;
       }
       .content {
-        color: #fff;
         z-index: 10;
         position: absolute;
         top: 20px;
         left: ${this.x.tsToPx(100)}px;
       }
+      .markers .marker {
+        position: absolute;
+        z-index: 10;
+        top: 80px;
+      }
+      .markers .indicator {
+        background: #f00;
+        width: 1px;
+        height: 20px;
+      }
+      .markers .label {
+        position: absolute;
+        color: #fff;
+        top: -20px;
+        left: 0;
+      }
     </style>
     <div class="wrap" on-click=${(e) => { this.onClick(e); }}>
       <div class="content">
-        Slice Track Content
       </div>
     </div>`;
 	    }
@@ -21925,59 +22419,6 @@ var perfetto = (function () {
 	unwrapExports(sliceTrackContent);
 	var sliceTrackContent_1 = sliceTrackContent.SliceTrackContent;
 
-	var timeScale = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	class TimeScale {
-	    constructor(tStart, tEnd, pxStart, pxEnd, pxOffset = 0) {
-	        this.tStart = tStart;
-	        this.tEnd = tEnd;
-	        this.pxStart = pxStart;
-	        this.pxEnd = pxEnd;
-	        this.pxOffset = pxOffset;
-	    }
-	    tsToPx(time) {
-	        /*if(time < this.tStart) return this.pxStart;
-	        if(time > this.tEnd) return this.pxEnd;*/
-	        const percentage = (time - this.tStart) / (this.tEnd - this.tStart);
-	        const percentagePx = percentage * (this.pxEnd - this.pxStart);
-	        return this.pxStart + percentagePx - this.pxOffset;
-	    }
-	    pxToTs(px) {
-	        const percentage = (px - this.pxStart) / (this.pxEnd - this.pxStart);
-	        return this.tStart + percentage * (this.tEnd - this.tStart);
-	    }
-	    setTimeLimits(tStart, tEnd) {
-	        this.tStart = tStart;
-	        this.tEnd = tEnd;
-	    }
-	}
-	exports.TimeScale = TimeScale;
-	class OffsetTimeScale {
-	    constructor(scale, pxOffset, width) {
-	        this.scale = scale;
-	        this.pxOffset = pxOffset;
-	        this.width = width;
-	    }
-	    tsToPx(time) {
-	        const result = this.scale.tsToPx(time) - this.pxOffset;
-	        if (result < 0)
-	            return 0;
-	        if (result > this.width)
-	            return this.width;
-	        return result;
-	    }
-	    pxToTs(px) {
-	        return this.scale.pxToTs(px + this.pxOffset);
-	    }
-	}
-	exports.OffsetTimeScale = OffsetTimeScale;
-
-	});
-
-	unwrapExports(timeScale);
-	var timeScale_1 = timeScale.TimeScale;
-	var timeScale_2 = timeScale.OffsetTimeScale;
-
 	var track = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 
@@ -21987,35 +22428,48 @@ var perfetto = (function () {
 
 
 	class Track extends litElement.LitElement {
-	    constructor(state, tCtx, width, x) {
+	    constructor(state, tCtx, width, x, gps, trackData) {
 	        super();
 	        this.state = state;
 	        this.tCtx = tCtx;
 	        this.width = width;
 	        this.x = x;
+	        this.gps = gps;
+	        this.trackData = trackData;
 	        this.type = 'slice'; //TODO: Infer
-	        const height = 100;
-	        this.shell = new trackShell.TrackShell(height, this.width, this.state.metadata.name);
+	        this.height = this.state.height;
+	        this.shell = new trackShell.TrackShell(this.height, this.width, this.state.name);
 	        const contentWidth = this.shell.getContentWidth();
-	        const cp = this.contentPosition;
 	        const shellCp = this.shell.contentPosition;
-	        const left = cp.left + shellCp.left;
-	        const top = cp.top + shellCp.top;
-	        const contentX = new timeScale.OffsetTimeScale(this.x, left, contentWidth);
-	        const contentCtx = new trackCanvasController.TrackCanvasContext(this.tCtx, left, top);
-	        this.content = new sliceTrackContent.SliceTrackContent(contentCtx, contentWidth, contentX); //TODO: Infer
-	        //console.log(this.width, this.height);
-	        contentCtx.setDimensions(this.width, this.height);
+	        this.contentX = new timeScale.OffsetTimeScale(this.x, shellCp.left, contentWidth);
+	        this.contentCtx = new trackCanvasController.TrackCanvasContext(this.tCtx, shellCp.left, shellCp.top);
+	        const contentHeight = this.getContentHeight();
+	        this.content = new sliceTrackContent.SliceTrackContent(this.contentCtx, contentWidth, contentHeight, this.contentX, this.gps, this.trackData, this.state); //TODO: Infer
+	        this.contentCtx.setDimensions(this.width, contentHeight);
 	    }
-	    get contentPosition() {
-	        return { top: 10, right: 0, bottom: 0, left: 0 };
+	    setState(state, gps, trackData) {
+	        this.state = state;
+	        this.gps = gps;
+	        this.trackData = trackData;
+	        this.content.setState(this.gps, this.trackData, this.state);
 	    }
-	    get height() {
-	        const cp = this.contentPosition;
-	        return cp.top + cp.bottom + this.content.height;
+	    setWidth(width, scale) {
+	        //TODO: Too much code duplication with constructor.
+	        this.width = width;
+	        this.x = scale;
+	        this.shell.setWidth(width);
+	        const contentHeight = this.getContentHeight();
+	        const contentWidth = this.shell.getContentWidth();
+	        const shellCp = this.shell.contentPosition;
+	        this.contentX = new timeScale.OffsetTimeScale(this.x, shellCp.left, contentWidth);
+	        this.content.setWidth(contentWidth, this.contentX);
+	        this.contentCtx.setDimensions(this.width, contentHeight);
+	    }
+	    getContentHeight() {
+	        const shellCp = this.shell.contentPosition;
+	        return this.height - shellCp.top - shellCp.bottom;
 	    }
 	    _render() {
-	        if (this.state) ;
 	        this.content._invalidateProperties();
 	        const contentTemplate = litElement.html `${this.content}`;
 	        litHtml.render(contentTemplate, this.shell);
@@ -22029,9 +22483,7 @@ var perfetto = (function () {
       position: relative;
     }
     .wrap {
-      position: absolute;
-      top: ${this.contentPosition.top}px;
-      left: ${this.contentPosition.left}px;
+      position: relative;
     }
     </style>
     <div class="wrap">
@@ -22054,60 +22506,146 @@ var perfetto = (function () {
 
 
 	class TrackTree extends litElement.LitElement {
-	    constructor(state, tCtx, width, scale) {
+	    constructor(trackTreeState, tracks, trackTrees, tCtx, width, scale, gps, trackDataById) {
 	        super();
-	        this.state = state;
+	        this.trackTreeState = trackTreeState;
+	        this.tracks = tracks;
+	        this.trackTrees = trackTrees;
 	        this.tCtx = tCtx;
 	        this.width = width;
 	        this.scale = scale;
-	        this.trackChildren = [];
+	        this.gps = gps;
+	        this.trackDataById = trackDataById;
+	        this.idToChildTracks = new Map();
+	        this.idToChildTrackTrees = new Map();
 	        this.updateChildren();
 	    }
-	    static get properties() { return { state: String, trackChildren: [String] }; }
-	    updateChildren() {
-	        let yOffset = this.contentPosition.top + 1; // 1px for border.
-	        for (let childState of this.state.children) {
-	            const tCtx = this.createTrackCtx(this.contentPosition.left, yOffset);
-	            const sidePadding = this.contentPosition.left + this.contentPosition.right;
-	            const reducedWidth = this.width - sidePadding;
-	            const cScale = new timeScale.OffsetTimeScale(this.scale, this.contentPosition.left, reducedWidth);
-	            const child = TrackTree.isTrackTreeState(childState) ?
-	                new TrackTree(childState, tCtx, reducedWidth, cScale) :
-	                new track.Track(childState, tCtx, reducedWidth, cScale);
-	            tCtx.setDimensions(reducedWidth, child.height);
-	            this.trackChildren.push(child);
-	            yOffset += child.height;
+	    static get properties() { return {}; }
+	    getNodeHeight(nodeID) {
+	        if (nodeID.nodeType === 'TRACK') {
+	            const track$$1 = this.tracks[nodeID.id];
+	            if (track$$1 == null)
+	                throw 'Non-existent track';
+	            return track$$1.height;
 	        }
+	        // Else, it's a tracktree.
+	        const trackTree = this.trackTrees[nodeID.id];
+	        if (trackTree == null)
+	            throw 'Non-existent track tree';
+	        const childrenHeight = trackTree.children
+	            .map(c => this.getNodeHeight(c))
+	            .reduce((a, b) => a + b, 0);
+	        // TODO: Remove references to contentPosition in here.
+	        // This should be all constants.
+	        return this.contentPosition.top + childrenHeight
+	            + this.contentPosition.bottom;
+	    }
+	    updateChildren() {
+	        const sidePadding = this.contentPosition.left + this.contentPosition.right;
+	        const reducedWidth = this.width - sidePadding;
+	        const cScale = new timeScale.OffsetTimeScale(this.scale, this.contentPosition.left, reducedWidth);
+	        let yOffset = this.contentPosition.top + 1; // 1px for border.
+	        for (const childID of this.trackTreeState.children) {
+	            switch (childID.nodeType) {
+	                case 'TRACK': { // Intentionally using new block.
+	                    const childState = this.tracks[childID.id];
+	                    if (childState == null)
+	                        throw 'Non-existent track';
+	                    const child = this.idToChildTracks.get(childID.id);
+	                    const trackData = this.trackDataById[childID.id];
+	                    if (child == null) {
+	                        const childTrackCtx = this.createTrackCtx(this.contentPosition.left, yOffset);
+	                        this.idToChildTracks.set(childID.id, new track.Track(childState, childTrackCtx, reducedWidth, cScale, this.gps, trackData));
+	                    }
+	                    else {
+	                        child.setState(childState, this.gps, trackData);
+	                        child.setWidth(reducedWidth, cScale);
+	                    }
+	                    break;
+	                }
+	                case 'TRACKTREE': {
+	                    // TODO: Lots of code duplication with the block above.
+	                    const childState = this.trackTrees[childID.id];
+	                    if (childState == null)
+	                        throw 'Non-existent track tree';
+	                    const child = this.idToChildTrackTrees.get(childID.id);
+	                    if (child == null) {
+	                        const childTrackCtx = this.createTrackCtx(this.contentPosition.left, yOffset);
+	                        this.idToChildTrackTrees.set(childID.id, 
+	                        // TODO: Constructor takes in way too many things. Refactor.
+	                        new TrackTree(childState, this.tracks, this.trackTrees, childTrackCtx, reducedWidth, cScale, this.gps, this.trackDataById));
+	                    }
+	                    else {
+	                        child.setState(childState, this.tracks, this.trackTrees, this.gps, this.trackDataById);
+	                        child.setWidth(reducedWidth, cScale);
+	                    }
+	                    break;
+	                }
+	            }
+	            yOffset += this.getNodeHeight(childID);
+	        }
+	        const childIDs = new Set(this.trackTreeState.children.map(c => c.id));
+	        for (const id of this.idToChildTracks.keys()) {
+	            if (!childIDs.has(id))
+	                this.idToChildTracks.delete(id);
+	        }
+	        for (const id of this.idToChildTrackTrees.keys()) {
+	            if (!childIDs.has(id))
+	                this.idToChildTrackTrees.delete(id);
+	        }
+	    }
+	    setState(state, tracks, trackTrees, gps, trackDataById) {
+	        this.trackTreeState = state;
+	        this.tracks = tracks;
+	        this.trackTrees = trackTrees;
+	        this.gps = gps;
+	        this.trackDataById = trackDataById;
+	        this.updateChildren();
+	        this._invalidateProperties();
 	    }
 	    static isTrackTreeState(state) {
 	        return 'children' in state;
 	    }
 	    get height() {
-	        const childrenHeight = this.trackChildren
-	            .map(c => c.height).reduce((a, b) => a + b, 0);
-	        return this.contentPosition.top + childrenHeight + this.contentPosition.bottom;
+	        // TODO: This and getNodeHeight has duplicated code.
+	        const childrenHeight = this.trackTreeState.children
+	            .map(c => this.getNodeHeight(c))
+	            .reduce((a, b) => a + b, 0);
+	        // TODO: Remove references to contentPosition in here.
+	        // This should be all constants.
+	        return this.contentPosition.top + childrenHeight
+	            + this.contentPosition.bottom;
+	    }
+	    setWidth(width, scale) {
+	        this.width = width;
+	        this.scale = scale;
+	        this.updateChildren();
+	        this._invalidateProperties();
 	    }
 	    get contentPosition() {
-	        return { top: 92, right: 10, bottom: 20, left: 10 };
+	        return { top: 0, right: 0, bottom: 0, left: 0 };
 	    }
 	    createTrackCtx(xOffset, yOffset) {
 	        return new trackCanvasController.TrackCanvasContext(this.tCtx, xOffset, yOffset);
 	    }
-	    _render({ state, trackChildren }) {
-	        for (const child of trackChildren) {
-	            //TODO: This is an ugly way of propagating changes.
+	    _render() {
+	        //TODO: This is an ugly way of propagating changes.
+	        for (const child of this.idToChildTracks.values()) {
+	            child._invalidateProperties();
+	        }
+	        for (const child of this.idToChildTrackTrees.values()) {
 	            child._invalidateProperties();
 	        }
 	        // TODO: Do colors based on nesting level.
 	        return litElement.html `
     <style>
       .wrap {
-        background-color: hsla(213, 100%, 98%, 50%);
+        background-color: hsla(213, 100%, 98%, 0.50);
         height: ${this.height}px;
         box-sizing: border-box;
         position: relative;
         width: ${this.width}px;
-        border: 1px solid #777; 
+        border: 1px solid #777;
       }
       .content {
         position: absolute;
@@ -22122,9 +22660,11 @@ var perfetto = (function () {
       }
     </style>
     <div class="wrap">
-      <div class="titlebar">${state.metadata.name}</div>
+      <div class="titlebar">${this.trackTreeState.name}</div>
       <div class="content">
-        ${trackChildren}
+        ${this.trackTreeState.children.map(childID => childID.nodeType === 'TRACK' ?
+            this.idToChildTracks.get(childID.id) :
+            this.idToChildTrackTrees.get(childID.id))}
       </div>
     </div>`;
 	    }
@@ -22154,10 +22694,18 @@ var perfetto = (function () {
 	        this.mouseXpos = 0;
 	        this.scroller = document.createElement('div');
 	        this.scroller.className = 'scroller';
-	        this.scroller.addEventListener('wheel', (e) => this.onWheel(e));
-	        this.handleZooming();
+	        this.scroller.addEventListener('wheel', (e) => this.onWheel(e), { passive: true });
+	        this.handleKeyNavigation();
 	    }
-	    handleZooming() {
+	    setState(state) {
+	        this.state = state;
+	    }
+	    setWinDimensions(windowWidth, windowHeight) {
+	        this.width = windowWidth;
+	        this.windowHeight = windowHeight;
+	        this._invalidateProperties();
+	    }
+	    handleKeyNavigation() {
 	        let zooming = false;
 	        document.body.addEventListener('keydown', (e) => {
 	            if (e.key === 'w') {
@@ -22166,10 +22714,19 @@ var perfetto = (function () {
 	            else if (e.key === 's') {
 	                startZoom(false);
 	            }
+	            else if (e.key === 'a') {
+	                startPan(true);
+	            }
+	            else if (e.key === 'd') {
+	                startPan(false);
+	            }
 	        });
 	        document.body.addEventListener('keyup', (e) => {
 	            if (e.key === 'w' || e.key === 's') {
 	                endZoom();
+	            }
+	            if (e.key === 'a' || e.key === 'd') {
+	                endPan();
 	            }
 	        });
 	        const zoom = (zoomIn) => {
@@ -22178,7 +22735,6 @@ var perfetto = (function () {
 	                PanContent.ZOOM_OUT_PERCENTAGE_SPEED;
 	            const newT = t * percentage;
 	            const zoomPosition = this.scale.pxToTs(this.mouseXpos);
-	            //const zoomPosition = t / 2 + this.state.gps.startVisibleWindow;
 	            const zoomPositionPercentage = (zoomPosition -
 	                this.state.gps.startVisibleWindow) / t;
 	            this.state.gps.startVisibleWindow = zoomPosition - newT * zoomPositionPercentage;
@@ -22189,11 +22745,35 @@ var perfetto = (function () {
 	            }
 	        };
 	        const startZoom = (zoomIn) => {
+	            if (zooming) {
+	                return;
+	            }
 	            zooming = true;
 	            zoom(zoomIn);
 	        };
 	        const endZoom = () => {
 	            zooming = false;
+	        };
+	        let panning = false;
+	        const pan = (left) => {
+	            const leftFactor = left ? -1 : 1;
+	            const panAmount = this.scale.relativePxToTs(PanContent.PAN_SPEED);
+	            this.state.gps.startVisibleWindow += leftFactor * panAmount;
+	            this.state.gps.endVisibleWindow += leftFactor * panAmount;
+	            this.onPanned();
+	            if (panning) {
+	                requestAnimationFrame(() => pan(left));
+	            }
+	        };
+	        const startPan = (left) => {
+	            if (panning) {
+	                return;
+	            }
+	            panning = true;
+	            pan(left);
+	        };
+	        const endPan = () => {
+	            panning = false;
 	        };
 	    }
 	    onMouseDown(e) {
@@ -22204,6 +22784,7 @@ var perfetto = (function () {
 	            const movedPx = this.mouseDownX - e.offsetX;
 	            this.panByPx(movedPx);
 	            this.mouseDownX = e.offsetX;
+	            e.preventDefault();
 	        }
 	        this.mouseXpos = e.offsetX;
 	        //console.log(this.mouseXpos, this.scale.pxToTs(this.mouseXpos));
@@ -22212,7 +22793,7 @@ var perfetto = (function () {
 	        this.mouseDownX = -1;
 	    }
 	    panByPx(movedPx) {
-	        const movedTime = this.scale.pxToTs(movedPx) - this.scale.pxToTs(0);
+	        const movedTime = this.scale.relativePxToTs(movedPx);
 	        this.state.gps.startVisibleWindow += movedTime;
 	        this.state.gps.endVisibleWindow += movedTime;
 	        this.onPanned();
@@ -22237,6 +22818,10 @@ var perfetto = (function () {
     `;
 	        litHtml.render(scrollerContent, this.scroller);
 	        return litElement.html `<style>
+      :host {
+        display: block;
+        height: 100%;
+      }
       .event-capture {
         width: ${this.width}px;
         height: ${this.windowHeight}px;
@@ -22262,6 +22847,7 @@ var perfetto = (function () {
 	PanContent.SCROLLBAR_WIDTH = 16;
 	PanContent.ZOOM_IN_PERCENTAGE_SPEED = 0.95;
 	PanContent.ZOOM_OUT_PERCENTAGE_SPEED = 1.05;
+	PanContent.PAN_SPEED = 20; // In px per frame
 	exports.PanContent = PanContent;
 	customElements.define('pan-content', PanContent);
 
@@ -22270,8 +22856,169 @@ var perfetto = (function () {
 	unwrapExports(panContent);
 	var panContent_1 = panContent.PanContent;
 
+	var detailAxis = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	class DetailAxis {
+	    constructor(tCtx, width, height, x) {
+	        this.tCtx = tCtx;
+	        this.width = width;
+	        this.height = height;
+	        this.x = x;
+	    }
+	    setWidth(width) {
+	        this.width = width;
+	    }
+	    render() {
+	        this.tCtx.fillStyle = '#f3f8fe';
+	        this.tCtx.fillRect(0, 0, this.width, this.height);
+	        this.tCtx.font = '300 18px Roboto Mono';
+	        this.tCtx.strokeStyle = 'black';
+	        this.tCtx.lineWidth = 1;
+	        if (!this.zeroWidth)
+	            this.zeroWidth = this.tCtx.measureText('0').width;
+	        const widthPerLetter = this.zeroWidth;
+	        const limits = this.x.getTimeLimits();
+	        const range = limits.end - limits.start;
+	        let step = 1;
+	        while (range / step > 20) {
+	            step *= 10;
+	        }
+	        if (step > 1) {
+	            if (range / step < 5) {
+	                step /= 5;
+	            }
+	            if (range / step < 10) {
+	                step /= 2;
+	            }
+	        }
+	        // TODO: Figure out sub 1 labels.
+	        let unit = 'ns';
+	        let representationFactor = 1;
+	        if (step >= 1000000) {
+	            unit = 's';
+	            representationFactor = 1 / 1000000;
+	        }
+	        else if (step >= 1000) {
+	            unit = 'ms';
+	            representationFactor = 1 / 1000;
+	        }
+	        this.tCtx.fillStyle = 'black';
+	        this.tCtx.fillText('Time in ' + unit, 10, 22);
+	        const start = Math.round(limits.start / step) * step;
+	        for (let t = start; t <= limits.end; t += step) {
+	            const tRounded = Math.round(Math.round(t / step) * step);
+	            // To get a sharp line you have to draw at X.5.
+	            const xPos = Math.floor(this.x.tsToPx(t)) + 0.5;
+	            this.tCtx.beginPath();
+	            this.tCtx.moveTo(xPos, 30);
+	            this.tCtx.lineTo(xPos, this.height);
+	            this.tCtx.stroke();
+	            this.tCtx.fillStyle = 'black';
+	            const text = (tRounded * representationFactor).toString();
+	            const offset = (text.length / 2) * widthPerLetter;
+	            this.tCtx.fillText(text, xPos - offset, 22);
+	        }
+	    }
+	}
+	exports.DetailAxis = DetailAxis;
+
+	});
+
+	unwrapExports(detailAxis);
+	var detailAxis_1 = detailAxis.DetailAxis;
+
+	var sliceDetailPanel = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+
+	class SideDetailPanel extends litElement.LitElement {
+	    constructor(state, width) {
+	        super();
+	        this.state = state;
+	        this.width = width;
+	        this.height = 0;
+	        this.slice = null;
+	        this.setState(this.state);
+	    }
+	    setState(state) {
+	        this.state = state;
+	        this.slice = this.state.selection;
+	        this.height = this.slice ? 100 : 0;
+	    }
+	    _render() {
+	        let content;
+	        if (this.slice) {
+	            content = litElement.html `
+        <style>
+          header, .content {
+            padding: 8px 16px;
+          }
+          header {
+            background: #73a6ff;
+            font-weight: bold;
+          }
+          .id {
+            font-family: Roboto, sans-serif;
+            font-weight: normal;
+            font-size: 10px;
+          }
+          .id:before {
+            content: "("
+          }
+          .id:after {
+            content: ")"
+          }
+        </style>
+        
+        <header>
+          ${this.slice.title} 
+          <span class="id">ID: ${this.slice.id}</span>
+        </header>
+        <div class="content">
+          
+          Start: ${this.slice.start} ns<br />
+          End: ${this.slice.end} ns
+        </div>
+      `;
+	        }
+	        else {
+	            content = litElement.html ` `;
+	        }
+	        return litElement.html `
+    <style>
+    :host {
+      display: block;
+      box-sizing: border-box;
+    }
+    .wrap {
+      box-sizing: border-box;
+      background: rgb(185,212,255);
+      transition: height 200ms ease;
+      height: ${this.height}px;
+      width: ${this.width}px;
+      position: fixed;
+      bottom: 0;
+      display: block;
+      /*will-change: transform;*/
+    }
+    </style>
+    <div class="wrap">
+      ${content}
+    </div>
+    `;
+	    }
+	}
+	exports.SideDetailPanel = SideDetailPanel;
+	customElements.define('slice-detail-panel', SideDetailPanel);
+
+	});
+
+	unwrapExports(sliceDetailPanel);
+	var sliceDetailPanel_1 = sliceDetailPanel.SideDetailPanel;
+
 	var traceUi = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
+
+
 
 
 
@@ -22287,55 +23034,136 @@ var perfetto = (function () {
 	        this.height = height;
 	        console.log('Trace UI initialized.', this.width);
 	        const reRender = () => this._invalidateProperties();
-	        const canvasHeight = 2 * this.height;
-	        this.scale = new timeScale.TimeScale(0, 1000, TraceUi.CONTENT_MARGIN_LEFT, this.width - TraceUi.CONTENT_MARGIN_LEFT);
-	        this.cc = new trackCanvasController.CanvasController(this.width, canvasHeight, this.height, reRender);
+	        this.scale = new timeScale.TimeScale(0, 1000, TraceUi.CONTENT_MARGIN_LEFT, this.width);
+	        this.cc = new trackCanvasController.CanvasController(this.width, 2, this.height, reRender);
 	        const tCtx = this.cc.getTrackCanvasContext();
 	        const contentWidth = this.width - TraceUi.SCROLLBAR_WIDTH;
-	        this.root = new trackTree.TrackTree(this.state.trackTree, tCtx, contentWidth, new timeScale.OffsetTimeScale(this.scale, 0, this.width));
+	        // TODO: This constructor has too many arguments. Need better state propagation.
+	        this.root = this.state.rootTrackTree != null
+	            ? this.root = this.createRootTree(this.state.rootTrackTree)
+	            : null;
 	        this.overview = new globalBrushTimeline.GlobalBrushTimeline(this.state, contentWidth, reRender);
 	        //const totalHeight = this.overview.height + this.root.height;
 	        this.pc = new panContent.PanContent(this.width, this.height, this.state, this.scale, reRender, (scrollTop) => this.cc.setScrollTop(scrollTop));
-	        this.cc.setMaxHeight(this.root.height);
+	        const canvasMaxHeight = !this.root ? 0 :
+	            this.root.height + TraceUi.AXIS_HEIGHT;
+	        this.cc.setMaxHeight(canvasMaxHeight);
+	        this.detailAxis = new detailAxis.DetailAxis(tCtx, this.width, TraceUi.AXIS_HEIGHT, this.scale);
+	        this.detailPanel = new sliceDetailPanel.SideDetailPanel(this.state, contentWidth);
+	        this.listenResize();
 	    }
 	    static get properties() { return { s: String }; }
+	    createRootTree(rootTrackTreeID) {
+	        const tCtx = this.cc.getTrackCanvasContext();
+	        const tracksCtx = new trackCanvasController.TrackCanvasContext(tCtx, 0, TraceUi.AXIS_HEIGHT);
+	        // TODO: Maybe pass this in from the caller since it's already calculated once.
+	        const contentWidth = this.width - TraceUi.SCROLLBAR_WIDTH;
+	        // TODO: This constructor has too many arguments. Need better state propagation.
+	        const rootTrackTreeState = this.state.trackTrees[rootTrackTreeID];
+	        if (rootTrackTreeState == null)
+	            return null;
+	        return new trackTree.TrackTree(rootTrackTreeState, this.state.tracks, this.state.trackTrees, tracksCtx, contentWidth, new timeScale.OffsetTimeScale(this.scale, 0, this.width), this.state.gps, this.state.tracksData);
+	    }
+	    setState(state) {
+	        this.state = state;
+	        this.overview.setState(this.state);
+	        this.pc.setState(this.state);
+	        this.detailPanel.setState(this.state);
+	        if (this.state.rootTrackTree != null) {
+	            const rootTrackTreeState = this.state.trackTrees[this.state.rootTrackTree];
+	            if (rootTrackTreeState == null)
+	                return;
+	            if (this.root == null) {
+	                this.root = this.createRootTree(this.state.rootTrackTree);
+	            }
+	            else {
+	                this.root.setState(rootTrackTreeState, this.state.tracks, this.state.trackTrees, this.state.gps, this.state.tracksData);
+	            }
+	        }
+	        const canvasMaxHeight = !this.root ? 0 :
+	            this.root.height + TraceUi.AXIS_HEIGHT;
+	        this.cc.setMaxHeight(canvasMaxHeight);
+	        this._invalidateProperties();
+	    }
+	    listenResize() {
+	        //TODO: Better resize detection needed. Didn't get it to work with event
+	        // listeners.
+	        let w = 0, h = 0;
+	        let raf = () => {
+	            if (this.offsetWidth && this.offsetHeight) {
+	                const newH = this.offsetHeight - this.offsetTop;
+	                const newW = this.offsetWidth - this.offsetLeft;
+	                if (w !== newW || h !== newH) {
+	                    w = newW;
+	                    h = newH;
+	                    this.resize(w, h);
+	                }
+	            }
+	            requestAnimationFrame(raf);
+	        };
+	        raf();
+	    }
+	    resize(width, height) {
+	        this.width = width;
+	        this.height = height;
+	        const contentWidth = this.width - TraceUi.SCROLLBAR_WIDTH;
+	        this.scale.setPxLimits(TraceUi.CONTENT_MARGIN_LEFT, this.width);
+	        this.cc.setWinDimensions(this.width, this.height);
+	        this.pc.setWinDimensions(this.width, this.height);
+	        this.overview.setWidth(contentWidth);
+	        if (this.root) {
+	            this.root.setWidth(contentWidth, new timeScale.OffsetTimeScale(this.scale, 0, this.width));
+	        }
+	        this.detailAxis.setWidth(this.width);
+	        this._invalidateProperties();
+	    }
 	    _render() {
 	        this.scale.setTimeLimits(this.state.gps.startVisibleWindow, this.state.gps.endVisibleWindow);
 	        this.overview._invalidateProperties();
-	        this.root._invalidateProperties();
+	        if (this.root)
+	            this.root._invalidateProperties();
 	        this.pc._invalidateProperties();
+	        this.detailAxis.render();
+	        this.detailPanel._invalidateProperties();
 	        const panContentContent = litElement.html `
-        
-      <style>
-      :host {
-        display: block;
-      }
-      .ui {
-        position: relative;
-      }
-      .tracks-list {
-        position: relative;
-      }
-    </style>
-    
-    <div id='ui' class="ui">
-      <h1>Trace UI</h1>
       ${this.overview}
-      <div class="tracks-list">
-        ${this.root}
+      <div class="content">
+        <div class="tracks-list">
+          ${this.root}
+        </div>
         ${this.cc}
       </div>
     </div>
     `;
 	        litHtml.render(panContentContent, this.pc);
 	        return litElement.html `
-    ${this.pc}
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+      }
+      .ui , .content {
+        position: relative;
+        /*height: 100%;
+        overflow: hidden;*/
+      }
+      .tracks-list {
+        position: relative;
+        top: ${TraceUi.AXIS_HEIGHT}px
+      }
+    </style>
+    <div id='ui' class="ui">
+      ${this.pc}
+      ${this.detailPanel}
+    </div>
     `;
-	        //<track-tree tree=rootTree modifiedCtx=cc.getCanvasContext('2D')/>
 	    }
 	}
 	TraceUi.SCROLLBAR_WIDTH = 16;
 	TraceUi.CONTENT_MARGIN_LEFT = 200;
+	TraceUi.AXIS_HEIGHT = 50;
 	exports.TraceUi = TraceUi;
 	customElements.define('trace-ui', TraceUi);
 
@@ -22367,8 +23195,9 @@ var perfetto = (function () {
 
 
 
-	let gState = state.createZeroState();
-	let gDispatch = _ => { };
+
+
+
 	function q(f) {
 	    return function (e) {
 	        e.redraw = false;
@@ -22379,9 +23208,9 @@ var perfetto = (function () {
 	    return function (e) {
 	        e.redraw = false;
 	        if (action instanceof Function) {
-	            return gDispatch(action(e));
+	            return uiDispatcher.default.gDispatch(action(e));
 	        }
-	        return gDispatch(action);
+	        return uiDispatcher.default.gDispatch(action);
 	    };
 	}
 	function navigate(fragment) {
@@ -22395,6 +23224,13 @@ var perfetto = (function () {
 	        topic: 'query',
 	        query,
 	        id,
+	    };
+	}
+	function showHide(id, cpu) {
+	    return {
+	        topic: 'show_hide',
+	        id,
+	        cpu,
 	    };
 	}
 	function setStreamToHost(enabled) {
@@ -22435,7 +23271,11 @@ var perfetto = (function () {
 	};
 	const Side = {
 	    view: function () {
-	        return mithril("#side", mithril('#masthead', mithril("img#logo[src='logo.png'][width=384px][height=384px]"), mithril("h1", "Perfetto")), mithril('ul.items', mithril('li', { onclick: quietDispatch(navigate('/home')) }, 'Home'), mithril('li', { onclick: quietDispatch(navigate('/viewer')) }, 'Trace Viewer'), mithril('li', { onclick: quietDispatch(navigate('/config')) }, 'Config Editor')));
+	        return mithril("#side", mithril('#masthead', mithril("img#logo[src='logo.png'][width=384px][height=384px]"), mithril("h1", "Perfetto")), mithril('ul.items', mithril('li', { onclick: quietDispatch(navigate('/home')) }, 'Home'), mithril('li', { onclick: quietDispatch(navigate('/viewer')) }, 'Trace Viewer'), mithril('li', { onclick: quietDispatch(navigate('/config')) }, 'Config Editor')), Object.values(uiStateStore.default.gState.backends).map((t) => mithril('.trace-items', mithril('.trace-item', t.name), mithril('button', {
+	            onclick: quietDispatch(navigate(`/query/${t.id}`))
+	        }, 'Query'), [...Array(8).keys()].map(i => mithril('button', {
+	            onclick: quietDispatch(showHide(t.id, i))
+	        }, `Show/Hide CPU ${i}`)))));
 	    },
 	};
 	function copy(text) {
@@ -22468,9 +23308,9 @@ var perfetto = (function () {
 	                    const file = e.target.files.item(0);
 	                    return loadTraceFile(file);
 	                }),
-	            }, "Load trace"), gState.traces.length === 0
+	            }, "Load trace"), uiStateStore.default.gState.traces.length === 0
 	                ? mithril('span.center', 'No traces loaded')
-	                : mithril('.traces', Object.values(gState.backends).map(b => mithril('.trace-card', {
+	                : mithril('.traces', Object.values(uiStateStore.default.gState.backends).map(b => mithril('.trace-card', {
 	                    class: `trace-backend-state-${b.state}`,
 	                }, mithril('.trace-card-name', b.name), mithril('.trace-card-status', b.state), mithril('.trace-card-info', b.state === 'READY' ? [
 	                    mithril('button', {
@@ -22487,22 +23327,22 @@ var perfetto = (function () {
 	            mithril(Side),
 	            mithril('#content', mithril('.group', 'Trace Config'), mithril(Checkbox, {
 	                label: 'Stream to host',
-	                checked: gState.config_editor.stream_to_host,
-	                setter: (c) => gDispatch(setStreamToHost(c)),
+	                checked: uiStateStore.default.gState.config_editor.stream_to_host,
+	                setter: (c) => uiDispatcher.default.gDispatch(setStreamToHost(c)),
 	            }), mithril('label', mithril('input[type=number][min=0]', {
-	                value: (gState.config_editor.trace_duration_ms || 0) / 1000,
-	                onchange: q(mithril.withAttr('value', v => gDispatch(setTraceDuration(v)))),
+	                value: (uiStateStore.default.gState.config_editor.trace_duration_ms || 0) / 1000,
+	                onchange: q(mithril.withAttr('value', v => uiDispatcher.default.gDispatch(setTraceDuration(v)))),
 	            }), 'Trace duration (seconds)'), mithril('label', mithril('input[type=number][min=0]', {
-	                value: (gState.config_editor.buffer_size_kb || 0) / 1024,
-	                onchange: q(mithril.withAttr('value', v => gDispatch(setBufferSize(v)))),
+	                value: (uiStateStore.default.gState.config_editor.buffer_size_kb || 0) / 1024,
+	                onchange: q(mithril.withAttr('value', v => uiDispatcher.default.gDispatch(setBufferSize(v)))),
 	            }), 'Buffer size (mb)'), atrace.categories.map(category => mithril(Checkbox, {
 	                label: category.name,
-	                checked: gState.config_editor.atrace_categories[category.tag],
-	                setter: (c) => gDispatch(setCategory(category.tag, c)),
-	            })), gState.config_commandline && [
-	                mithril('code.block', gState.config_commandline),
+	                checked: uiStateStore.default.gState.config_editor.atrace_categories[category.tag],
+	                setter: (c) => uiDispatcher.default.gDispatch(setCategory(category.tag, c)),
+	            })), uiStateStore.default.gState.config_commandline && [
+	                mithril('code.block', uiStateStore.default.gState.config_commandline),
 	                mithril('button', {
-	                    onclick: () => copy(gState.config_commandline)
+	                    onclick: () => copy(uiStateStore.default.gState.config_commandline)
 	                }, 'Copy to clipboard'),
 	            ]),
 	        ];
@@ -22512,7 +23352,7 @@ var perfetto = (function () {
 	    view: function () {
 	        const id = mithril.route.param('id');
 	        let request = null;
-	        for (const trace of gState.traces) {
+	        for (const trace of uiStateStore.default.gState.traces) {
 	            if (id === trace.id)
 	                request = trace;
 	        }
@@ -22523,8 +23363,8 @@ var perfetto = (function () {
 	            mithril(Side),
 	            mithril('#content', mithril('input.big', {
 	                value: request.query,
-	                onchange: q(mithril.withAttr('value', v => gDispatch(updateQuery(id, v)))),
-	            }), table(gState.backends[id].result)),
+	                onchange: q(mithril.withAttr('value', v => uiDispatcher.default.gDispatch(updateQuery(id, v)))),
+	            }), table(uiStateStore.default.gState.backends[id].result)),
 	        ];
 	    },
 	};
@@ -22545,85 +23385,33 @@ var perfetto = (function () {
 	    })));
 	}
 	const ViewerPage = {
-	    oncreate: function (vnode) {
-	        const state$$1 = {
-	            loadedTraces: [],
-	            gps: {
-	                startVisibleWindow: 10,
-	                endVisibleWindow: 2000
-	            },
-	            trackTree: {
-	                metadata: {
-	                    name: 'Trace 1: Pinpoint job 347',
-	                    shellColor: 'red'
-	                },
-	                children: [{
-	                        metadata: {
-	                            name: 'Renderer PID: 12341',
-	                            shellColor: 'blue'
-	                        },
-	                        children: []
-	                    }, {
-	                        metadata: {
-	                            name: 'Renderer PID: 32423',
-	                            shellColor: 'yellow'
-	                        },
-	                        children: [{
-	                                metadata: {
-	                                    name: 'Metrics Analysis for renderer',
-	                                    shellColor: 'green'
-	                                },
-	                                children: [{
-	                                        metadata: { name: "Slice Track" },
-	                                        trackData: {},
-	                                    }],
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }, {
-	                                metadata: { name: "Slice Track" },
-	                                trackData: {}
-	                            }]
-	                    }]
-	            },
-	            sliceTrackDataSpec: {}
-	        };
+	    oncreate(vnode) {
+	        traceDataStore.traceDataStore.initialize(() => {
+	            const traceUI = window.traceUI;
+	            if (traceUI)
+	                traceUI._invalidateProperties();
+	        });
 	        const root = vnode.dom;
 	        const rect = root.getBoundingClientRect();
-	        const ui = new traceUi.TraceUi(state$$1, rect.width, rect.height);
-	        litHtml.render(litHtml.html `${ui}`, root);
+	        // Turns out we were creating trace ui multiple times. We need to fix this
+	        // properly in the real UI (lots of things to think about - especially
+	        // around how to get rid of all the internal objects like CanvasController
+	        // created by Trace UI.) For now, just cache this on window.
+	        if (window.traceUI) {
+	            window.traceUI.setState(uiStateStore.default.gState);
+	        }
+	        else {
+	            window.traceUI = new traceUi.TraceUi(uiStateStore.default.gState, rect.width, rect.height);
+	        }
+	        litHtml.render(litHtml.html `${window.traceUI}`, root);
 	    },
-	    view: function () {
+	    onupdate(vnode) {
+	        const ui = vnode.dom.firstElementChild;
+	        ui.setState(uiStateStore.default.gState);
+	    },
+	    view() {
 	        return [
 	            mithril('#trace-ui-container'),
-	            mithril(Menu, { title: "Home" }),
 	            mithril(Side),
 	        ];
 	    },
@@ -22646,6 +23434,12 @@ var perfetto = (function () {
 	        readParam('trace_duration_ms', v => state$$1.config_editor.trace_duration_ms = v);
 	        readParam('atrace_categories', v => v.forEach((c) => state$$1.config_editor.atrace_categories[c] = true));
 	    }
+	    else {
+	        for (const route of ["/home", "/config", "/viewer", "/query"]) {
+	            if (fragment.startsWith(route))
+	                state$$1.fragment = route;
+	        }
+	    }
 	    return state$$1;
 	}
 	function tryReadState() {
@@ -22658,11 +23452,14 @@ var perfetto = (function () {
 	    }
 	}
 	function updateState(new_state) {
-	    const old_state = gState;
-	    gState = new_state;
+	    const old_state = uiStateStore.default.gState;
+	    uiStateStore.default.gState = new_state;
+	    // TODO: Hack - Preserve the old gps until we know how to sync frontend
+	    // and backend gps.
+	    uiStateStore.default.gState.gps = old_state.gps;
 	    if (old_state.fragment == new_state.fragment) {
 	        if (new_state.fragment === '/config') {
-	            mithril.route.set(gState.fragment, new_state.fragment_params, {
+	            mithril.route.set(uiStateStore.default.gState.fragment, new_state.fragment_params, {
 	                replace: true,
 	                state: {}
 	            });
@@ -22670,7 +23467,7 @@ var perfetto = (function () {
 	        mithril.redraw();
 	        return;
 	    }
-	    mithril.route.set(gState.fragment, new_state.fragment_params, {
+	    mithril.route.set(uiStateStore.default.gState.fragment, new_state.fragment_params, {
 	        replace: false,
 	        state: {}
 	    });
@@ -22714,12 +23511,62 @@ var perfetto = (function () {
 	        "/viewer": ViewerPage,
 	        "/query/:id": QueryPage,
 	    });
-	    gState = tryReadState();
+	    uiStateStore.default.gState = tryReadState();
+	    uiStateStore.default.gState.gps = {
+	        startVisibleWindow: 10,
+	        endVisibleWindow: 2000,
+	    };
+	    uiStateStore.default.gState.maxVisibleWindow = {
+	        start: 0,
+	        end: 10000,
+	    };
+	    uiStateStore.default.gState.tracks = {
+	        'foo1': { id: 'foo1', name: "Slice Track 1", height: 100, query: "" },
+	        'foo2': { id: 'foo2', name: "Slice Track 2", height: 100, query: "" },
+	        'foo3': { id: 'foo3', name: "Slice Track 3", height: 100, query: "" },
+	        'foo4': { id: 'foo4', name: "Slice Track 4", height: 100, query: "" },
+	        'foo5': { id: 'foo5', name: "Slice Track 5", height: 100, query: "" },
+	        'foo6': { id: 'foo6', name: "Slice Track 6", height: 100, query: "" },
+	        'foo7': { id: 'foo7', name: "Slice Track 7", height: 100, query: "" },
+	        'foo8': { id: 'foo8', name: "Slice Track 8", height: 100, query: "" },
+	        'foo9': { id: 'foo9', name: "Slice Track 9", height: 100, query: "" },
+	        'foo10': { id: 'foo10', name: "Slice Track 10", height: 100, query: "" }
+	    };
+	    uiStateStore.default.gState.trackTrees = {
+	        'tree1': {
+	            name: 'Trace 1: Pinpoint job 347',
+	            children: [
+	                { nodeType: 'TRACKTREE', id: 'tree3' },
+	                { nodeType: 'TRACK', id: 'foo2' },
+	                { nodeType: 'TRACK', id: 'foo3' },
+	                { nodeType: 'TRACK', id: 'foo4' },
+	                { nodeType: 'TRACK', id: 'foo5' },
+	                { nodeType: 'TRACK', id: 'foo6' },
+	                { nodeType: 'TRACK', id: 'foo7' },
+	                { nodeType: 'TRACK', id: 'foo8' },
+	                { nodeType: 'TRACK', id: 'foo9' },
+	                { nodeType: 'TRACK', id: 'foo10' },
+	            ]
+	        },
+	        'tree2': {
+	            name: 'Renderer PID: 12341',
+	            children: [],
+	        },
+	        'tree3': {
+	            name: 'Metrics Analysis for renderer',
+	            children: [{ nodeType: 'TRACK', id: 'foo1' }],
+	        },
+	        'tree4': {
+	            name: 'Renderer PID: 32423',
+	            children: [{ nodeType: 'TRACKTREE', id: 'tree3' }],
+	        },
+	    };
+	    uiStateStore.default.gState.rootTrackTree = 'tree1';
 	    mithril.redraw();
-	    gDispatch = worker.postMessage.bind(worker);
-	    gDispatch({
+	    uiDispatcher.default.initialize(worker.postMessage.bind(worker));
+	    uiDispatcher.default.gDispatch({
 	        topic: 'init',
-	        initial_state: gState,
+	        initial_state: uiStateStore.default.gState,
 	    });
 	}
 	exports.main = main;
@@ -22748,6 +23595,18 @@ var perfetto = (function () {
 	Object.defineProperty(exports, "__esModule", { value: true });
 
 	frontend.main();
+	/*
+	let raf = () => {
+	  const start = Date.now();
+	  let i = 0;
+	  while(Date.now() - start < 100) {
+	    i++;
+	  }
+	  console.log(i);
+	  requestAnimationFrame(raf);
+	};
+
+	raf();*/
 
 	});
 

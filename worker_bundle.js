@@ -11,7 +11,7 @@ var perfetto = (function () {
 		return module = { exports: {} }, fn(module, module.exports), module.exports;
 	}
 
-	var state = createCommonjsModule(function (module, exports) {
+	var ipc = createCommonjsModule(function (module, exports) {
 	/*
 	 * Copyright (C) 2018 The Android Open Source Project
 	 *
@@ -28,27 +28,672 @@ var perfetto = (function () {
 	 * limitations under the License.
 	 */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	function createZeroState() {
-	    return {
-	        fragment: "/home",
-	        config_editor: {
-	            stream_to_host: false,
-	            buffer_size_kb: null,
-	            trace_duration_ms: null,
-	            atrace_categories: {},
-	        },
-	        fragment_params: {},
-	        traces: [],
-	        backends: {},
-	        config_commandline: "echo 'Create a config above'",
-	    };
+	class Receiver {
+	    constructor(port, client) {
+	        this.port = port;
+	        this.client = client;
+	        this.port.onmessage = this.recv.bind(this);
+	    }
+	    recv(msg) {
+	        const name = msg.data.name;
+	        const args = msg.data.args;
+	        const requestId = msg.data.requestId;
+	        const pending = this.client[name].apply(this.client, args);
+	        pending.then(result => this.send(requestId, result));
+	    }
+	    send(requestId, result) {
+	        this.port.postMessage({
+	            requestId,
+	            result,
+	        });
+	    }
 	}
-	exports.createZeroState = createZeroState;
+	class SenderTarget {
+	    constructor(port) {
+	        this.port = port;
+	        this.requestId = 0;
+	        this.pendingRequests = {};
+	        this.port.onmessage = this.recv.bind(this);
+	    }
+	    recv(msg) {
+	        const requestId = msg.data.requestId;
+	        const result = msg.data.result;
+	        console.assert(this.pendingRequests[requestId]);
+	        this.pendingRequests[requestId](result);
+	        delete this.pendingRequests[requestId];
+	    }
+	    send(name, args) {
+	        const requestId = this.requestId++;
+	        const pending = new Promise(resolve => {
+	            this.pendingRequests[requestId] = resolve;
+	        });
+	        this.port.postMessage({
+	            requestId,
+	            name,
+	            args,
+	        });
+	        return pending;
+	    }
+	}
+	class SenderHandler {
+	    constructor() {
+	    }
+	    get(rawTarget, p, _receiver) {
+	        const target = rawTarget;
+	        return function (...args) {
+	            return target.send(p, args);
+	        };
+	    }
+	}
+	function createReceiver(port, client) {
+	    return new Receiver(port, client);
+	}
+	exports.createReceiver = createReceiver;
+	function createSender(port) {
+	    const target = new SenderTarget(port);
+	    return new Proxy(target, new SenderHandler());
+	}
+	exports.createSender = createSender;
 
 	});
 
-	unwrapExports(state);
-	var state_1 = state.createZeroState;
+	unwrapExports(ipc);
+	var ipc_1 = ipc.createReceiver;
+	var ipc_2 = ipc.createSender;
+
+	var process_names = createCommonjsModule(function (module, exports) {
+	/*
+	 * Copyright (C) 2018 The Android Open Source Project
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 *      http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 */
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const processNames = [
+	    "ActivityManager",
+	    "allocator@2.0-s",
+	    "android.anim",
+	    "android.anim.lf",
+	    "android.bg",
+	    ".android.chrome",
+	    "android.display",
+	    "android.fg",
+	    "android.io",
+	    "android.ui",
+	    "android.vending",
+	    "android.youtube",
+	    "AnrDetector",
+	    "ApmOutput",
+	    "appEventThread",
+	    "applyRouting",
+	    ".apps.turbo:aab",
+	    "async_sensor",
+	    "AsyncTask #1",
+	    "AsyncTask #11",
+	    "AsyncTask #12",
+	    "AsyncTask #13",
+	    "AsyncTask #14",
+	    "AsyncTask #15",
+	    "AsyncTask #16",
+	    "AsyncTask #17",
+	    "AsyncTask #18",
+	    "AsyncTask #5",
+	    "audio@2.0-servi",
+	    "AudioOut_15",
+	    "AudioOut_1D",
+	    "AudioOut_25",
+	    "AudioOut_2D",
+	    "AudioOut_35",
+	    "AudioOut_D",
+	    "AudioService",
+	    "AudioThread",
+	    "AudioTrack",
+	    "BackgroundTask ",
+	    "backup",
+	    "batterystats-wo",
+	    "Binder:1640_1",
+	    "Binder:1640_10",
+	    "Binder:1640_11",
+	    "Binder:1640_13",
+	    "Binder:1640_14",
+	    "Binder:1640_17",
+	    "Binder:1640_18",
+	    "Binder:1640_19",
+	    "Binder:1640_1A",
+	    "Binder:1640_2",
+	    "Binder:1640_4",
+	    "Binder:1640_5",
+	    "Binder:1640_7",
+	    "Binder:1640_8",
+	    "Binder:1640_9",
+	    "Binder:1640_A",
+	    "Binder:1640_D",
+	    "Binder:1640_F",
+	    "Binder:17869_5",
+	    "Binder:23850_2",
+	    "Binder:23850_3",
+	    "Binder:23850_4",
+	    "Binder:23850_5",
+	    "Binder:23850_6",
+	    "Binder:23850_7",
+	    "Binder:23895_1",
+	    "Binder:23895_2",
+	    "Binder:23895_3",
+	    "Binder:23925_2",
+	    "Binder:23956_3",
+	    "Binder:23956_5",
+	    "Binder:24208_3",
+	    "Binder:24307_1",
+	    "Binder:24307_2",
+	    "Binder:24307_3",
+	    "Binder:24307_4",
+	    "Binder:24307_5",
+	    "Binder:24307_6",
+	    "Binder:24307_7",
+	    "Binder:24307_8",
+	    "Binder:24488_2",
+	    "Binder:24685_2",
+	    "Binder:24839_4",
+	    "Binder:24839_E",
+	    "Binder:24945_5",
+	    "Binder:24981_2",
+	    "Binder:25043_5",
+	    "Binder:25067_5",
+	    "Binder:25219_3",
+	    "Binder:25432_4",
+	    "Binder:25465_3",
+	    "Binder:25538_1",
+	    "Binder:25538_4",
+	    "Binder:25608_2",
+	    "Binder:25715_1",
+	    "Binder:25715_3",
+	    "Binder:25715_4",
+	    "Binder:25789_5",
+	    "Binder:25907_1",
+	    "Binder:25907_2",
+	    "Binder:25907_4",
+	    "Binder:25907_5",
+	    "Binder:25941_3",
+	    "Binder:4518_2",
+	    "Binder:4518_4",
+	    "Binder:4518_7",
+	    "Binder:4543_5",
+	    "Binder:4543_6",
+	    "Binder:4543_7",
+	    "Binder:4543_8",
+	    "Binder:4543_A",
+	    "Binder:4621_1",
+	    "Binder:4621_4",
+	    "Binder:4682_2",
+	    "Binder:4682_3",
+	    "Binder:4682_4",
+	    "Binder:4710_3",
+	    "Binder:4720_6",
+	    "Binder:4720_8",
+	    "Binder:4756_1",
+	    "Binder:4792_2",
+	    "Binder:4826_1",
+	    "Binder:5199_4",
+	    "Binder:5322_3",
+	    "Binder:5351_5",
+	    "Binder:5370_3",
+	    "Binder:5380_4",
+	    "Binder:5392_3",
+	    "Binder:5408_10",
+	    "Binder:5408_5",
+	    "Binder:5408_6",
+	    "Binder:5408_7",
+	    "Binder:5408_A",
+	    "Binder:5408_B",
+	    "Binder:5408_C",
+	    "Binder:5408_D",
+	    "Binder:5408_F",
+	    "Binder:5425_10",
+	    "Binder:5425_2",
+	    "Binder:5425_3",
+	    "Binder:5425_4",
+	    "Binder:5425_7",
+	    "Binder:5425_9",
+	    "Binder:5425_B",
+	    "Binder:5425_C",
+	    "Binder:5425_E",
+	    "Binder:5425_F",
+	    "Binder:5439_1",
+	    "Binder:5480_2",
+	    "Binder:5510_1",
+	    "Binder:5534_1",
+	    "Binder:5534_3",
+	    "Binder:5565_1",
+	    "Binder:5565_10",
+	    "Binder:5565_2",
+	    "Binder:5565_3",
+	    "Binder:5565_4",
+	    "Binder:5565_6",
+	    "Binder:5565_7",
+	    "Binder:5565_8",
+	    "Binder:5565_9",
+	    "Binder:5565_A",
+	    "Binder:5565_D",
+	    "Binder:5565_F",
+	    "Binder:5643_3",
+	    "Binder:5858_1",
+	    "Binder:5858_2",
+	    "Binder:5858_3",
+	    "Binder:5858_6",
+	    "Binder:5858_7",
+	    "Binder:607_1",
+	    "Binder:607_2",
+	    "Binder:607_3",
+	    "Binder:607_4",
+	    "Binder:607_5",
+	    "Binder:686_2",
+	    "Binder:686_4",
+	    "Binder:7219_2",
+	    "Binder:7219_C",
+	    "Binder:728_2",
+	    "Binder:728_3",
+	    "Binder:7534_4",
+	    "Binder:7534_7",
+	    "Binder:7534_9",
+	    "Binder:8209_3",
+	    "Binder:858_1",
+	    "Binder:858_3",
+	    "Binder:858_5",
+	    "Binder:923_3",
+	    "Binder:930_1",
+	    "Binder:930_2",
+	    "Binder:930_3",
+	    "Binder:932_1",
+	    "bluetooth@1.0-s",
+	    "BluetoothScanMa",
+	    "BrowserWatchdog",
+	    "BT Service Call",
+	    "btu message loo",
+	    "cameraserver",
+	    "cds_mc_thread",
+	    "cds_ol_rx_threa",
+	    "chre",
+	    "Chrome_ChildIOT",
+	    "Chrome_HistoryT",
+	    "Chrome_IOThread",
+	    "Chrome_ProcessL",
+	    "ChromiumNet",
+	    "CMEventHandler",
+	    "cnd",
+	    "com.android.nfc",
+	    "composer@2.1-se",
+	    "Compositor",
+	    "CompositorTileW",
+	    "ConnectivitySer",
+	    "ConnectivityThr",
+	    "contexthub@1.0-",
+	    "CrGpuMain",
+	    "CronetInit",
+	    "CrRendererMain",
+	    "dboxed_process0",
+	    "DecoderWrapper",
+	    "DFacilitator-1",
+	    "DispSync",
+	    "d.process.media",
+	    "droid.bluetooth",
+	    "dsps_smem_glink",
+	    "earchbox:search",
+	    "ExUtils-F-P10-1",
+	    "ExUtils-F-P10-2",
+	    "ExUtils-F-P10-3",
+	    "ExUtils-F-P10-4",
+	    "ExUtils-F-P10-5",
+	    "ExUtils-F-P10-6",
+	    "ExUtils-F-P10-7",
+	    "ExUtils-F-P10-8",
+	    "ExUtils-F-P11-2",
+	    "ExUtils-F-P2-10",
+	    "ExUtils-F-P2-11",
+	    "ExUtils-F-P2-12",
+	    "ExUtils-F-P2-13",
+	    "ExUtils-F-P2-14",
+	    "ExUtils-F-P2-15",
+	    "ExUtils-F-P2-16",
+	    "ExUtils-F-P2-9",
+	    "ExUtils-P10-1",
+	    "ExUtils-P1-1",
+	    "ExUtils-P11-1",
+	    "ExUtils-P6-1",
+	    "ExUtils-P9-1",
+	    "FastMixer",
+	    "FileObserver",
+	    "File thread",
+	    "FinalizerDaemon",
+	    "FinalizerWatchd",
+	    "FlpThread",
+	    "GAC_Executor[0]",
+	    "GAC_Executor[1]",
+	    "GcoreGoogleApiC",
+	    "GELServices0",
+	    "GELServices1",
+	    "GeofencerStateM",
+	    "gle.android.gms",
+	    "GlobalDispatchi",
+	    "GlobalScheduler",
+	    "GLThread 39",
+	    ".gms.persistent",
+	    "gnss@1.0-servic",
+	    "GoogleApiHandle",
+	    "GoogleLocationS",
+	    "GpuMemoryThread",
+	    "gstatic.com/...",
+	    "hbox:interactor",
+	    "hci_thread",
+	    "health@2.0-serv",
+	    "healthd",
+	    "HeapTaskDaemon",
+	    "highpool[2]",
+	    "highpool[3]",
+	    "HwBinder:1640_2",
+	    "HwBinder:1640_3",
+	    "HwBinder:4518_1",
+	    "HwBinder:5351_1",
+	    "HwBinder:607_1",
+	    "HwBinder:609_3",
+	    "HwBinder:611_2",
+	    "HwBinder:771_1",
+	    "HwBinder:771_2",
+	    "HwBinder:771_4",
+	    "HwBinder:771_5",
+	    "HwBinder:779_1",
+	    "HwBinder:779_2",
+	    "HwBinder:789_1",
+	    "HwBinder:790_1",
+	    "HwBinder:916_1",
+	    "HwBinder:930_1",
+	    "HwBinder:936_1",
+	    "HWC_UeventThrea",
+	    "hwrng",
+	    "hwuiTask1",
+	    "ICEventLogger-1",
+	    "id.ext.services",
+	    "id.gms.unstable",
+	    "InflaterThread ",
+	    "InputDispatcher",
+	    "InputReader",
+	    "IntentService[B",
+	    "IntentService[D",
+	    "ip6tables-resto",
+	    "iptables-restor",
+	    "irq/254-wcd9xxx",
+	    "irq/35-1008000.",
+	    "irq/747-ima-rdy",
+	    "irq/760-synapti",
+	    "jbd2/sda45-8",
+	    "Jit thread pool",
+	    "kcompactd0",
+	    "keystore",
+	    "kgsl_worker_thr",
+	    "ksoftirqd/0",
+	    "ksoftirqd/1",
+	    "ksoftirqd/2",
+	    "ksoftirqd/3",
+	    "ksoftirqd/4",
+	    "ksoftirqd/5",
+	    "ksoftirqd/6",
+	    "ksoftirqd/7",
+	    "kswapd0",
+	    "kthreadd",
+	    "kworker/0:0",
+	    "kworker/0:1",
+	    "kworker/0:1H",
+	    "kworker/0:2",
+	    "kworker/1:1",
+	    "kworker/1:1H",
+	    "kworker/1:3",
+	    "kworker/2:0",
+	    "kworker/2:1H",
+	    "kworker/2:2",
+	    "kworker/2:4",
+	    "kworker/3:1H",
+	    "kworker/3:2",
+	    "kworker/3:3",
+	    "kworker/4:0",
+	    "kworker/4:1",
+	    "kworker/4:1H",
+	    "kworker/4:2",
+	    "kworker/4:3",
+	    "kworker/5:0",
+	    "kworker/5:1H",
+	    "kworker/5:2",
+	    "kworker/5:3",
+	    "kworker/6:0",
+	    "kworker/6:1H",
+	    "kworker/6:2",
+	    "kworker/7:1H",
+	    "kworker/7:2",
+	    "kworker/7:3",
+	    "kworker/u16:0",
+	    "kworker/u16:1",
+	    "kworker/u16:10",
+	    "kworker/u16:11",
+	    "kworker/u16:12",
+	    "kworker/u16:5",
+	    "kworker/u16:7",
+	    "kworker/u16:8",
+	    "kworker/u16:9",
+	    "kworker/u17:0",
+	    "launcher-loader",
+	    "LazyTaskWriterT",
+	    "light@2.0-servi",
+	    "lmkd",
+	    "Loc_hal",
+	    "logd.klogd",
+	    "logd.writer",
+	    "lowpool[10]",
+	    "lowpool[11]",
+	    "lowpool[13]",
+	    "lowpool[15]",
+	    "lowpool[35]",
+	    "lowpool[36]",
+	    "lowpool[38]",
+	    "lpass_smem_glin",
+	    "MainEventThread",
+	    "m.android.phone",
+	    "mdss_fb0",
+	    "measurement-1",
+	    "mediadrmserver",
+	    "memtrack@1.0-se",
+	    "MetricsManager",
+	    "migration/0",
+	    "migration/1",
+	    "migration/2",
+	    "migration/3",
+	    "migration/4",
+	    "migration/5",
+	    "migration/6",
+	    "migration/7",
+	    "mpss_smem_glink",
+	    "msm_irqbalance",
+	    "msm_serial_hs_0",
+	    "msm_slim_qmi_cl",
+	    "msm_watchdog",
+	    "NativeLogger-1",
+	    "ndroid.settings",
+	    "ndroid.systemui",
+	    "NearbyDirectMai",
+	    "NearbyMessages",
+	    "netd",
+	    "NetdConnector",
+	    "netscheduler-qu",
+	    "Network File Th",
+	    "NetworkPolicy",
+	    "NetworkStats",
+	    "NetworkStatsObs",
+	    "NetworkTimeUpda",
+	    "NetworkWatchlis",
+	    "nfc@1.1-service",
+	    "NodeLooperThrea",
+	    "NonUserFacing85",
+	    "NonUserFacing87",
+	    "NonUserFacing88",
+	    "NonUserFacing92",
+	    "notification-sq",
+	    "ogle.android.as",
+	    "oid.setupwizard",
+	    "OkHttp Connecti",
+	    "OkHttp Dispatch",
+	    "OkHttp Http2Con",
+	    "Okio Watchdog",
+	    "on.USER_PRESENT",
+	    "oogle.vr.vrcore",
+	    "PackageManager",
+	    "peration loader",
+	    "PhotonicModulat",
+	    "Places",
+	    "pool-15-thread-",
+	    "pool-1-thread-1",
+	    "pool-2-thread-1",
+	    "pool-3-thread-1",
+	    "pool-3-thread-2",
+	    "pool-4-thread-1",
+	    "pool-4-thread-3",
+	    "pool-5-thread-1",
+	    "pool-6-thread-1",
+	    "POSIX timer 0",
+	    "POSIX timer 4",
+	    "power@1.2-servi",
+	    "PowerManagerSer",
+	    "Primes-1",
+	    "Primes-2",
+	    "Profile Saver",
+	    "ps.pixelmigrate",
+	    "putmethod.latin",
+	    "queued-work-loo",
+	    "raService] idle",
+	    "rcuop/0",
+	    "rcuop/1",
+	    "rcuop/2",
+	    "rcuop/3",
+	    "rcuop/4",
+	    "rcuop/5",
+	    "rcuop/6",
+	    "rcuop/7",
+	    "rcuos/0",
+	    "rcuos/1",
+	    "rcuos/2",
+	    "rcuos/3",
+	    "rcuos/4",
+	    "rcuos/5",
+	    "rcuos/6",
+	    "rcuos/7",
+	    "rcu_preempt",
+	    "rcu_sched",
+	    "recents.fg",
+	    "Recents-HighRes",
+	    "Recents-TaskRes",
+	    "reel.wallpapers",
+	    "ReferenceQueueD",
+	    "reflection-thre",
+	    "RenderThread",
+	    "SafetyNetHandle",
+	    "ScriptStreamer ",
+	    "SDM_EventThread",
+	    "SearchSettings_",
+	    "SensorEventAckR",
+	    "sensors@1.0-ser",
+	    "SensorService",
+	    "sensors.qcom",
+	    "servicemanager",
+	    "SettingsProvide",
+	    "sfEventThread",
+	    "SharedPreferenc",
+	    "Signal Catcher",
+	    "smem_native_dsp",
+	    "smem_native_lpa",
+	    "smem_native_mps",
+	    "smem_native_rpm",
+	    "s.nexuslauncher",
+	    "SoundPool",
+	    "sp-control-1",
+	    "sp-download-1",
+	    "spi2",
+	    "spi_wdsp",
+	    "statsd.writer",
+	    "sugov:0",
+	    "sugov:4",
+	    "surfaceflinger",
+	    "system",
+	    "system_server",
+	    "SysUiBg",
+	    "TaskSchedulerBa",
+	    "TaskSchedulerFo",
+	    "TaskSchedulerSe",
+	    "TaskSchedulerSi",
+	    "TaskSnapshotPer",
+	    "thermal-engine",
+	    "Thread-70",
+	    "Thread-71",
+	    "Thread-72",
+	    "Thread-73",
+	    "TimeCheckThread",
+	    "TimerThread0",
+	    "traced",
+	    "traced_probes",
+	    "traced_probes0",
+	    "traced_probes1",
+	    "traced_probes2",
+	    "traced_probes3",
+	    "traced_probes4",
+	    "traced_probes5",
+	    "traced_probes6",
+	    "traced_probes7",
+	    "tty_worker_thre",
+	    "tworkPolicy.uid",
+	    "ueventd",
+	    "UEventObserver",
+	    "UiThreadHelper",
+	    "UserFacing110",
+	    "UserFacing112",
+	    "UserFacing113",
+	    "UserFacing114",
+	    "vibrator@1.2-se",
+	    "VolumeDialogCon",
+	    "vsync_retire_wo",
+	    "watchdog",
+	    "Watchdog",
+	    "watchdog/0",
+	    "watchdog/1",
+	    "watchdog/2",
+	    "watchdog/3",
+	    "watchdog/4",
+	    "watchdog/5",
+	    "watchdog/6",
+	    "watchdog/7",
+	    "wdsp_spi_glink_",
+	    "WebRtcVolumeLev",
+	    "webview_zygote",
+	    "wifi@1.0-servic",
+	    "wifiAwareServic",
+	    "wificond",
+	    "WifiService",
+	    "WifiStateMachin",
+	    "wlan_logging_th",
+	    "wpa_supplicant",
+	    "writer",
+	    "wvcdm::Timer::I",
+	    "www.gstatic.com",
+	];
+	exports.processNames = processNames;
+
+	});
+
+	unwrapExports(process_names);
+	var process_names_1 = process_names.processNames;
 
 	var aspromise = asPromise;
 
@@ -24618,7 +25263,7 @@ var perfetto = (function () {
 	var protos_3 = protos$1.RawQueryResult;
 	var protos_4 = protos$1.RawQueryArgs;
 
-	var ipc = createCommonjsModule(function (module, exports) {
+	var state = createCommonjsModule(function (module, exports) {
 	/*
 	 * Copyright (C) 2018 The Android Open Source Project
 	 *
@@ -24635,78 +25280,41 @@ var perfetto = (function () {
 	 * limitations under the License.
 	 */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	class Receiver {
-	    constructor(port, client) {
-	        this.port = port;
-	        this.client = client;
-	        this.port.onmessage = this.recv.bind(this);
-	    }
-	    recv(msg) {
-	        const name = msg.data.name;
-	        const args = msg.data.args;
-	        const requestId = msg.data.requestId;
-	        const pending = this.client[name].apply(this.client, args);
-	        pending.then(result => this.send(requestId, result));
-	    }
-	    send(requestId, result) {
-	        this.port.postMessage({
-	            requestId,
-	            result,
-	        });
-	    }
+	function createZeroState() {
+	    return {
+	        fragment: "/home",
+	        config_editor: {
+	            stream_to_host: false,
+	            buffer_size_kb: null,
+	            trace_duration_ms: null,
+	            atrace_categories: {},
+	        },
+	        fragment_params: {},
+	        traces: [],
+	        backends: {},
+	        config_commandline: "echo 'Create a config above'",
+	        tracks: {},
+	        trackTrees: {},
+	        tracksData: {},
+	        traceCpuData: [],
+	        rootTrackTree: null,
+	        gps: {
+	            startVisibleWindow: 0,
+	            endVisibleWindow: 0,
+	        },
+	        maxVisibleWindow: {
+	            start: 0,
+	            end: 0,
+	        },
+	        selection: null,
+	    };
 	}
-	class SenderTarget {
-	    constructor(port) {
-	        this.port = port;
-	        this.requestId = 0;
-	        this.pendingRequests = {};
-	        this.port.onmessage = this.recv.bind(this);
-	    }
-	    recv(msg) {
-	        const requestId = msg.data.requestId;
-	        const result = msg.data.result;
-	        console.assert(this.pendingRequests[requestId]);
-	        this.pendingRequests[requestId](result);
-	        delete this.pendingRequests[requestId];
-	    }
-	    send(name, args) {
-	        const requestId = this.requestId++;
-	        const pending = new Promise(resolve => {
-	            this.pendingRequests[requestId] = resolve;
-	        });
-	        this.port.postMessage({
-	            requestId,
-	            name,
-	            args,
-	        });
-	        return pending;
-	    }
-	}
-	class SenderHandler {
-	    constructor() {
-	    }
-	    get(rawTarget, p, _receiver) {
-	        const target = rawTarget;
-	        return function (...args) {
-	            return target.send(p, args);
-	        };
-	    }
-	}
-	function createReceiver(port, client) {
-	    return new Receiver(port, client);
-	}
-	exports.createReceiver = createReceiver;
-	function createSender(port) {
-	    const target = new SenderTarget(port);
-	    return new Proxy(target, new SenderHandler());
-	}
-	exports.createSender = createSender;
+	exports.createZeroState = createZeroState;
 
 	});
 
-	unwrapExports(ipc);
-	var ipc_1 = ipc.createReceiver;
-	var ipc_2 = ipc.createSender;
+	unwrapExports(state);
+	var state_1 = state.createZeroState;
 
 	var backend = createCommonjsModule(function (module, exports) {
 	/*
@@ -24728,10 +25336,21 @@ var perfetto = (function () {
 
 
 
+
 	let gState = state.createZeroState();
 	let gTracesController = null;
 	let gLargestKnownId = 0;
+	let gLargestKnownSliceId = 0;
 	let gPort = null;
+	function pidToName(id) {
+	    return process_names.processNames[id % process_names.processNames.length];
+	}
+	function pidToColor(pid) {
+	    const colors = [
+	        "rgb(262, 161, 161)", "rgb(150, 292, 193)", "rgb(177, 132, 210)", "rgb(287, 265, 128)", "rgb(128, 204, 221)", "rgb(228, 134, 184)", "rgb(204, 331, 158)", "rgb(152, 149, 220)", "rgb(281, 193, 146)", "rgb(133, 256, 209)", "rgb(195, 128, 202)", "rgb(268, 308, 130)", "rgb(134, 179, 223)", "rgb(249, 148, 171)", "rgb(167, 311, 181)", "rgb(167, 137, 215)", "rgb(290, 236, 133)", "rgb(128, 222, 218)", "rgb(215, 129, 192)", "rgb(230, 331, 145)", "rgb(145, 159, 222)", "rgb(270, 172, 155)", "rgb(142, 278, 200)",
+	    ];
+	    return colors[pid % colors.length];
+	}
 	function createConfig(state$$1) {
 	    const ftraceEvents = [];
 	    const atraceCategories = Object.keys(state$$1.atrace_categories);
@@ -24801,6 +25420,32 @@ var perfetto = (function () {
 	    }
 	    return {};
 	}
+	// Taken from first prototype.
+	function computeCpuTime(tracksData, num_buckets, traceDataWindow) {
+	    const n = num_buckets;
+	    const trace_duration_ns = traceDataWindow.end - traceDataWindow.start;
+	    let bucket_size_ns = trace_duration_ns / num_buckets;
+	    let buckets = [];
+	    for (let i = 0; i < n + 1; i++) {
+	        buckets.push({ time: traceDataWindow.start + i * bucket_size_ns, cpu: 0 });
+	    }
+	    for (const trackData of Object.values(tracksData)) {
+	        if (trackData == null)
+	            throw 'trackData should not be null';
+	        for (let slice of trackData.data) {
+	            let first_bucket = Math.floor((slice.start - traceDataWindow.start) / bucket_size_ns);
+	            let last_bucket = Math.ceil((slice.end - traceDataWindow.start) / bucket_size_ns);
+	            for (let i = first_bucket; i < last_bucket; i++) {
+	                let bucket_start = i * bucket_size_ns;
+	                let bucket_end = bucket_start + bucket_size_ns;
+	                let start = Math.max(bucket_start, slice.start);
+	                let end = Math.min(bucket_end, slice.end);
+	                buckets[i].cpu += Math.max(0, end - start);
+	            }
+	        }
+	    }
+	    return buckets;
+	}
 	function publishBackend(info) {
 	    return {
 	        topic: 'publish_backend',
@@ -24813,6 +25458,13 @@ var perfetto = (function () {
 	        id,
 	    };
 	}
+	function updateTrackData(id, data) {
+	    return {
+	        topic: 'update_track_data',
+	        id,
+	        data,
+	    };
+	}
 	class TraceController {
 	    constructor(id) {
 	        this.id = id;
@@ -24820,6 +25472,7 @@ var perfetto = (function () {
 	        this.name = '';
 	        this.file = null;
 	        this.remoteTraceProcessorBridge = null;
+	        this.seenTracks = new Set();
 	    }
 	    details() {
 	        return {
@@ -24839,7 +25492,7 @@ var perfetto = (function () {
 	            topic: 'start_processor',
 	        });
 	    }
-	    update(_, request) {
+	    update(state$$1, request) {
 	        if (this.state === 'LOADING' && this.file && gPort) {
 	            const bridge = ipc.createSender(gPort);
 	            this.remoteTraceProcessorBridge = bridge;
@@ -24853,11 +25506,38 @@ var perfetto = (function () {
 	            this.remoteTraceProcessorBridge &&
 	            request.needs_update) {
 	            this.remoteTraceProcessorBridge.query(request.query).then((x) => {
-	                console.log(x);
 	                this.result = x;
 	                dispatch(updateDone(this.id));
 	                dispatch(publishBackend(this.details()));
 	            });
+	        }
+	        if (this.state === 'READY' && this.remoteTraceProcessorBridge) {
+	            for (let [id, track] of Object.entries(state$$1.tracks)) {
+	                if (track == null)
+	                    continue; // TS being a little too pedantic here.
+	                if (this.seenTracks.has(id))
+	                    continue;
+	                if (!track.query)
+	                    continue;
+	                this.seenTracks.add(id);
+	                this.remoteTraceProcessorBridge.query(track.query).then((result) => {
+	                    let slices = [];
+	                    for (let i = 0; i < result.numRecords; i++) {
+	                        const start = result.columns[0].ulongValues[i] - 81473011195345;
+	                        const length = result.columns[2].ulongValues[i];
+	                        const end = start + length;
+	                        const pid = result.columns[3].ulongValues[i];
+	                        slices.push({
+	                            id: 'worker-' + gLargestKnownSliceId++,
+	                            start,
+	                            end: end,
+	                            title: pidToName(pid),
+	                            color: pidToColor(pid),
+	                        });
+	                    }
+	                    dispatch(updateTrackData(id, slices));
+	                });
+	            }
 	        }
 	    }
 	    teardown() {
@@ -24893,6 +25573,7 @@ var perfetto = (function () {
 	    }
 	}
 	function dispatch(action) {
+	    console.log("Worker: Received action: ", action);
 	    const any_self = self;
 	    switch (action.topic) {
 	        case 'processor_started': {
@@ -24928,6 +25609,27 @@ var perfetto = (function () {
 	            gState.backends[action.info.id] = action.info;
 	            break;
 	        }
+	        case 'show_hide': {
+	            //const cpu = (action.cpu as any);
+	            //for (const track of Object.values(gState.tracks)) {
+	            //  if (track.name !== `CPU ${cpu}`)
+	            //    continue;
+	            //  let i = -1;
+	            //  let j = 0;
+	            //  for (const child of gState.trackTrees.children) {
+	            //    if (child.id === track.id)
+	            //      i = j;
+	            //    j++;
+	            //  }
+	            //  if (i !== -1) {
+	            //    gState.trackTrees.children.splice(i, 1);
+	            //  } else {
+	            //    gState.trackTrees.children.push({ nodeType: 'TRACK', id: track.id});
+	            //  }
+	            //  break;
+	            //}
+	            break;
+	        }
 	        case 'set_category': {
 	            const config = gState.config_editor;
 	            const category = action.category;
@@ -24949,6 +25651,24 @@ var perfetto = (function () {
 	                id: '' + gLargestKnownId++,
 	                query: '',
 	            });
+	            const trackIds = [];
+	            for (let i = 0; i < 8; i++) {
+	                const id = '' + gLargestKnownId++;
+	                gState.tracks[id] = {
+	                    id,
+	                    name: `CPU ${i}`,
+	                    height: 50,
+	                    query: `select * from sched_slices where cpu = ${i} limit 100;`,
+	                };
+	                trackIds.push({ nodeType: 'TRACK', id });
+	            }
+	            gState.trackTrees = {
+	                "tree1": {
+	                    name: "CPU Trace",
+	                    children: trackIds,
+	                }
+	            };
+	            gState.rootTrackTree = 'tree1';
 	            break;
 	        }
 	        case 'query': {
@@ -24968,6 +25688,35 @@ var perfetto = (function () {
 	                if (trace.id === id)
 	                    trace.needs_update = false;
 	            }
+	            break;
+	        }
+	        case 'update_track_data': {
+	            const id = action.id;
+	            const data = action.data;
+	            gState.tracksData[id] = {
+	                data,
+	            };
+	            let maxVisibleWindowStart = +Infinity;
+	            let maxVisibleWindowEnd = -Infinity;
+	            for (const trackData of Object.values(gState.tracksData)) {
+	                if (trackData == null)
+	                    throw 'Cannot happen';
+	                const trackDataStart = trackData.data[0].start;
+	                const trackDataEnd = trackData.data[trackData.data.length - 1].end;
+	                if (trackDataStart < maxVisibleWindowStart) {
+	                    maxVisibleWindowStart = trackDataStart;
+	                }
+	                if (trackDataEnd > maxVisibleWindowEnd) {
+	                    maxVisibleWindowEnd = trackDataEnd;
+	                }
+	            }
+	            gState.maxVisibleWindow.start = maxVisibleWindowStart;
+	            gState.maxVisibleWindow.end = maxVisibleWindowEnd;
+	            gState.traceCpuData = computeCpuTime(gState.tracksData, 200, gState.maxVisibleWindow);
+	            break;
+	        }
+	        case 'update_slice_selection': {
+	            gState.selection = action.slice;
 	            break;
 	        }
 	        default:

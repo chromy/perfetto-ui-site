@@ -24692,6 +24692,7 @@ var perfetto = (function () {
 	    constructor() {
 	        this.wasm_ = undefined;
 	        this.blob_ = undefined;
+	        this.ready = false;
 	        // @ts-ignore
 	        this.blobReader = new FileReaderSync();
 	        this.pendingRequests = {};
@@ -24727,7 +24728,6 @@ var perfetto = (function () {
 	        const readTraceFn = this.wasm_.addFunction(this.readTraceData.bind(this), 'iiii');
 	        const replyFn = this.wasm_.addFunction(this.reply.bind(this), 'viiii');
 	        this.wasm_.ccall('Initialize', 'void', ['number', 'number'], [readTraceFn, replyFn]);
-	        this.resolvePendingInitialized();
 	    }
 	    readTraceData(offset, len, dstPtr) {
 	        const slice = this.blob.slice(offset, offset + len);
@@ -24737,6 +24737,11 @@ var perfetto = (function () {
 	        return buf.byteLength;
 	    }
 	    reply(requestId, success, heapPtr, size) {
+	        if (!this.ready) {
+	            this.ready = true;
+	            this.resolvePendingInitialized();
+	            return;
+	        }
 	        const data = this.wasm_.HEAPU8.slice(heapPtr, heapPtr + size);
 	        console.assert(success);
 	        console.assert(this.pendingRequests[requestId]);

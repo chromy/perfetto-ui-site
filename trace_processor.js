@@ -1107,7 +1107,7 @@ function enlargeMemory() {
 
 
 var TOTAL_STACK = Module['TOTAL_STACK'] || 5242880;
-var TOTAL_MEMORY = Module['TOTAL_MEMORY'] || 33554432;
+var TOTAL_MEMORY = Module['TOTAL_MEMORY'] || 536870912;
 if (TOTAL_MEMORY < TOTAL_STACK) Module.printErr('TOTAL_MEMORY should be larger than TOTAL_STACK, was ' + TOTAL_MEMORY + '! (TOTAL_STACK=' + TOTAL_STACK + ')');
 
 // Initialize the runtime's memory
@@ -1729,7 +1729,7 @@ var ASM_CONSTS = [];
 
 STATIC_BASE = GLOBAL_BASE;
 
-STATICTOP = STATIC_BASE + 52848;
+STATICTOP = STATIC_BASE + 52864;
 /* global initializers */  __ATINIT__.push({ func: function() { __GLOBAL__sub_I_status_cc() } });
 
 
@@ -1738,7 +1738,7 @@ STATICTOP = STATIC_BASE + 52848;
 
 
 
-var STATIC_BUMP = 52848;
+var STATIC_BUMP = 52864;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 
